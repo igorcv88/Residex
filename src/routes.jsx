@@ -2,12 +2,12 @@ import AINEs from './pages/AINEs';
 import COX2 from './pages/COX2';
 import HV from './pages/HV';
 import Abdominal from './pages/Abdominal';
-import InsuficienciaHepatica from './pages/Choque';
-import Hepato101 from './pages/Choque';
-import Obesidade from './pages/Choque';
-import DoencasTireoide from './pages/Choque';
+import InsuficienciaHepatica from './pages/InsuficienciaHepatica';
+import Hepato101 from './pages/Hepato101';
+import Obesidade from './pages/Obesidade';
+import DoencasTireoide from './pages/DoencasTireoide';
 import Choque from './pages/Choque';
-import DiabetesMellitus from './pages/Choque';
+import DiabetesMellitus from './pages/DiabetesMellitus';
 
 export const routes = [
   {
