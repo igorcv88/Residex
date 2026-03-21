@@ -16,6 +16,7 @@ import Neurotrauma from './pages/Neurotrauma';
 import Politrauma from './pages/Politrauma';
 import ViaAerea from './pages/ViaAerea';
 import CicloMenstrual from './pages/CicloMenstrual';
+import TriagemNeonatal from './pages/TriagemNeonatal';
 
 export const routes = [
   {
