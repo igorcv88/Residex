@@ -11,6 +11,7 @@ import DiabetesMellitus from './pages/DiabetesMellitus';
 import IctericiaNeonatal from './pages/IctericiaNeonatal';
 import SepseNeonatal from './pages/SepseNeonatal';
 import ReanimacaoNeonatal from './pages/ReanimacaoNeonatal';
+import PedCalc from './pages/PedCalc';
 
 export const routes = [
   {
@@ -110,6 +111,15 @@ export const routes = [
     categoria: 'Emergencia',
     descricao:
       'Calculadora de hidratação venosa pediatrica de ataque e manutenção',
+  },
+  {
+    path: '/PedCalc',
+    element: <PedCalc />,
+    title: 'Calculadora de Doses Pediátricas',
+    icon: '💊',
+    categoria: 'Emergencia',
+    descricao:
+      'Calculadora de medicações pediátricas e protocolos de diversas emergencias pediatricas',
   },
   {
     path: '/aines',
