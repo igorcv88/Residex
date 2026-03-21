@@ -116,7 +116,7 @@ export const routes = [
     element: <AINEs />,
     title: 'Potência dos AINEs',
     icon: '💊',
-    categoria: 'Farmacologia',
+    categoria: 'Ciclo Basico',
     descricao: 'Comparativo de potência e seletividade COX-1/COX-2',
   },
   {
@@ -124,7 +124,7 @@ export const routes = [
     element: <COX2 />,
     title: 'Fisiologia das COX',
     icon: '🔬',
-    categoria: 'Fisiologia',
+    categoria: 'Ciclo Basico',
     descricao: 'Mecanismo das ciclooxigenases e cascata do ácido araquidônico',
   },
 ];

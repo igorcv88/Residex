@@ -2,11 +2,10 @@ import { useNavigate } from 'react-router-dom';
 import { routes } from '../routes';
 
 const categoriaColor = {
-  Emergência:   { bg: '#fff0f0', accent: '#c0000a', border: '#ffb3b8' },
+  Emergencia:   { bg: '#fff0f0', accent: '#c0000a', border: '#ffb3b8' },
   Pediatria:    { bg: '#fef0f6', accent: '#b5006e', border: '#f9b8d9' },
   Ginecologia:  { bg: '#fff0f8', accent: '#d63384', border: '#f7c6e8' },
-  Fisiologia:   { bg: '#f0f0f0', accent: '#333333', border: '#cccccc' },
-  Farmacologia: { bg: '#f0faf9', accent: '#0a7060', border: '#a0ddd6' },
+  'Ciclo Basico': { bg: '#f0faf9', accent: '#0a7060', border: '#a0ddd6' },
   Clinica:      { bg: '#e8f4fd', accent: '#1a6fa8', border: '#b3d9f5' },
   Cirurgia:     { bg: '#edf7ed', accent: '#2a7a3b', border: '#b3e5b3' },
   Preventiva:   { bg: '#e8f4ff', accent: '#4a9fd4', border: '#aed6f1' },
