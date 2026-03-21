@@ -5,10 +5,10 @@ const categoriaColor = {
   Emergência:   { bg: '#fff4e5', accent: '#b35a00', border: '#ffd9a0' },
   Pediatria:    { bg: '#fef0f6', accent: '#b5006e', border: '#f9b8d9' },
   Ginecologia:  { bg: '#fff8f0', accent: '#9a4500', border: '#ffd4a8' },
-  Cirurgia:     { bg: '#f0f0f0', accent: '#333333', border: '#cccccc' },
-  Clínica:      { bg: '#f0faf9', accent: '#0a7060', border: '#a0ddd6' },
-  Farmacologia: { bg: '#e8f4fd', accent: '#1a6fa8', border: '#b3d9f5' },
-  Fisiologia:   { bg: '#edf7ed', accent: '#2a7a3b', border: '#b3e5b3' },
+  Fisiologia:     { bg: '#f0f0f0', accent: '#333333', border: '#cccccc' },
+  Farmacologia:      { bg: '#f0faf9', accent: '#0a7060', border: '#a0ddd6' },
+  Clínica: { bg: '#e8f4fd', accent: '#1a6fa8', border: '#b3d9f5' },
+  Cirurgia:   { bg: '#edf7ed', accent: '#2a7a3b', border: '#b3e5b3' },
 };
 
 const defaultColor = { bg: '#f5f5f5', accent: '#444', border: '#ddd' };
