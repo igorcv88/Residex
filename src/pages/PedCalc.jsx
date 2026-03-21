@@ -519,6 +519,38 @@ const DRUGS = [
 // ─────────────────────────────────────────────
 const EMERGENCIES = [
   {
+  id: "cad", name: "Cetoacidose Diabética", emoji: "🩸", color: "#F59E0B",
+  description: "CAD — Hiperglicemia + Acidose + Cetose",
+  notes: "CRITÉRIOS: Glicemia >200 + pH <7,3 e/ou Bic <15 + Cetose. CLASSIFICAÇÃO: Leve pH 7,2-7,3 | Moderada pH 7,1-7,2 | Grave pH <7,1. MONITORAR: Dx 1/1h · SV + diurese + neurológico 1/1h · Gasometria + eletrólitos 2-4h · Cetonemia 2/2h. SUSPENDER BOMBA: pH >7,3 + HCO3 >18 + Glicemia <200 → 1h antes: insulina IM regular 0,05-0,1U/kg → pausar bomba → dieta.",
+  drugs: (w) => [
+    { order: 1, name: "SF 0,9% — Expansão 1ª fase (1ª hora)",          urgency: "IMEDIATO — antes de tudo",
+      dose:  `${Math.min(w*20,500).toFixed(0)}–${Math.min(w*20,1000).toFixed(0)} mL bolus`,
+      prep:  "SF 0,9% ou Ringer Lactato — 10-20mL/kg em 20-30 min. Reavaliar; repetir se necessário",
+      freq:  "1-2 bolus na 1ª hora", max: "", highlight: true },
+    { order: 2, name: "HV 2ª fase — repor perdas em 24-48h",            urgency: "Após expansão",
+      dose:  (() => {
+        const ch = w <= 10 ? w*100 : w <= 20 ? 1000+(w-10)*50 : 1500+(w-20)*20;
+        const perda_mod = Math.round(w*70); // 7% moderada (referência)
+        const total = Math.round(ch + perda_mod);
+        return `~${total} mL/dia (Holliday + 7% perda)`;
+      })(),
+      prep:  "CAD leve: +5% peso · Moderada: +7% peso · Grave: +10% peso. Dividir reposição em 24-48h. Se Dx>250: SF0,9% puro. Se Dx<250: SGF 1:1. Se Dx<150: SG10%+NaCl",
+      freq:  "BIC contínua — ajustar conforme Dx seriado", max: "", highlight: false },
+    { order: 3, name: "Potássio — reposição na HV",                     urgency: "ANTES da insulina",
+      dose:  "40 mEq/L na solução",
+      prep:  "K ≥3,5 e <5,5: acrescentar 40mEq/L. K <3,5: corrigir primeiro (0,5mEq/kg/h) + ATRASAR insulina 1h. K ≥5,5: não repor — checar diurese",
+      freq:  "Reavaliar K + gasometria a cada 2-4h", max: "Usar K corrigido pelo pH: cada 0,1 de pH abaixo de 7,3 reduz K em 0,6mEq/L", highlight: false },
+    { order: 4, name: "Insulina Regular — Bomba EV contínua",           urgency: "Iniciar 1-2h após expansão + K corrigido",
+      dose:  `0,1 UI/kg/h = ${(w*0.1).toFixed(1)} mL/h`,
+      prep:  `Preparar: Insulina Regular 50UI + SF0,9% 500mL → 0,1UI/mL. Fazer ${(w*0.1).toFixed(1)}mL/h (= 0,1UI/kg/h = peso em mL/h)`,
+      freq:  `Dx >250 → ${w.toFixed(0)}mL/h | Dx <250 ou queda >100mg/dL/h → ${(w/2).toFixed(1)}mL/h (metade)`, max: "Trocar solução + equipo a cada 6h. NÃO suspender até resolução bioquímica", highlight: true },
+    { order: 5, name: "Insulina IM — transição para SC",                urgency: "Ao resolver CAD",
+      dose:  `${Math.min(w*0.05,5).toFixed(2)}–${Math.min(w*0.1,10).toFixed(2)} UI Regular SC`,
+      prep:  "Fazer 1h ANTES de pausar a bomba. Após: iniciar dieta + NPH+Regular conforme esquema de manutenção",
+      freq:  "Dose única de transição", max: "Manutenção: Lactente 0,3-0,5 | Criança 0,5-0,7 | Púbere 0,8-2 UI/kg/dia", highlight: false },
+  ],
+},
+  {
     id: "anafilaxia", name: "Anafilaxia", emoji: "⚡", color: "#EF4444",
     description: "Reação alérgica grave sistêmica",
     notes: "1. Adrenalina IM IMEDIATA — decúbito c/ MMII elevados — 2. O₂ alto fluxo — 3. Acesso venoso — 4. SF 0,9% 20mL/kg se hipotensão — 5. Monitorizar SpO₂, PA, FC — 6. Observação mínima 4-6h (risco de resposta bifásica)",
