@@ -12,6 +12,9 @@ import IctericiaNeonatal from './pages/IctericiaNeonatal';
 import SepseNeonatal from './pages/SepseNeonatal';
 import ReanimacaoNeonatal from './pages/ReanimacaoNeonatal';
 import PedCalc from './pages/PedCalc';
+import Neurotrauma from './pages/Neurotrauma';
+import Politrauma from './pages/Politrauma';
+import ViaAerea from './pages/ViaAerea';
 
 export const routes = [
   {
@@ -122,12 +125,12 @@ export const routes = [
     descricao: 'Resumo interativo sobre choque no contexto do trauma',
   },
   {
-    path: '/Choque',
-    element: <Choque />,
-    title: 'Choque Hemorrágico/Hipovolemico',
-    icon: '🩸',
+    path: '/ViaAerea',
+    element: <ViaAerea />,
+    title: 'Via Aerea no Trauma',
+    icon: '🫁',
     categoria: 'Cirurgia',
-    descricao: 'Resumo interativo sobre choque no contexto do trauma',
+    descricao: 'Via aérea no trauma — dispositivos básicos e avançados, indicações de IOT, sequência rápida com os 7 Ps, farmacologia completa (indutores e BNMs), cricotireoidotomia e manejo pós-intubação com ventilação protetora.',
   },
   {
     path: '/Politrauma',
