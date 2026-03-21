@@ -15,6 +15,7 @@ import PedCalc from './pages/PedCalc';
 import Neurotrauma from './pages/Neurotrauma';
 import Politrauma from './pages/Politrauma';
 import ViaAerea from './pages/ViaAerea';
+import CicloMenstrual from './pages/CicloMenstrual';
 
 export const routes = [
   {
@@ -106,6 +107,15 @@ export const routes = [
     categoria: 'Clinica',
     descricao:
       'Anatomia e síntese hormonal, hipertireoidismo (Graves, BNT), crise tireotóxica com sequência de manejo, hipotireoidismo, tireoidites, nódulo (BETHESDA/TIRADS) e câncer de tireoide.',
+  },
+    {
+    path: '/CicloMenstrual',
+    element: <CicloMenstrual />,
+    title: 'CicloMenstrual',
+    icon: '🔄🩸',
+    categoria: 'Ginecologia',
+    descricao:
+      'Fisiologia do ciclo ovariano-endometrial: eixo hipotálamo-hipófise, fases folicular/lútea, hormônios e transtornos pré-menstruais para residência.',
   },
   {
     path: '/Abdominal',
