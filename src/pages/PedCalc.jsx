@@ -462,6 +462,62 @@ const DRUGS = [
     notes: "Preferir para: convulsão focal, tumor SNC, TCE. NÃO diluir em SG. NÃO misturar com KCl.",
   },
   {
+  id: "levetiracetam", name: "Levetiracetam (Keppra)",
+  category: "anticonvulsivantes", color: "#EC4899", inputType: "weight",
+  presentation: "Sol oral 100mg/mL | CP 250/500/750/1000mg | CP XR 500mg | Sol EV 100mg/mL",
+  dilution: "EV: diluir dose em 100mL SF0,9% ou SG5%",
+  infusion: "EV em 15 min",
+  calc: (w) => {
+    if (w <= 50) {
+      const ini   = Math.min(w * 10, 500);
+      const max_d = Math.min(w * 30, 1500);
+      const ini_ml  = (ini  / 100).toFixed(2);
+      const max_ml  = (max_d / 100).toFixed(2);
+      return [
+        { label: "VO — Dose inicial (10mg/kg/dose) — < 50kg",
+          value: `${ini.toFixed(0)} mg/dose`,
+          freq:  "12/12h",
+          sub:   `Sol 100mg/mL: ${ini_ml}mL/dose | Regra: 0,1mL/kg/dose\n⚠ ≤ 25kg: preferir solução oral (não partir comprimido)`,
+          highlight: true },
+        { label: "VO — Dose máxima (30mg/kg/dose) — < 50kg",
+          value: `${max_d.toFixed(0)} mg/dose`,
+          freq:  "12/12h",
+          sub:   `Sol 100mg/mL: ${max_ml}mL/dose | Aumentar 10mg/kg/dose a cada 2 semanas`,
+          highlight: false },
+        { label: "EV — Dose inicial (10mg/kg/dose) — < 50kg",
+          value: `${ini.toFixed(0)} mg/dose EV`,
+          freq:  "12/12h",
+          sub:   `Diluir em 100mL SF0,9% — infundir em 15 min | Max 30mg/kg/dose`,
+          highlight: false },
+        { label: "1-6 meses — dose inicial (7mg/kg/dose)",
+          value: `${Math.min(w * 7, 210).toFixed(0)} mg/dose`,
+          freq:  "12/12h",
+          sub:   `Sol 100mg/mL: ${(Math.min(w*7,210)/100).toFixed(2)}mL/dose (0,07mL/kg) | Max: 21mg/kg/dose`,
+          highlight: false },
+      ];
+    } else {
+      return [
+        { label: "VO — Dose inicial (> 50kg / adolescente)",
+          value: "500 mg/dose",
+          freq:  "12/12h",
+          sub:   "Progredir para 1.500mg/dose após 2 semanas | Incrementos de 500mg/dose a cada 2-4 sem | Max 1.500mg/dose",
+          highlight: true },
+        { label: "VO XR (liberação prolongada) — > 50kg",
+          value: "1.000 mg/dia",
+          freq:  "1× ao dia",
+          sub:   "Iniciar 500mg/dia por 2 sem → 1.000mg/dia | Incrementos de 500mg/dia a cada 2 sem | Max 3.000mg/dia",
+          highlight: false },
+        { label: "EV — Dose adjuvante (> 50kg)",
+          value: "500 mg/dose EV",
+          freq:  "12/12h",
+          sub:   "Diluir em 100mL SF0,9% — infundir em 15 min | Pode progredir até 1.500mg/dose | Incrementos 500mg a cada 2-4 sem",
+          highlight: false },
+      ];
+    }
+  },
+  notes: "Monoterapia: ≥ 16 anos. Adjuvante: a partir de 1 mês. Ajuste para ClCr (ver Rfofos). Efeitos: irritabilidade, sintomas depressivos — especialmente em pediatria. Não partir comprimido XR. ≤ 25kg: solução oral preferencial.",
+},
+  {
     id: "diazepam_retal", name: "Diazepam (Retal / EV)",
     category: "anticonvulsivantes", color: "#EC4899", inputType: "weight",
     presentation: "FA 10mg/2mL (5mg/mL)",
