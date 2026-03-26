@@ -1,5 +1,6 @@
 import { useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
+import { EXTRA_CATEGORIES, EXTRA_DRUGS } from "./PedCalcDrugsExtra";
 
 // ─────────────────────────────────────────────
 // DESIGN TOKENS
@@ -13,7 +14,7 @@ const BORDER2 = "#1e2a3a";
 // ─────────────────────────────────────────────
 // DRUG CATEGORIES
 // ─────────────────────────────────────────────
-const DRUG_CATEGORIES = [
+const DRUG_CATEGORIES_BASE = [
   { id: "todos",           name: "Todos",                    color: "#64748b" },
   { id: "antibioticos",    name: "Antibióticos",             color: "#10B981" },
   { id: "analgesicos",     name: "Analgésicos / Antitérmicos", color: "#F59E0B" },
@@ -24,12 +25,14 @@ const DRUG_CATEGORIES = [
   { id: "anticonvulsivantes", name: "Anticonvulsivantes",    color: "#EC4899" },
   { id: "sedativos",       name: "Sedação / Analgesia",      color: "#F97316" },
 ];
+const DRUG_CATEGORIES = [...DRUG_CATEGORIES_BASE, ...EXTRA_CATEGORIES];
+const DRUGS = [...DRUGS_BASE, ...EXTRA_DRUGS];
 
 // ─────────────────────────────────────────────
 // DRUG DATABASE
 // calc(input) → [{label, value, freq, sub, highlight}]
 // ─────────────────────────────────────────────
-const DRUGS = [
+const DRUGS_BASE = [
 
   // ══ ANTIBIÓTICOS ══════════════════════════
   {
