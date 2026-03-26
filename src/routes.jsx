@@ -17,6 +17,7 @@ import Politrauma from './pages/Politrauma';
 import ViaAerea from './pages/ViaAerea';
 import CicloMenstrual from './pages/CicloMenstrual';
 import TriagemNeonatal from './pages/TriagemNeonatal';
+import { EXTRA_CATEGORIES, EXTRA_DRUGS } from "./PedCalcDrugsExtra";
 
 export const routes = [
   {
