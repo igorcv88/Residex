@@ -21,7 +21,7 @@ export const T = {
   // ── Texto ────────────────────────────────────
   textPrimary: "#000000", // Slate 950 — títulos (WCAG AAA)
   textBody: "#000000", // Slate 700 — corpo de texto (WCAG AA 9.8:1)
-  textMuted: "#64748b", // Slate 500 — labels e metadados (WCAG AA 5.9:1)
+  textMuted: "#262f3c", // Slate 500 — labels e metadados (WCAG AA 5.9:1)
   textSubtle: "#94a3b8", // Slate 400 — nav inativos, rodapé
   textDisabled: "#cbd5e1", // Slate 300 — dots inativos, separadores
 
