@@ -5011,7 +5011,7 @@ export default function PedCalc() {
               >
                 <div
                   style={{
-                    color: selDrug?.id === drug.id ? T.textPrimary : "#9ca3af",
+                    color: selDrug?.id === drug.id ? T.textPrimary : T.textSubtle,
                     marginBottom: 2,
                   }}
                 >
