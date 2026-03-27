@@ -1,5 +1,4 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom"; // ← adiciona essa linha
+import MedPanelPage from "./medpanel-layout";
 
 const sections = [
   {
