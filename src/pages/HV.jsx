@@ -273,11 +273,342 @@ const S = {
 
 // ── Componente principal ───────────────────────────────────────────────────
 export default function HidratacaoPediatrica() {
+  const navigate = useNavigate(); // ← adiciona aqui
+  const [peso, setPeso] = useState("");
+  const [kclType, setKclType] = useState("10");
+  const [ataqueMlKg, setAtaqueMlKg] = useState("20");
+  const [naAlvo, setNaAlvo] = useState("3");
+  const [kAlvo, setKAlvo] = useState("2");
+  const [activeTab, setActiveTab] = useState("manutencao");
+
+  const p = parseFloat(peso.replace(",", "."));
+  const isValid = !isNaN(p) && p > 0 && p <= 150;
+
+  // ── AHV Ataque ──
+  const mlKgAtaque = parseFloat(ataqueMlKg.replace(",", ".")) || 20;
+  const volAtaque = isValid ? r0(p * mlKgAtaque) : null;
+  const velAtaque30 = isValid ? r1(volAtaque / 0.5) : null; // mL/h se 30 min
+  const velAtaque60 = isValid ? r1(volAtaque / 1) : null; // mL/h se 60 min
+
+  // ── HV Manutenção ──
+  const volTotal = isValid ? hollidaySegar(p) : null;
+  const na = parseFloat(naAlvo.replace(",", ".")) || 3;
+  const k = parseFloat(kAlvo.replace(",", ".")) || 2;
+
+  let volNaCl, volKCl, volSGI, velInfusao, velMlKgH;
+  if (isValid && volTotal) {
+    const totalNa = na * (volTotal / 100);
+    const totalK = k * (volTotal / 100);
+    volNaCl = r1(totalNa / NACL20_MEQ_PER_ML);
+    const kConc = kclType === "191" ? KCL191_MEQ_PER_ML : KCL10_MEQ_PER_ML;
+    volKCl = r1(totalK / kConc);
+    volSGI = r1(volTotal - volNaCl - volKCl);
+    velInfusao = r1(volTotal / 24);
+    velMlKgH = r1(velInfusao / p);
+  }
+
+  // Classificação de peso
+  let pesoClass = "";
+  if (isValid) {
+    if (p <= 10) pesoClass = "≤ 10 kg → 100 mL/kg/dia";
+    else if (p <= 20) pesoClass = "10–20 kg → 1000 + 50×(P−10)";
+    else pesoClass = "> 20 kg → 1500 + 20×(P−20)";
+  }
+
   return (
-    <MedPanelPage
-      sections={sections}
-      specialty="Emergencia"
-      title="HV de Manutenção"
-    />
+    <div style={S.root}>
+      <link
+        href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500;600&display=swap"
+        rel="stylesheet"
+      />
+      <div style={S.card}>
+        <button
+          onClick={() => navigate("/")}
+          style={{
+            background: "transparent",
+            border: "1px solid #1e2a3a",
+            color: "#64748b",
+            padding: "6px 14px",
+            borderRadius: 6,
+            cursor: "pointer",
+            fontFamily: "monospace",
+            fontSize: 12,
+            width: "fit-content", // ← essa linha
+            margin: "16px auto",
+            display: "inline-flex",
+            alignItems: "center",
+            gap: 5,
+          }}
+        >
+          ← MedPanel
+        </button>
+        {/* ── Header ── */}
+        <div style={S.header}>
+          <p style={S.headerTitle}>Hidratação Venosa Pediátrica</p>
+          <p style={S.headerSub}>
+            Holliday-Segar · AHV Ataque · Soro de Manutenção
+          </p>
+        </div>
+
+        <div style={S.body}>
+          {/* ── Input: peso ── */}
+          <div style={S.section}>
+            <p style={S.sectionLabel}>Dados do Paciente</p>
+            <div style={S.inputRow}>
+              <div style={S.inputGroup}>
+                <label style={S.label}>Peso (kg)</label>
+                <input
+                  style={S.input}
+                  type="number"
+                  min="0.5"
+                  max="150"
+                  step="0.1"
+                  placeholder="Ex: 12,5"
+                  value={peso}
+                  onChange={(e) => setPeso(e.target.value)}
+                />
+              </div>
+              <div style={S.inputGroup}>
+                <label style={S.label}>KCl utilizado</label>
+                <select
+                  style={S.select}
+                  value={kclType}
+                  onChange={(e) => setKclType(e.target.value)}
+                >
+                  <option value="10">KCl 10% (1,34 mEq/mL)</option>
+                  <option value="191">KCl 19,1% (2,57 mEq/mL)</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div style={S.divider} />
+
+          {/* ── Tabs ── */}
+          <div style={S.tabs}>
+            <button
+              style={S.tab(activeTab === "manutencao")}
+              onClick={() => setActiveTab("manutencao")}
+            >
+              HV Manutenção
+            </button>
+            <button
+              style={S.tab(activeTab === "ataque")}
+              onClick={() => setActiveTab("ataque")}
+            >
+              AHV Ataque
+            </button>
+          </div>
+
+          {/* ══ TAB: MANUTENÇÃO ══ */}
+          {activeTab === "manutencao" && (
+            <>
+              {/* Parâmetros de eletrólitos */}
+              <div style={S.section}>
+                <p style={S.sectionLabel}>Concentração-alvo de eletrólitos</p>
+                <div style={S.inputRow}>
+                  <div style={S.inputGroup}>
+                    <label style={S.label}>Na⁺ alvo (mEq/100 mL)</label>
+                    <input
+                      style={S.input}
+                      type="number"
+                      min="0"
+                      max="10"
+                      step="0.5"
+                      value={naAlvo}
+                      onChange={(e) => setNaAlvo(e.target.value)}
+                    />
+                  </div>
+                  <div style={S.inputGroup}>
+                    <label style={S.label}>K⁺ alvo (mEq/100 mL)</label>
+                    <input
+                      style={S.input}
+                      type="number"
+                      min="0"
+                      max="5"
+                      step="0.5"
+                      value={kAlvo}
+                      onChange={(e) => setKAlvo(e.target.value)}
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Resultados manutenção */}
+              {isValid && volTotal ? (
+                <>
+                  {/* Volume total */}
+                  <div style={S.resultBlock}>
+                    <p style={S.resultTitle}>
+                      Volume Total / 24 h — Holliday-Segar
+                    </p>
+                    <div style={S.resultGrid}>
+                      <div style={S.resultItem}>
+                        <span style={S.resultKey}>Volume diário</span>
+                        <span style={S.resultVal}>
+                          {r0(volTotal)}
+                          <span style={S.resultUnit}>mL/24h</span>
+                        </span>
+                      </div>
+                      <div style={S.resultItem}>
+                        <span style={S.resultKey}>Faixa Holliday-Segar</span>
+                        <span
+                          style={{
+                            fontSize: "0.72rem",
+                            color: "#7dd3fc",
+                            lineHeight: 1.4,
+                          }}
+                        >
+                          {pesoClass}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Composição */}
+                  <div style={S.resultBlock}>
+                    <p style={S.resultTitle}>
+                      Composição do Soro — {na} mEq Na⁺ · {k} mEq K⁺ por 100 mL
+                    </p>
+                    <div style={S.compRow}>
+                      <span style={S.compLabel}>SGI 5% (soro glicosado)</span>
+                      <span style={S.compVal}>{volSGI} mL</span>
+                    </div>
+                    <div style={S.compRow}>
+                      <span style={S.compLabel}>NaCl 20%</span>
+                      <span style={S.compVal}>{volNaCl} mL</span>
+                    </div>
+                    <div style={{ ...S.compRow, borderBottom: "none" }}>
+                      <span style={S.compLabel}>
+                        KCl {kclType === "191" ? "19,1%" : "10%"}
+                      </span>
+                      <span style={S.compVal}>{volKCl} mL</span>
+                    </div>
+                  </div>
+
+                  {/* Velocidade */}
+                  <div style={S.resultBlockAlt}>
+                    <p style={S.resultTitleGreen}>Velocidade de Infusão</p>
+                    <div style={S.resultGrid}>
+                      <div style={S.resultItem}>
+                        <span style={S.resultKey}>Velocidade</span>
+                        <span style={S.resultValGreen}>
+                          {velInfusao}
+                          <span style={S.unitGreen}> mL/h</span>
+                        </span>
+                      </div>
+                      <div style={S.resultItem}>
+                        <span style={S.resultKey}>Por peso</span>
+                        <span style={S.resultValGreen}>
+                          {velMlKgH}
+                          <span style={S.unitGreen}> mL/kg/h</span>
+                        </span>
+                      </div>
+                    </div>
+                    <div style={S.velBadge}>
+                      <span style={S.dot} />
+                      Bomba de infusão: {velInfusao} mL/h · contínuo · 24 h
+                    </div>
+                  </div>
+                </>
+              ) : (
+                <div style={S.emptyState}>Insira o peso para calcular</div>
+              )}
+            </>
+          )}
+
+          {/* ══ TAB: ATAQUE ══ */}
+          {activeTab === "ataque" && (
+            <>
+              <div style={S.section}>
+                <p style={S.sectionLabel}>Parâmetros do ataque</p>
+                <div style={S.inputGroup}>
+                  <label style={S.label}>Volume (mL/kg)</label>
+                  <input
+                    style={{ ...S.input, maxWidth: 220 }}
+                    type="number"
+                    min="5"
+                    max="60"
+                    step="5"
+                    value={ataqueMlKg}
+                    onChange={(e) => setAtaqueMlKg(e.target.value)}
+                  />
+                  <span
+                    style={{
+                      fontSize: "0.62rem",
+                      color: "#475569",
+                      marginTop: 4,
+                    }}
+                  >
+                    Padrão: 20 mL/kg · SF 0,9% ou Ringer Lactato
+                  </span>
+                </div>
+              </div>
+
+              {isValid && volAtaque ? (
+                <div style={S.resultBlock}>
+                  <p style={S.resultTitle}>AHV de Ataque</p>
+                  <div style={S.resultGrid}>
+                    <div style={S.resultItem}>
+                      <span style={S.resultKey}>Volume total</span>
+                      <span style={S.resultVal}>
+                        {volAtaque}
+                        <span style={S.resultUnit}>mL</span>
+                      </span>
+                    </div>
+                    <div style={S.resultItem}>
+                      <span style={S.resultKey}>Dose</span>
+                      <span style={S.resultVal}>
+                        {mlKgAtaque}
+                        <span style={S.resultUnit}>mL/kg</span>
+                      </span>
+                    </div>
+                  </div>
+
+                  <div style={{ marginTop: "1.25rem" }}>
+                    <p style={{ ...S.sectionLabel, marginBottom: "0.6rem" }}>
+                      Velocidade de infusão
+                    </p>
+                    <div style={S.compRow}>
+                      <span style={S.compLabel}>Em 30 minutos</span>
+                      <span style={S.compVal}>{velAtaque30} mL/h</span>
+                    </div>
+                    <div style={{ ...S.compRow, borderBottom: "none" }}>
+                      <span style={S.compLabel}>Em 60 minutos</span>
+                      <span style={S.compVal}>{velAtaque60} mL/h</span>
+                    </div>
+                  </div>
+
+                  <div style={{ ...S.velBadge, marginTop: "1rem" }}>
+                    <span style={S.dot} />
+                    SF 0,9% · bolus rápido · reavalie após expansão
+                  </div>
+                </div>
+              ) : (
+                <div style={S.emptyState}>Insira o peso para calcular</div>
+              )}
+            </>
+          )}
+
+          {/* ── Rodapé ── */}
+          <div style={{ ...S.divider, marginTop: "2rem" }} />
+          <p
+            style={{
+              fontSize: "0.58rem",
+              color: "#334155",
+              letterSpacing: "0.06em",
+              textAlign: "center",
+              lineHeight: 1.6,
+            }}
+          >
+            HOLLIDAY & SEGAR, 1957 · NaCl 20%: 3,4 mEq Na⁺/mL · KCl 10%: 1,34
+            mEq K⁺/mL · KCl 19,1%: 2,57 mEq K⁺/mL
+            <br />
+            Uso exclusivo para profissionais de saúde. Confirme sempre os
+            cálculos clinicamente.
+          </p>
+        </div>
+      </div>
+    </div>
   );
 }
