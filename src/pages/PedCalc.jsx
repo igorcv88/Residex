@@ -4745,7 +4745,7 @@ export default function PedCalc() {
         background: T.bgPage,
         minHeight: "100vh",
         fontFamily: "'Palatino Linotype','Book Antiqua',Palatino,serif",
-        color: "T.textBody",
+        color: T.textBody,
         display: "flex",
         flexDirection: "column",
         fontSize: 13,
@@ -4791,7 +4791,7 @@ export default function PedCalc() {
             style={{
               fontSize: 9,
               letterSpacing: "0.3em",
-              color: "T.textMuted",
+              color: T.textMuted,
               fontFamily: "monospace",
               textTransform: "uppercase",
             }}
@@ -4802,7 +4802,7 @@ export default function PedCalc() {
             style={{
               fontSize: 18,
               fontWeight: 400,
-              color: "T.textPrimary",
+              color: T.textPrimary,
               marginTop: 2,
             }}
           >
@@ -4855,7 +4855,7 @@ export default function PedCalc() {
               style={{
                 padding: "8px 14px",
                 fontSize: 9,
-                color: "T.textMuted",
+                color: T.textMuted,
                 fontFamily: "monospace",
                 letterSpacing: "0.15em",
                 textTransform: "uppercase",
@@ -4876,7 +4876,7 @@ export default function PedCalc() {
                     category === cat.id ? `${cat.color}15` : "transparent",
                   border: "none",
                   borderLeft: `2px solid ${category === cat.id ? cat.color : "transparent"}`,
-                  color: category === cat.id ? "T.textPrimary" : "#4b5563",
+                  color: category === cat.id ? T.textPrimary : "#4b5563",
                   padding: "8px 14px",
                   cursor: "pointer",
                   textAlign: "left",
@@ -4892,7 +4892,7 @@ export default function PedCalc() {
                       height: 5,
                       borderRadius: "50%",
                       background:
-                        category === cat.id ? cat.color : "T.textSubtle",
+                        category === cat.id ? cat.color : T.textSubtle,
                       flexShrink: 0,
                     }}
                   />
@@ -4928,7 +4928,7 @@ export default function PedCalc() {
               <div
                 style={{
                   padding: "16px 14px",
-                  color: "T.textMuted",
+                  color: T.textMuted,
                   fontFamily: "monospace",
                   fontSize: 11,
                 }}
@@ -4950,7 +4950,7 @@ export default function PedCalc() {
                     selDrug?.id === drug.id ? `${drug.color}12` : "transparent",
                   border: "none",
                   borderLeft: `2px solid ${selDrug?.id === drug.id ? drug.color : "transparent"}`,
-                  color: selDrug?.id === drug.id ? "T.textPrimary" : "#6b7280",
+                  color: selDrug?.id === drug.id ? T.textPrimary : "#6b7280",
                   padding: "10px 14px",
                   cursor: "pointer",
                   textAlign: "left",
@@ -4962,14 +4962,13 @@ export default function PedCalc() {
               >
                 <div
                   style={{
-                    color:
-                      selDrug?.id === drug.id ? "T.textPrimary" : "#9ca3af",
+                    color: selDrug?.id === drug.id ? T.textPrimary : "#9ca3af",
                     marginBottom: 2,
                   }}
                 >
                   {drug.name}
                 </div>
-                <div style={{ fontSize: 10, color: "T.textMuted" }}>
+                <div style={{ fontSize: 10, color: T.textMuted }}>
                   {drug.infusion}
                 </div>
               </button>
@@ -4981,7 +4980,7 @@ export default function PedCalc() {
             {!selDrug ? (
               <div
                 style={{
-                  color: "T.textSubtle",
+                  color: T.textSubtle,
                   fontFamily: "monospace",
                   fontSize: 12,
                   paddingTop: 50,
@@ -5021,7 +5020,7 @@ export default function PedCalc() {
                         ?.name
                     }
                   </div>
-                  <div style={{ fontSize: 16, color: "T.textPrimary" }}>
+                  <div style={{ fontSize: 16, color: T.textPrimary }}>
                     {selDrug.name}
                   </div>
                 </div>
@@ -5050,7 +5049,7 @@ export default function PedCalc() {
                       <div
                         style={{
                           fontSize: 9,
-                          color: "T.textMuted",
+                          color: T.textMuted,
                           fontFamily: "monospace",
                           letterSpacing: "0.12em",
                           textTransform: "uppercase",
@@ -5062,7 +5061,7 @@ export default function PedCalc() {
                       <div
                         style={{
                           fontSize: 12,
-                          color: "T.textBody",
+                          color: T.textBody,
                           lineHeight: 1.6,
                         }}
                       >
@@ -5182,7 +5181,7 @@ export default function PedCalc() {
                     <div
                       style={{
                         fontSize: 10,
-                        color: "T.textMuted",
+                        color: T.textMuted,
                         fontFamily: "monospace",
                         letterSpacing: "0.15em",
                         textTransform: "uppercase",
@@ -5197,7 +5196,7 @@ export default function PedCalc() {
                         style={{
                           background: r.highlight ? `${catColor}0e` : T.bgCard,
                           border: `1px solid ${r.highlight ? catColor + "33" : T.borderSection}`,
-                          borderLeft: `3px solid ${r.highlight ? catColor : "T.textSubtle"}`,
+                          borderLeft: `3px solid ${r.highlight ? catColor : T.textSubtle}`,
                           borderRadius: 6,
                           padding: "12px 16px",
                           marginBottom: 10,
@@ -5219,9 +5218,7 @@ export default function PedCalc() {
                           style={{
                             fontSize: 22,
                             fontWeight: 500,
-                            color: r.highlight
-                              ? "T.textPrimary"
-                              : "T.textPrimary",
+                            color: r.highlight ? T.textPrimary : T.textPrimary,
                             marginBottom: r.freq ? 4 : 0,
                           }}
                         >
@@ -5256,7 +5253,7 @@ export default function PedCalc() {
                     {selDrug.notes && (
                       <div
                         style={{
-                          background: "T.bgObs",
+                          background: T.bgObs,
                           border: `1px solid ${T.borderCard}`,
                           borderLeft: `3px solid ${catColor}`,
                           borderRadius: 6,
@@ -5279,7 +5276,7 @@ export default function PedCalc() {
                         <div
                           style={{
                             fontSize: 12,
-                            color: "T.textBody",
+                            color: T.textBody,
                             lineHeight: 1.75,
                           }}
                         >
@@ -5291,7 +5288,7 @@ export default function PedCalc() {
                 ) : (
                   <div
                     style={{
-                      color: "T.textSubtle",
+                      color: T.textSubtle,
                       fontSize: 12,
                       fontFamily: "monospace",
                       marginTop: 8,
@@ -5328,7 +5325,7 @@ export default function PedCalc() {
               style={{
                 padding: "8px 14px",
                 fontSize: 9,
-                color: "T.textMuted",
+                color: T.textMuted,
                 fontFamily: "monospace",
                 letterSpacing: "0.15em",
                 textTransform: "uppercase",
@@ -5349,7 +5346,7 @@ export default function PedCalc() {
                     selEm?.id === em.id ? `${em.color}15` : "transparent",
                   border: "none",
                   borderLeft: `2px solid ${selEm?.id === em.id ? em.color : "transparent"}`,
-                  color: selEm?.id === em.id ? "T.textPrimary" : "#6b7280",
+                  color: selEm?.id === em.id ? T.textPrimary : "#6b7280",
                   padding: "10px 14px",
                   cursor: "pointer",
                   textAlign: "left",
@@ -5362,7 +5359,7 @@ export default function PedCalc() {
                 <div
                   style={{
                     fontSize: 12,
-                    color: selEm?.id === em.id ? "T.textPrimary" : "#9ca3af",
+                    color: selEm?.id === em.id ? T.textPrimary : "#9ca3af",
                   }}
                 >
                   {em.name}
@@ -5370,7 +5367,7 @@ export default function PedCalc() {
                 <div
                   style={{
                     fontSize: 10,
-                    color: "T.textMuted",
+                    color: T.textMuted,
                     marginTop: 2,
                     lineHeight: 1.5,
                   }}
@@ -5386,7 +5383,7 @@ export default function PedCalc() {
             {!selEm ? (
               <div
                 style={{
-                  color: "T.textSubtle",
+                  color: T.textSubtle,
                   fontFamily: "monospace",
                   fontSize: 12,
                   paddingTop: 50,
@@ -5427,7 +5424,7 @@ export default function PedCalc() {
                     >
                       EMERGÊNCIA
                     </div>
-                    <div style={{ fontSize: 17, color: "T.textPrimary" }}>
+                    <div style={{ fontSize: 17, color: T.textPrimary }}>
                       {selEm.name}
                     </div>
                     <div style={{ fontSize: 11, color: "#64748b" }}>
@@ -5520,7 +5517,7 @@ export default function PedCalc() {
                   <div
                     style={{
                       fontSize: 12,
-                      color: "T.textBody",
+                      color: T.textBody,
                       lineHeight: 1.8,
                     }}
                   >
@@ -5534,7 +5531,7 @@ export default function PedCalc() {
                     <div
                       style={{
                         fontSize: 10,
-                        color: "T.textMuted",
+                        color: T.textMuted,
                         fontFamily: "monospace",
                         letterSpacing: "0.15em",
                         textTransform: "uppercase",
@@ -5551,7 +5548,7 @@ export default function PedCalc() {
                             ? `${selEm.color}0d`
                             : T.bgCard,
                           border: `1px solid ${d.highlight ? selEm.color + "33" : T.borderCard}`,
-                          borderLeft: `3px solid ${d.highlight ? selEm.color : "T.borderCard"}`,
+                          borderLeft: `3px solid ${d.highlight ? selEm.color : T.borderCard}`,
                           borderRadius: 6,
                           padding: "14px 16px",
                           marginBottom: 10,
@@ -5577,11 +5574,9 @@ export default function PedCalc() {
                               style={{
                                 background: d.highlight
                                   ? `${selEm.color}25`
-                                  : "T.bgCard",
-                                border: `1px solid ${d.highlight ? selEm.color + "44" : "T.borderCard"}`,
-                                color: d.highlight
-                                  ? selEm.color
-                                  : "T.textMuted",
+                                  : T.bgCard,
+                                border: `1px solid ${d.highlight ? selEm.color + "44" : T.borderCard}`,
+                                color: d.highlight ? selEm.color : T.textMuted,
                                 padding: "1px 8px",
                                 borderRadius: 3,
                                 fontSize: 9,
@@ -5594,7 +5589,7 @@ export default function PedCalc() {
                               {d.order}°
                             </span>
                             <span
-                              style={{ fontSize: 13, color: "T.textPrimary" }}
+                              style={{ fontSize: 13, color: T.textPrimary }}
                             >
                               {d.name}
                             </span>
@@ -5603,9 +5598,7 @@ export default function PedCalc() {
                             <span
                               style={{
                                 fontSize: 9,
-                                color: d.highlight
-                                  ? selEm.color
-                                  : "T.textMuted",
+                                color: d.highlight ? selEm.color : T.textMuted,
                                 fontFamily: "monospace",
                                 letterSpacing: "0.04em",
                                 textAlign: "right",
@@ -5622,7 +5615,7 @@ export default function PedCalc() {
                           style={{
                             fontSize: 21,
                             fontWeight: 500,
-                            color: d.highlight ? "T.textPrimary" : "T.textBody",
+                            color: d.highlight ? T.textPrimary : T.textBody,
                             marginBottom: 6,
                           }}
                         >
@@ -5653,7 +5646,7 @@ export default function PedCalc() {
                           <div
                             style={{
                               fontSize: 10,
-                              color: "T.textMuted",
+                              color: T.textMuted,
                               marginTop: 5,
                               fontFamily: "monospace",
                               borderTop: `1px solid ${T.borderSection}`,
@@ -5669,7 +5662,7 @@ export default function PedCalc() {
                 ) : (
                   <div
                     style={{
-                      color: "T.textSubtle",
+                      color: T.textSubtle,
                       fontSize: 12,
                       fontFamily: "monospace",
                     }}
@@ -5699,7 +5692,7 @@ export default function PedCalc() {
         <div
           style={{
             fontSize: 9,
-            color: "T.textSubtle",
+            color: T.textSubtle,
             fontFamily: "monospace",
           }}
         >
@@ -5708,7 +5701,7 @@ export default function PedCalc() {
         <div
           style={{
             fontSize: 9,
-            color: "T.textMuted",
+            color: T.textMuted,
             fontFamily: "monospace",
           }}
         >
