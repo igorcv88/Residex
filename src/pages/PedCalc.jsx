@@ -4749,6 +4749,7 @@ export default function PedCalc() {
         color: T.textBody,
         display: "flex",
         flexDirection: "column",
+        overflow: "hidden",
         fontSize: 13,
       }}
     >
