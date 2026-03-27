@@ -4,44 +4,43 @@
 // ─────────────────────────────────────────────
 
 export const T = {
-
   // ── Fundos ──────────────────────────────────
-  bgPage:       "#f1f5f9",   // Slate 100 — fundo geral claro (igual à Home)
-  bgSurface:    "#ffffff",   // Header + Nav — branco puro
-  bgCard:       "#ffffff",   // Cards normais — branco
-  bgCardHl:     "#eff6ff",   // Blue 50 — cards com highlight
-  bgObs:        "#f8fafc",   // Slate 50 — obs levemente recuado
+  bgPage: "#f1f5f9", // Slate 100 — fundo geral claro (igual à Home)
+  bgSurface: "#ffffff", // Header + Nav — branco puro
+  bgCard: "#ffffff", // Cards normais — branco
+  bgCardHl: "#eff6ff", // Blue 50 — cards com highlight
+  bgObs: "#f8fafc", // Slate 50 — obs levemente recuado
 
   // ── Bordas ──────────────────────────────────
-  borderCard:   "#e2e8f0",   // Slate 200 — borda suave
-  borderCardHl: "#bfdbfe",   // Blue 200 — borda cards highlighted
-  borderObs:    "#6366F1",   // Indigo — borda lateral do bloco obs
-  borderSection:"#e2e8f0",   // Separadores header/nav
-  borderNav:    "#e2e8f0",   // Linha entre nav e conteúdo
+  borderCard: "#e2e8f0", // Slate 200 — borda suave
+  borderCardHl: "#bfdbfe", // Blue 200 — borda cards highlighted
+  borderObs: "#6366F1", // Indigo — borda lateral do bloco obs
+  borderSection: "#e2e8f0", // Separadores header/nav
+  borderNav: "#e2e8f0", // Linha entre nav e conteúdo
 
   // ── Texto ────────────────────────────────────
-  textPrimary:  "#0f172a",   // Slate 950 — títulos (WCAG AAA)
-  textBody:     "#334155",   // Slate 700 — corpo de texto (WCAG AA 9.8:1)
-  textMuted:    "#64748b",   // Slate 500 — labels e metadados (WCAG AA 5.9:1)
-  textSubtle:   "#94a3b8",   // Slate 400 — nav inativos, rodapé
-  textDisabled: "#cbd5e1",   // Slate 300 — dots inativos, separadores
+  textPrimary: "#000000", // Slate 950 — títulos (WCAG AAA)
+  textBody: "#000000", // Slate 700 — corpo de texto (WCAG AA 9.8:1)
+  textMuted: "#64748b", // Slate 500 — labels e metadados (WCAG AA 5.9:1)
+  textSubtle: "#94a3b8", // Slate 400 — nav inativos, rodapé
+  textDisabled: "#cbd5e1", // Slate 300 — dots inativos, separadores
 
   // ── Labels monospace ─────────────────────────
-  labelSection: "#64748b",   // Títulos de seção — legível sobre fundo claro
-  labelCard:    "#6366f1",   // Label card não-highlight — indigo
-  labelCardHl:  null,        // Usa cor de acento da seção — dinâmico
-  labelObs:     "#4f46e5",   // Indigo 600 — label do bloco obs
-  labelAlert:   null,        // Usa block.color — dinâmico
+  labelSection: "#64748b", // Títulos de seção — legível sobre fundo claro
+  labelCard: "#6366f1", // Label card não-highlight — indigo
+  labelCardHl: null, // Usa cor de acento da seção — dinâmico
+  labelObs: "#4f46e5", // Indigo 600 — label do bloco obs
+  labelAlert: null, // Usa block.color — dinâmico
 
   // ── Navegação ────────────────────────────────
-  navText:      "#94a3b8",   // Itens inativos
-  navActive:    "#0f172a",   // Item ativo — preto sobre branco
-  navDotInactive: "#e2e8f0", // Ponto lateral inativo
-  navDotBottom: "#cbd5e1",   // Dots do rodapé inativos
+  navText: "#94a3b8", // Itens inativos
+  navActive: "#000000", // Item ativo — preto sobre branco
+  navDotInactive: "#afb8c4", // Ponto lateral inativo
+  navDotBottom: "#afb8c4", // Dots do rodapé inativos
 
   // ── Botão volta ──────────────────────────────
-  btnBackBorder: "#e2e8f0",
-  btnBackText:   "#64748b",
+  btnBackBorder: "#283345",
+  btnBackText: "#4e6485",
 
   // ── Cores de acento por seção ────────────────
   accents: [
@@ -62,7 +61,6 @@ export const T = {
 // ─────────────────────────────────────────────
 
 export const S = {
-
   page: {
     background: T.bgPage,
     minHeight: "100vh",
