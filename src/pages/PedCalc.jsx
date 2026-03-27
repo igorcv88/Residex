@@ -1,5 +1,7 @@
 import MedPanelPage from "./medpanel-layout";
 import { T } from "./medpanel-tokens";
+import { useState, useMemo } from "react";
+import { useNavigate } from "react-router-dom";
 
 // ─────────────────────────────────────────────
 // DRUG CATEGORIES
