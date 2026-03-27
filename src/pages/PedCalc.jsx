@@ -4744,7 +4744,7 @@ export default function PedCalc() {
     <div
       style={{
         background: T.bgPage,
-        Height: "100dvh",
+        height: "100dvh",
         fontFamily: "'Palatino Linotype','Book Antiqua',Palatino,serif",
         color: T.textBody,
         display: "flex",
@@ -4769,6 +4769,7 @@ export default function PedCalc() {
             flex-direction: row !important;
             overflow-x: auto !important; 
             overflow-y: hidden !important;
+            flex-shrink: 0 !important;
           }
           .sidebar-title { display: none !important; }
           .cat-btn { 
@@ -4958,6 +4959,10 @@ export default function PedCalc() {
               style={{
                 padding: "10px 12px",
                 borderBottom: `1px solid ${T.borderSection}`,
+                position: "sticky",
+                top: 0,
+                zIndex: 10,
+                background: T.bgSurface,
               }}
             >
               <input
