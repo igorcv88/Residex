@@ -4744,7 +4744,7 @@ export default function PedCalc() {
     <div
       style={{
         background: T.bgPage,
-        Height: "100dvh",
+        height: "100dvh",
         fontFamily: "'Palatino Linotype','Book Antiqua',Palatino,serif",
         color: T.textBody,
         display: "flex",
@@ -5760,6 +5760,7 @@ export default function PedCalc() {
         style={{
           borderTop: `1px solid ${T.borderSection}`,
           padding: "8px 20px",
+          paddingBottom: "calc(8px + env(safe-area-inset-bottom))",
           background: T.bgSurface,
           display: "flex",
           justifyContent: "space-between",
