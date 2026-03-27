@@ -884,9 +884,10 @@ const content = {
 };
 
 export default function DiabetesMellitus() {
+  const sectionsWithContent = sections.map(s => ({ ...s, content: content[s.id] }));
   return (
     <MedPanelPage
-      sections={sections}
+      sections={sectionsWithContent}
       specialty="Clinica"
       title="Diabetes Mellitus — Guia Completo"
     />
