@@ -6,8 +6,8 @@
 export const T = {
 
   // ── Fundos ──────────────────────────────────
-  bgPage:       "#0f172a",   // Slate 950 — fundo geral
-  bgSurface:    "#0f172a",   // Header + Nav (mesmo tom — sem split desnecessário)
+  bgPage:       "#06080f",   // Fundo geral — original MedPanel
+  bgSurface:    "#06080f",   // Header + Nav
   bgCard:       "#1e293b",   // Slate 800 — cards normais (ΔL +9% sobre bgPage)
   bgCardHl:     "#1e3a5f",   // Azul-acinzentado — cards com highlight
   bgObs:        "#1e293b",   // Mesmo que card — obs usa borda colorida para diferenciar
