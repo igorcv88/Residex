@@ -902,9 +902,10 @@ const content = {
 };
 
 export default function Hepato101() {
+  const sectionsWithContent = sections.map(s => ({ ...s, content: content[s.id] }));
   return (
     <MedPanelPage
-      sections={sections}
+      sections={sectionsWithContent}
       specialty="Clinica"
       title="Fundamentos de Hepatologia"
     />
