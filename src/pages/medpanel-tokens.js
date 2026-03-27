@@ -11,6 +11,15 @@ export const T = {
   bgCardHl: "#eff6ff", // Blue 50 — cards com highlight
   bgObs: "#f8fafc", // Slate 50 — obs levemente recuado
 
+  // ── Header (Novo Design Escuro) ──────────────
+  bgHeader: "#0f172a", // Slate 900 - fundo escuro do cabeçalho
+  headerDot: "#0ea5e9", // Sky 500 - ponto azul ao lado do título
+  textHeaderTitle: "#f8fafc", // Branco/Slate 50
+  textHeaderSub: "#94a3b8", // Slate 400 - texto silenciado
+  bgHeaderBadge: "rgba(14, 165, 233, 0.1)", // Fundo translúcido do botão direito
+  borderHeaderBadge: "rgba(14, 165, 233, 0.3)", // Borda do botão direito
+  textHeaderBadge: "#38bdf8", // Sky 400 - texto do botão direito
+
   // ── Bordas ──────────────────────────────────
   borderCard: "#e2e8f0", // Slate 200 — borda suave
   borderCardHl: "#bfdbfe", // Blue 200 — borda cards highlighted
@@ -86,35 +95,55 @@ export const S = {
     gap: 5,
   },
 
+  // ── Header (Novo Layout do Print) ───────────
   header: {
-    borderBottom: `1px solid ${T.borderSection}`,
-    padding: "16px 28px",
-    background: T.bgSurface,
+    background: T.bgHeader,
+    padding: "20px 24px",
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
   },
 
-  headerEyebrow: {
-    fontSize: 10,
-    letterSpacing: "0.35em",
-    color: T.textSubtle,
-    fontFamily: "monospace",
-    textTransform: "uppercase",
-    marginBottom: 4,
+  headerLogoContainer: {
+    display: "flex",
+    alignItems: "center",
+    gap: 8,
+  },
+
+  headerDot: {
+    width: 8,
+    height: 8,
+    borderRadius: "50%",
+    background: T.headerDot,
   },
 
   headerTitle: {
     margin: 0,
-    fontSize: 20,
-    fontWeight: 400,
-    color: T.textPrimary,
-    letterSpacing: "0.01em",
+    fontSize: 22,
+    fontWeight: "bold",
+    color: T.textHeaderTitle,
+    letterSpacing: "0.02em",
   },
 
-  headerSections: {
-    fontSize: 11,
-    color: T.textDisabled,
-    marginTop: 4,
-    fontFamily: "monospace",
+  headerSubtitle: {
+    fontSize: 13,
+    color: T.textHeaderSub,
+    margin: "4px 0 0 16px", // Alinha exatamente abaixo do texto, pulando o dot
+    fontFamily: "sans-serif",
   },
+
+  headerBadge: {
+    background: T.bgHeaderBadge,
+    border: `1px solid ${T.borderHeaderBadge}`,
+    color: T.textHeaderBadge,
+    padding: "6px 16px",
+    borderRadius: 20, // Formato pílula (arredondado)
+    fontSize: 12,
+    fontFamily: "sans-serif",
+    cursor: "pointer",
+  },
+
+  // ── Fim do Header ───────────────────────────
 
   nav: {
     width: 170,
