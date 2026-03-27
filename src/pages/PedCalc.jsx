@@ -4999,7 +4999,7 @@ export default function PedCalc() {
                     selDrug?.id === drug.id ? `${drug.color}12` : "transparent",
                   border: "none",
                   borderLeft: `2px solid ${selDrug?.id === drug.id ? drug.color : "transparent"}`,
-                  color: selDrug?.id === drug.id ? T.textPrimary : "#6b7280",
+                  color: selDrug?.id === drug.id ? T.textPrimary : T.textBody,
                   padding: "10px 14px",
                   cursor: "pointer",
                   textAlign: "left",
