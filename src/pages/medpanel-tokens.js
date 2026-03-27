@@ -5,7 +5,7 @@
 
 export const T = {
   // ── Fundos ──────────────────────────────────
-  bgPage: "#f1f5f9", // Slate 100 — fundo geral claro (igual à Home)
+  bgPage: "#ffffff", // Slate 100 — fundo geral claro (igual à Home)
   bgSurface: "#ffffff", // Header + Nav — branco puro
   bgCard: "#ffffff", // Cards normais — branco
   bgCardHl: "#eff6ff", // Blue 50 — cards com highlight
@@ -33,7 +33,7 @@ export const T = {
   labelAlert: null, // Usa block.color — dinâmico
 
   // ── Navegação ────────────────────────────────
-  navText: "#94a3b8", // Itens inativos
+  navText: "#314d5e", // Itens inativos
   navActive: "#000000", // Item ativo — preto sobre branco
   navDotInactive: "#afb8c4", // Ponto lateral inativo
   navDotBottom: "#afb8c4", // Dots do rodapé inativos
