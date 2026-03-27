@@ -4751,6 +4751,57 @@ export default function PedCalc() {
         fontSize: 13,
       }}
     >
+      {/* ── ESTILOS RESPONSIVOS PARA MOBILE ── */}
+      <style>{`
+        .info-grid { grid-template-columns: 1fr 1fr; }
+        .mobile-only { display: none !important; }
+        
+        @media (max-width: 768px) {
+          /* Layout principal passa para coluna */
+          .layout-container { flex-direction: column !important; }
+          
+          /* Sidebar (Categorias) vira scroll horizontal no topo */
+          .sidebar { 
+            width: 100% !important; 
+            border-right: none !important; 
+            border-bottom: 1px solid ${T.borderSection} !important; 
+            display: flex !important; 
+            flex-direction: row !important;
+            overflow-x: auto !important; 
+            overflow-y: hidden !important;
+          }
+          .sidebar-title { display: none !important; }
+          .cat-btn { 
+            width: auto !important; 
+            white-space: nowrap !important; 
+            border-left: none !important; 
+            border-bottom: 2px solid var(--cat-color) !important;
+            padding: 12px 16px !important;
+          }
+          
+          /* Lista (Medicações/Emergências) ocupa a largura total */
+          .list-container { 
+            width: 100% !important; 
+            border-right: none !important; 
+            border-bottom: 1px solid ${T.borderSection} !important;
+            max-height: 40vh !important; 
+          }
+          
+          /* UX Mobile: Esconde listas para focar no cálculo quando algo é selecionado */
+          .hide-on-selection { display: none !important; }
+          .mobile-only { display: inline-flex !important; }
+          
+          /* Painel de Cálculo */
+          .calc-panel { padding: 16px 14px !important; overflow: visible !important; }
+          .info-grid { grid-template-columns: 1fr !important; gap: 8px !important; }
+          
+          /* Ajuste do cabeçalho */
+          .main-header { flex-direction: column !important; align-items: flex-start !important; }
+          .main-header-tabs { width: 100%; display: flex; margin-top: 12px; }
+          .main-header-tabs button { flex: 1; justify-content: center; }
+        }
+      `}</style>
+
       {/* ── Voltar ─────────────────────────── */}
       <button
         onClick={() => navigate("/")}
@@ -4775,6 +4826,7 @@ export default function PedCalc() {
 
       {/* ── Header ─────────────────────────── */}
       <div
+        className="main-header"
         style={{
           background: T.bgSurface,
           borderBottom: `1px solid ${T.borderSection}`,
@@ -4809,7 +4861,7 @@ export default function PedCalc() {
             Calculadora de Doses Pediátricas
           </div>
         </div>
-        <div style={{ display: "flex", gap: 8 }}>
+        <div className="main-header-tabs" style={{ display: "flex", gap: 8 }}>
           {[
             ["drugs", "💊 Medicações", "#0EA5E9"],
             ["emergency", "🚨 Emergências", "#EF4444"],
@@ -4839,9 +4891,13 @@ export default function PedCalc() {
           TAB: MEDICAÇÕES
       ═══════════════════════════════════════════ */}
       {tab === "drugs" && (
-        <div style={{ display: "flex", flex: 1, overflow: "hidden" }}>
+        <div
+          className="layout-container"
+          style={{ display: "flex", flex: 1, overflow: "hidden" }}
+        >
           {/* ─ Sidebar categorias ─ */}
           <div
+            className={`sidebar ${selDrug ? "hide-on-selection" : ""}`}
             style={{
               width: 190,
               background: T.bgSurface,
@@ -4852,6 +4908,7 @@ export default function PedCalc() {
             }}
           >
             <div
+              className="sidebar-title"
               style={{
                 padding: "8px 14px",
                 fontSize: 9,
@@ -4866,11 +4923,14 @@ export default function PedCalc() {
             {DRUG_CATEGORIES.map((cat) => (
               <button
                 key={cat.id}
+                className="cat-btn"
                 onClick={() => {
                   setCat(cat.id);
                   setSelDrug(null);
                 }}
                 style={{
+                  "--cat-color":
+                    category === cat.id ? cat.color : "transparent",
                   width: "100%",
                   background:
                     category === cat.id ? `${cat.color}15` : "transparent",
@@ -4904,6 +4964,7 @@ export default function PedCalc() {
 
           {/* ─ Lista de medicamentos ─ */}
           <div
+            className={`list-container ${selDrug ? "hide-on-selection" : ""}`}
             style={{
               width: 210,
               borderRight: `1px solid ${T.borderSection}`,
@@ -4976,7 +5037,33 @@ export default function PedCalc() {
           </div>
 
           {/* ─ Painel calculadora ─ */}
-          <div style={{ flex: 1, overflowY: "auto", padding: "22px 24px" }}>
+          <div
+            className="calc-panel"
+            style={{ flex: 1, overflowY: "auto", padding: "22px 24px" }}
+          >
+            {/* BOTÃO VOLTAR (EXCLUSIVO MOBILE) */}
+            {selDrug && (
+              <button
+                className="mobile-only"
+                onClick={() => setSelDrug(null)}
+                style={{
+                  background: "transparent",
+                  border: `1px solid ${T.borderCard}`,
+                  color: "#64748b",
+                  padding: "6px 14px",
+                  borderRadius: 6,
+                  cursor: "pointer",
+                  fontFamily: "monospace",
+                  fontSize: 12,
+                  alignItems: "center",
+                  gap: 5,
+                  marginBottom: 16,
+                }}
+              >
+                ← Voltar para medicações
+              </button>
+            )}
+
             {!selDrug ? (
               <div
                 style={{
@@ -5027,15 +5114,14 @@ export default function PedCalc() {
 
                 {/* info farmacológica */}
                 <div
+                  className="info-grid"
                   style={{
+                    display: "grid",
                     background: T.bgCard,
                     border: `1px solid ${T.borderCard}`,
                     borderRadius: 6,
                     padding: "12px 16px",
                     marginBottom: 16,
-                    display: "grid",
-                    gridTemplateColumns: "1fr 1fr",
-                    gap: 12,
                   }}
                 >
                   {[
@@ -5311,9 +5397,13 @@ export default function PedCalc() {
           TAB: EMERGÊNCIAS
       ═══════════════════════════════════════════ */}
       {tab === "emergency" && (
-        <div style={{ display: "flex", flex: 1, overflow: "hidden" }}>
+        <div
+          className="layout-container"
+          style={{ display: "flex", flex: 1, overflow: "hidden" }}
+        >
           {/* ─ Lista emergências ─ */}
           <div
+            className={`list-container ${selEm ? "hide-on-selection" : ""}`}
             style={{
               width: 210,
               background: T.bgSurface,
@@ -5379,7 +5469,33 @@ export default function PedCalc() {
           </div>
 
           {/* ─ Painel emergência ─ */}
-          <div style={{ flex: 1, overflowY: "auto", padding: "22px 24px" }}>
+          <div
+            className="calc-panel"
+            style={{ flex: 1, overflowY: "auto", padding: "22px 24px" }}
+          >
+            {/* BOTÃO VOLTAR (EXCLUSIVO MOBILE) */}
+            {selEm && (
+              <button
+                className="mobile-only"
+                onClick={() => setSelEm(null)}
+                style={{
+                  background: "transparent",
+                  border: `1px solid ${T.borderCard}`,
+                  color: "#64748b",
+                  padding: "6px 14px",
+                  borderRadius: 6,
+                  cursor: "pointer",
+                  fontFamily: "monospace",
+                  fontSize: 12,
+                  alignItems: "center",
+                  gap: 5,
+                  marginBottom: 16,
+                }}
+              >
+                ← Voltar para protocolos
+              </button>
+            )}
+
             {!selEm ? (
               <div
                 style={{
