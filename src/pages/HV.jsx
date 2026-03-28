@@ -296,33 +296,28 @@ export default function HidratacaoPediatrica() {
         {activeTab === "manutencao" && (
           <>
             {/* Input de Eletrólitos (Holliday) */}
-            <div style={{ marginBottom: 20 }}>
+            <div style={{ 
+              background: T.bgCard, 
+              border: `1px solid ${T.borderCard}`, 
+              borderRadius: 6, 
+              padding: "12px 16px", 
+              marginBottom: 20 
+            }}>
               <div
                 style={{
                   fontSize: 10,
-                  color: "#4b5563",
+                  color: T.textMuted,
                   fontFamily: "monospace",
                   letterSpacing: "0.12em",
                   textTransform: "uppercase",
                   marginBottom: 8,
-                  background: T.bgCard, 
-                  border: `1px solid ${T.borderCard}`, 
-                  borderRadius: 6, 
-                  padding: "12px 16px", 
-                  marginBottom: 20
                 }}
               >
                 Eletrólitos-Alvo (mEq / 100mL)
               </div>
               <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
                 <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                  <span
-                    style={{
-                      fontSize: 13,
-                      fontFamily: "monospace",
-                      color: T.textPrimary,
-                    }}
-                  >
+                  <span style={{ fontSize: 13, fontFamily: "monospace", color: T.textPrimary }}>
                     Na⁺:
                   </span>
                   <input
@@ -336,13 +331,7 @@ export default function HidratacaoPediatrica() {
                   />
                 </div>
                 <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                  <span
-                    style={{
-                      fontSize: 13,
-                      fontFamily: "monospace",
-                      color: T.textPrimary,
-                    }}
-                  >
+                  <span style={{ fontSize: 13, fontFamily: "monospace", color: T.textPrimary }}>
                     K⁺:
                   </span>
                   <input
@@ -572,16 +561,17 @@ export default function HidratacaoPediatrica() {
         ═══════════════════════════════════════════ */}
         {activeTab === "ataque" && (
           <>
-            <div style={{ marginBottom: 20 }}>
+            <div style={{ 
+              background: T.bgCard, 
+              border: `1px solid ${T.borderCard}`, 
+              borderRadius: 6, 
+              padding: "12px 16px", 
+              marginBottom: 20 
+            }}>
               <div
                 style={{
-                  background: T.bgCard, 
-                  border: `1px solid ${T.borderCard}`, 
-                  borderRadius: 6, 
-                  padding: "12px 16px", 
-                  marginBottom: 20,
                   fontSize: 10,
-                  color: "#4b5563",
+                  color: T.textMuted,
                   fontFamily: "monospace",
                   letterSpacing: "0.12em",
                   textTransform: "uppercase",
@@ -600,24 +590,11 @@ export default function HidratacaoPediatrica() {
                   value={ataqueMlKg}
                   onChange={(e) => setAtaqueMlKg(e.target.value)}
                 />
-                <span
-                  style={{
-                    fontSize: 13,
-                    fontFamily: "monospace",
-                    color: T.textPrimary,
-                  }}
-                >
+                <span style={{ fontSize: 13, fontFamily: "monospace", color: T.textPrimary }}>
                   mL/kg
                 </span>
               </div>
-              <div
-                style={{
-                  fontSize: 11,
-                  color: "#64748b",
-                  marginTop: 6,
-                  fontFamily: "monospace",
-                }}
-              >
+              <div style={{ fontSize: 11, color: "#64748b", marginTop: 6, fontFamily: "monospace" }}>
                 Padrão: 20 mL/kg (SF 0,9% ou Ringer Lactato)
               </div>
             </div>
