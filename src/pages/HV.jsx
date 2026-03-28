@@ -30,7 +30,7 @@ export default function HidratacaoPediatrica() {
   const [peso, setPeso] = useState("");
   const [kclType, setKclType] = useState("10");
   const [ataqueMlKg, setAtaqueMlKg] = useState("20");
-  const [naAlvo, setNaAlvo] = useState("13");
+  const [naAlvo, setNaAlvo] = useState("13.6");
   const [kAlvo, setKAlvo] = useState("2.5");
   const [activeTab, setActiveTab] = useState("manutencao");
 
