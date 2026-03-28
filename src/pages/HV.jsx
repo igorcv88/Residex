@@ -1,7 +1,7 @@
 import MedPanelPage from "./medpanel-layout";
 import { useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
-import { T } from "./medpanel-tokens";
+import { T, S } from "./medpanel-tokens";
 
 // ── Constantes farmacológicas ──────────────────────────────────────────────
 const NACL20_MEQ_PER_ML = 3.4; // NaCl 20%: ~3,4 mEq Na⁺/mL
