@@ -4678,7 +4678,7 @@ const EMERGENCIES = [
   {
   id: "impregnacao_neuroleptica",
   name: "Impregnação Neuroléptica",
-  emoji: "🧠",
+  emoji: "🤯",
   color: "#8B5CF6",
   description: "Distúrbio do movimento medicamento-induzido",
   notes: "CAUSAS: Metoclopramida, Bromoprida, Haloperidol, neurolépticos em geral — geralmente em dose terapêutica. CRITÉRIO DE ALTA: 12h assintomático após Biperideno. DIETA ZERO até melhora da contratura — liberar VO só após avaliar deglutição se rigidez importante. RABDOMIÓLISE: hidratar para débito urinário ≥ 2mL/kg/h (SF0,9% ou RL). Corrigir distúrbios hidroeletrolíticos. NÃO fazer medidas de descontaminação (não é superdosagem). CONTRAINDICADOS: Metoclopramida e Bromoprida (agravam o quadro).",
