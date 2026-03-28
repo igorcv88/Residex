@@ -157,7 +157,7 @@ export default function PedCalcLayout({ drugCategories, drugs, emergencies }) {
         }}
       >
         <div>
-          <div style={S.headerEyebrow}>Pediatria · HIAS Rfofos 2025</div>
+          <div style={S.headerEyebrow}>Pediatria</div>
           <div style={S.headerTitle}>Calculadora de Doses Pediátricas</div>
         </div>
         <div className="main-header-tabs" style={{ display: "flex", gap: 8 }}>
@@ -1084,10 +1084,10 @@ export default function PedCalcLayout({ drugCategories, drugs, emergencies }) {
         }}
       >
         <div style={{ fontSize: 9, color: T.textSubtle, fontFamily: "monospace" }}>
-          Rfofos 2025 · HIAS Turma 48 · MedPanel — Igor Vieira
+           MedPanel 2026 — Igor Vieira.
         </div>
         <div style={{ fontSize: 9, color: T.textMuted, fontFamily: "monospace" }}>
-          ⚠ Verificar dose antes de prescrever — apenas para uso educacional
+          ⚠ Verificar dose antes de prescrever — apenas para uso por profissionais habilitados.
         </div>
       </div>
     </div>
