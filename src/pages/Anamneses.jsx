@@ -2934,7 +2934,7 @@ export default function Anamneses() {
             marginBottom: 3,
           }}
         >
-          Clínica Geral
+          Pronto Socorro
         </div>
         <div
           style={{
