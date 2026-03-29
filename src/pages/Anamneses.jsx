@@ -28,6 +28,7 @@ const CATEGORIES = [
   { id: "pediatria",    name: "Pediatria",      color: "#10B981" },
   { id: "orl",          name: "ORL",            color: "#EC4899" },
   { id: "geral",        name: "Geral",          color: "#6366F1" },
+  { id: "oftalmo",      name: "Oftalmológico",  color: "#06B6D4" },
   { id: "critico",      name: "Crítico",        color: "#EF4444" },
   { id: "respiratorio", name: "Respiratório",   color: "#0EA5E9" },
   { id: "vascular",     name: "Vascular",       color: "#8B5CF6" },
@@ -181,6 +182,180 @@ Ausência de lesões cutâneas em tronco, dorso e extremidades.`,
 - Retorno oportuno se necessário.
 - Seguimento ambulatorial após tratamento inicial.`,
   },
+// ── AMIGDALITE PEDIATRIA ──────────────────────────────────────────────────
+  {
+    id: "amigdalite-ped",
+    title: "Amigdalite — Ped",
+    category: "pediatria",
+    hipotese: "Amigdalite aguda — provável etiologia bacteriana",
+    hda:
+`Paciente acompanhado pelo(a) pai/mãe/responsável.
+Refere dor de garganta há ___ dias.
+Refere febre, cefaleia discreta e odinofagia. Inapetência após início dos sintomas.
+Nega coriza e dor facial. Nega expectoração e tosse. Nega dor torácica.
+Nega sintomas neurológicos (convulsões, parestesias, alterações motoras).
+Nega alterações visuais, tontura. Nega rigidez de nuca. Nega vômitos.
+Nega dor cervical, alterações do pescoço ou tumoração cervical.
+Sem outras queixas (urinárias ou intestinais).
+
+ANTECEDENTES
+Doenças de base e pregressas: ___________________
+Medicamentos em uso: ___________________
+Cirurgias anteriores (nasal, amigdalectomia, cervical): ___________________
+Quadros semelhantes anteriores: ___________________`,
+    exame:
+`BEG, mucosas coradas e hidratadas, anictérico e acianótico. Eupneico.
+Temperatura axilar: ____ºC
+Consciente. Contactuante. Atividade normal. Glasgow=15. Visão e audição preservadas.
+Sem sinais de irritação meníngea. Nuca livre. Pulsos carotídeos palpáveis e simétricos.
+Ausência de linfoadenopatia cervical. Ausência de massas e tumores cervicais.
+Movimentos cervicais preservados. Força simétrica dos membros superiores.
+Orofaringe: hiperemia + foco purulento em amígdala ___. Secreção purulenta em orofaringe.
+Otoscopia: sem alterações.
+AC: BCR em 2 tempos, sem sopros.
+AP: MV+ bilateralmente, sem ruídos adventícios.
+Abdome: plano, flácido, sem visceromegalias. Inocente do ponto de vista cirúrgico. Sem sinais de peritonite. RHA+ normoativos. Blumberg, Murphy e Giordano negativos.
+Extremidades: perfusão distal simétrica; sem edemas ou sinais de TVP.
+Ausência de lesões cutâneas em tronco, dorso e extremidades.`,
+    conduta:
+`- Antimicrobianos + sintomáticos.
+- Orientações gerais e quanto aos sinais de gravidade.
+- Repouso. Dieta líquida e pastosa. Higiene oral. Afastamento da escola.
+- Retorno oportuno se necessário.
+- Seguimento ambulatorial após tratamento inicial.`,
+  },
+
+  // ── OMA PEDIATRIA ─────────────────────────────────────────────────────────
+  {
+    id: "oma-ped",
+    title: "OMA — Ped",
+    category: "pediatria",
+    hipotese: "Otite média aguda (OMA)",
+    hda:
+`Paciente acompanhado pelo(a) pai/mãe/responsável.
+Refere dor no ouvido (direito / esquerdo) há ____ dias.
+Relata dor irradiada para garganta, acompanhada de febre, cefaleia e mal-estar.
+Inapetência após aparecimento dos sintomas.
+Nega dor torácica. Nega hemoptise. Nega chiado no peito e dispneia.
+Nega sintomas neurológicos (convulsões, parestesias, alterações motoras).
+Nega alterações visuais, tontura. Nega alterações auditivas significativas.
+Nega rigidez de nuca. Nega vômitos.
+Nega dor cervical, alterações do pescoço ou tumoração cervical.
+Sem outras queixas (urinárias ou intestinais).
+
+ANTECEDENTES
+Doenças de base e pregressas: ___________________
+Medicamentos em uso: ___________________
+Cirurgias anteriores (nasal, amigdalectomia, cervical): ___________________`,
+    exame:
+`BEG, mucosas coradas e hidratadas, anictérico e acianótico. Eupneico.
+Temperatura axilar: ____ºC
+Consciente. Contactuante. Atividade normal. Glasgow=15. Visão e audição preservadas.
+Sem sinais de irritação meníngea. Nuca livre. Pulsos carotídeos palpáveis e simétricos.
+Ausência de linfoadenopatia cervical. Ausência de massas e tumores cervicais.
+Movimentos cervicais preservados. Força simétrica dos membros superiores.
+Testes de equilíbrio preservados. Teste índex-nariz preservado. Romberg negativo.
+Palpação indolor dos seios da face.
+Orofaringe: hiperemia discreta difusa. Ausência de secreção em retrocavidade.
+Otoscopia: opacificação de membrana timpânica (direita / esquerda).
+AC: BCR em 2 tempos, sem sopros.
+AP: MV+ bilateralmente, sem ruídos adventícios.
+Abdome: plano, flácido, sem visceromegalias. Inocente do ponto de vista cirúrgico. Sem sinais de peritonite. RHA+ normoativos. Blumberg, Murphy e Giordano negativos.
+Extremidades: perfusão distal simétrica; sem edemas ou sinais de TVP.
+Ausência de lesões cutâneas em tronco, dorso e extremidades.`,
+    conduta:
+`- Antimicrobianos + sintomáticos.
+- Orientações gerais e quanto aos sinais de gravidade.
+- Repouso. Afastamento da escola.
+- Retorno oportuno se necessário.
+- Seguimento ambulatorial após tratamento inicial.`,
+  },
+
+  // ── CORPO ESTRANHO OUVIDO ─────────────────────────────────────────────────
+  {
+    id: "ce-ouvido",
+    title: "CE Ouvido",
+    category: "pediatria",
+    hipotese: "Corpo estranho em conduto auditivo externo",
+    hda:
+`Paciente acompanhado pelo(a) responsável (pai / mãe / outro) com história de ter colocado objeto no ouvido (direito / esquerdo) hoje.
+Dor local e desconforto. Nega outras queixas.
+Nega cefaleia. Nega vômitos.
+
+ANTECEDENTES
+Antecedentes mórbidos: ___________________
+Cirurgias anteriores: ___________________
+Uso de álcool, tabaco e drogas: ___________________
+Alergias medicamentosas: ___________________
+Traumatismos anteriores: sim / não
+Vacinação antitetânica: em dia / não / não sabe`,
+    exame:
+`BEG, corado, hidratado, afebril, anictérico e acianótico. Eupneico.
+Consciente, contactuante, marcha preservada, sem déficits motores em extremidades.
+Glasgow=15; Pupilas isocóricas e fotorreagentes.
+Sensibilidade e força preservadas nas 4 extremidades. Sem sinais de irritação meníngea.
+Movimentos cervicais preservados. Movimentos mandibulares preservados.
+
+Otoscopia:
+- Lado _______________: normal
+- Lado _______________: presença de corpo estranho, sugestivo de _______________
+
+AC: BCR em 2 tempos, sem sopros.
+AP: MVFD sem RA.
+Abdome: sem particularidades.
+Extremidades: perfusão distal mantida; sem crepitações ou fraturas perceptíveis.`,
+    conduta:
+`- Analgesia.
+- Retirada de corpo estranho sob visão direta — sem intercorrências.
+- Profilaxia antitetânica.
+- Medicação sintomática para domicílio.
+- Orientações quanto ao tratamento e seguimento.
+- Orientações sobre sintomas de gravidade e retorno ao hospital se necessário.
+- Seguimento com otorrinolaringologista.`,
+  },
+
+  // ── CORPO ESTRANHO NARIZ ──────────────────────────────────────────────────
+  {
+    id: "ce-nariz",
+    title: "CE Nariz",
+    category: "pediatria",
+    hipotese: "Corpo estranho em cavidade nasal",
+    hda:
+`Paciente acompanhado pelo(a) responsável (pai / mãe / outro) com história de ter colocado objeto na narina (direita / esquerda) hoje.
+Dor local e desconforto. Secreção local. Nega outras queixas.
+Nega cefaleia. Nega vômitos.
+
+ANTECEDENTES
+Antecedentes mórbidos: ___________________
+Cirurgias anteriores: ___________________
+Uso de álcool, tabaco e drogas: ___________________
+Alergias medicamentosas: ___________________
+Traumatismos anteriores: sim / não
+Vacinação antitetânica: em dia / não / não sabe`,
+    exame:
+`BEG, corado, hidratado, afebril, anictérico e acianótico. Eupneico.
+Consciente, contactuante, marcha preservada, sem déficits motores em extremidades.
+Glasgow=15; Pupilas isocóricas e fotorreagentes.
+Sensibilidade e força preservadas nas 4 extremidades. Sem sinais de irritação meníngea.
+Movimentos cervicais preservados. Movimentos mandibulares preservados.
+
+Rinoscopia:
+- Lado _______________: normal
+- Lado _______________: presença de corpo estranho, sugestivo de _______________
+
+AC: BCR em 2 tempos, sem sopros.
+AP: MVFD sem RA.
+Abdome: sem particularidades.
+Extremidades: perfusão distal mantida; sem crepitações ou fraturas perceptíveis.`,
+    conduta:
+`- Analgesia.
+- Retirada de corpo estranho sob visão direta — sem intercorrências.
+- Profilaxia antitetânica.
+- Medicação sintomática para domicílio.
+- Orientações quanto ao tratamento e seguimento.
+- Orientações sobre sintomas de gravidade e retorno ao hospital se necessário.
+- Seguimento com otorrinolaringologista.`,
+  },
   // ── OTITE EXTERNA ─────────────────────────────────────────────────────────
   {
     id: "otite-externa",
@@ -228,49 +403,6 @@ Ausência de lesões cutâneas em tronco, dorso e extremidades.`,
 - Retorno oportuno se necessário.
 - Seguimento ambulatorial após tratamento inicial.`,
   },
-// ── IVAS ADULTO ───────────────────────────────────────────────────────────
-  {
-    id: "ivas",
-    title: "IVAS",
-    category: "orl",
-    hipotese: "Infecção de vias aéreas superiores (IVAS) — provável etiologia viral",
-    hda:
-`Paciente refere mal-estar + coriza hialina + febre não medida + inapetência com início há ___ dias.
-Dor de garganta discreta, tosse seca e mialgia.
-Nega dor torácica. Nega hemoptise. Nega chiado no peito e dispneia.
-Nega sintomas neurológicos (convulsões, parestesias, alterações motoras).
-Nega alterações visuais, tontura. Nega rigidez de nuca. Nega vômitos.
-Nega dor cervical, alterações do pescoço ou tumoração cervical.
-Sem outras queixas (urinárias ou intestinais).
-
-ANTECEDENTES
-Doenças de base e pregressas: ___________________
-Medicamentos em uso: ___________________
-Cirurgias anteriores (nasal, amigdalectomia, cervical): ___________________
-Hábitos (tabagismo, etilismo, drogas): ___________________`,
-    exame:
-`BEG, mucosas coradas e hidratadas, anictérico e acianótico. Eupneico.
-Temperatura axilar: ____ºC
-Consciente e contactuante. Glasgow=15. Visão e audição preservadas.
-Sem sinais de irritação meníngea. Brudzinski, Kernig e Lasègue negativos. Nuca livre.
-Pulsos carotídeos palpáveis e simétricos.
-Ausência de linfoadenopatia cervical. Ausência de massas e tumores cervicais.
-Movimentos cervicais preservados. Força simétrica dos membros superiores.
-Palpação indolor dos seios da face.
-Orofaringe: hiperemia discreta difusa. Ausência de secreção em retrocavidade.
-AC: BCR em 2 tempos, sem sopros.
-AP: MV+ bilateralmente, sem ruídos adventícios.
-Abdome: plano, flácido, sem visceromegalias. Inocente do ponto de vista cirúrgico. Sem sinais de peritonite. RHA+ normoativos. Blumberg, Murphy e Giordano negativos.
-Extremidades: perfusão distal simétrica; sem edemas ou sinais de TVP.
-Ausência de lesões cutâneas em tronco, dorso e extremidades.`,
-    conduta:
-`- Em virtude do provável quadro viral, opto pelo uso de sintomáticos.
-- Orientações gerais e quanto aos sinais de gravidade.
-- Repouso.
-- Retorno oportuno se necessário.
-- Seguimento ambulatorial após tratamento inicial.`,
-  },
-
   // ── SINUSITE ──────────────────────────────────────────────────────────────
   {
     id: "sinusite",
@@ -314,7 +446,6 @@ Ausência de lesões cutâneas em tronco, dorso e extremidades.`,
 - Retorno oportuno se necessário.
 - Seguimento ambulatorial após tratamento inicial.`,
   },
-
   // ── CRISE DE BRONCOESPASMO / ASMA ─────────────────────────────────────────
   {
     id: "asma",
@@ -365,7 +496,766 @@ Ausência de lesões cutâneas em tronco, dorso e extremidades.`,
 - Seguimento ambulatorial após tratamento inicial.
 - Se piora clínica: internação. Considerar template de insuficiência respiratória aguda.`,
   },
+// ── OMA ADULTO ────────────────────────────────────────────────────────────
+  {
+    id: "oma",
+    title: "Otite Média Aguda",
+    category: "orl",
+    hipotese: "Otite média aguda (OMA)",
+    hda:
+`Paciente refere dor no ouvido (direito / esquerdo) há ____ dias.
+Relata dor irradiada para garganta, acompanhada de febre, cefaleia e mal-estar.
+Inapetência após aparecimento dos sintomas.
+Nega dor torácica. Nega hemoptise. Nega chiado no peito e dispneia.
+Nega sintomas neurológicos (convulsões, parestesias, alterações motoras).
+Nega alterações visuais, tontura. Nega alterações auditivas significativas.
+Nega rigidez de nuca. Nega vômitos.
+Nega dor cervical, alterações do pescoço ou tumoração cervical.
+Sem outras queixas (urinárias ou intestinais).
 
+ANTECEDENTES
+Doenças de base e pregressas: ___________________
+Medicamentos em uso: ___________________
+Cirurgias anteriores (nasal, amigdalectomia, cervical): ___________________
+Hábitos (tabagismo, etilismo, drogas): ___________________`,
+    exame:
+`BEG, mucosas coradas e hidratadas, anictérico e acianótico. Eupneico.
+Temperatura axilar: ____ºC
+Consciente e contactuante. Glasgow=15. Visão e audição preservadas.
+Sem sinais de irritação meníngea. Brudzinski, Kernig e Lasègue negativos. Nuca livre.
+Pulsos carotídeos palpáveis e simétricos.
+Ausência de linfoadenopatia cervical. Ausência de massas e tumores cervicais.
+Movimentos cervicais preservados. Força simétrica dos membros superiores.
+Testes de equilíbrio preservados. Teste índex-nariz preservado. Romberg negativo.
+Palpação indolor dos seios da face.
+Orofaringe: hiperemia discreta difusa. Ausência de secreção em retrocavidade.
+Otoscopia: opacificação de membrana timpânica (direita / esquerda).
+AC: BCR em 2 tempos, sem sopros.
+AP: MV+ bilateralmente, sem ruídos adventícios.
+Abdome: plano, flácido, sem visceromegalias. Inocente do ponto de vista cirúrgico. Sem sinais de peritonite. RHA+ normoativos. Blumberg, Murphy e Giordano negativos.
+Extremidades: perfusão distal simétrica; sem edemas ou sinais de TVP.
+Ausência de lesões cutâneas em tronco, dorso e extremidades.`,
+    conduta:
+`- Antimicrobianos + sintomáticos.
+- Orientações gerais e quanto aos sinais de gravidade.
+- Repouso.
+- Retorno oportuno se necessário.
+- Seguimento ambulatorial após tratamento inicial.`,
+  },
+
+  // ── AMIGDALITE ADULTO ─────────────────────────────────────────────────────
+  {
+    id: "amigdalite",
+    title: "Amigdalite",
+    category: "orl",
+    hipotese: "Amigdalite aguda — provável etiologia bacteriana",
+    hda:
+`Paciente refere dor de garganta há ___ dias.
+Refere febre, cefaleia discreta e odinofagia. Inapetência após início dos sintomas.
+Nega coriza e dor facial. Nega expectoração e tosse. Nega dor torácica.
+Nega sintomas neurológicos (convulsões, parestesias, alterações motoras).
+Nega alterações visuais, tontura. Nega rigidez de nuca. Nega vômitos.
+Nega dor cervical, alterações do pescoço ou tumoração cervical.
+Sem outras queixas (urinárias ou intestinais).
+
+ANTECEDENTES
+Doenças de base e pregressas: ___________________
+Medicamentos em uso: ___________________
+Cirurgias anteriores (nasal, amigdalectomia, cervical): ___________________
+Hábitos (tabagismo, etilismo, drogas): ___________________`,
+    exame:
+`BEG, mucosas coradas e hidratadas, anictérico e acianótico. Eupneico.
+Temperatura axilar: ____ºC
+Consciente e contactuante. Glasgow=15. Visão e audição preservadas.
+Sem sinais de irritação meníngea. Brudzinski, Kernig e Lasègue negativos. Nuca livre.
+Pulsos carotídeos palpáveis e simétricos.
+Ausência de linfoadenopatia cervical. Ausência de massas e tumores cervicais.
+Movimentos cervicais preservados. Força simétrica dos membros superiores.
+Palpação indolor dos seios da face. Teste de olfato preservado.
+Orofaringe: hiperemia + foco purulento em amígdala ___.
+AC: BCR em 2 tempos, sem sopros.
+AP: MV+ bilateralmente, sem ruídos adventícios.
+Abdome: plano, flácido, sem visceromegalias. Inocente do ponto de vista cirúrgico. Sem sinais de peritonite. RHA+ normoativos. Blumberg, Murphy e Giordano negativos.
+Extremidades: perfusão distal simétrica; sem edemas ou sinais de TVP.
+Ausência de lesões cutâneas em tronco, dorso e extremidades.`,
+    conduta:
+`- Antimicrobianos + sintomáticos.
+- Orientações gerais e quanto aos sinais de gravidade.
+- Repouso. Dieta líquida e pastosa. Higiene oral.
+- Retorno oportuno se necessário.
+- Seguimento ambulatorial após tratamento inicial.`,
+  },
+
+  // ── CONJUNTIVITE VIRAL ────────────────────────────────────────────────────
+  {
+    id: "conjuntivite",
+    title: "Conjuntivite Viral",
+    category: "oftalmo",
+    hipotese: "Conjuntivite viral aguda",
+    hda:
+`Paciente refere dor no olho (direito / esquerdo) há ____ dias, com sensação de "areia".
+Relata turvação visual discreta, seguida de secreção ocular clara.
+Sem outras queixas. Nega fotofobia e trauma ocular de qualquer natureza.
+Nega sintomas neurológicos (convulsões, parestesias, alterações motoras).
+Nega tontura e alterações auditivas. Nega rigidez de nuca. Nega vômitos.
+Nega dor cervical, alterações do pescoço ou tumoração cervical.
+Sem outras queixas (urinárias ou intestinais).
+Contactantes com sintomas semelhantes: sim / não
+
+ANTECEDENTES
+Doenças de base e pregressas: ___________________
+Medicamentos em uso: ___________________
+Cirurgias anteriores (incluindo oftalmológicas): ___________________
+Hábitos (tabagismo, etilismo, drogas): ___________________`,
+    exame:
+`BEG, mucosas coradas e hidratadas, anictérico e acianótico. Eupneico.
+Temperatura axilar: ____ºC
+Consciente e contactuante. Glasgow=15. Visão e audição preservadas.
+Sem sinais de irritação meníngea. Brudzinski, Kernig e Lasègue negativos. Nuca livre.
+Pulsos carotídeos palpáveis e simétricos.
+Ausência de linfoadenopatia cervical. Ausência de massas e tumores cervicais.
+Movimentos cervicais preservados. Força simétrica dos membros superiores.
+Testes de equilíbrio preservados. Teste índex-nariz preservado. Romberg negativo.
+Palpação indolor dos seios da face.
+Orofaringe: sem alterações.
+Hiperemia conjuntival à (direita / esquerda). Secreção clara.
+AC: BCR em 2 tempos, sem sopros.
+AP: MV+ bilateralmente, sem ruídos adventícios.
+Abdome: plano, flácido, sem visceromegalias. Inocente do ponto de vista cirúrgico. Sem sinais de peritonite. RHA+ normoativos. Blumberg, Murphy e Giordano negativos.
+Extremidades: perfusão distal simétrica; sem edemas ou sinais de TVP.
+Ausência de lesões cutâneas em tronco, dorso e extremidades.`,
+    conduta:
+`- Colírios sintomáticos.
+- Orientações gerais e quanto aos sinais de gravidade.
+- Orientações sobre higiene ocular e risco de transmissibilidade.
+- Higiene de mãos rigorosa.
+- Repouso.
+- Retorno oportuno se necessário.
+- Seguimento ambulatorial após tratamento inicial.`,
+  },
+// ── IVAS ADULTO ───────────────────────────────────────────────────────────
+  {
+    id: "ivas",
+    title: "IVAS",
+    category: "respiratorio",
+    hipotese: "Infecção de vias aéreas superiores (IVAS) — provável etiologia viral",
+    hda:
+`Paciente refere mal-estar + coriza hialina + febre não medida + inapetência com início há ___ dias.
+Dor de garganta discreta, tosse seca e mialgia.
+Nega dor torácica. Nega hemoptise. Nega chiado no peito e dispneia.
+Nega sintomas neurológicos (convulsões, parestesias, alterações motoras).
+Nega alterações visuais, tontura. Nega rigidez de nuca. Nega vômitos.
+Nega dor cervical, alterações do pescoço ou tumoração cervical.
+Sem outras queixas (urinárias ou intestinais).
+
+ANTECEDENTES
+Doenças de base e pregressas: ___________________
+Medicamentos em uso: ___________________
+Cirurgias anteriores (nasal, amigdalectomia, cervical): ___________________
+Hábitos (tabagismo, etilismo, drogas): ___________________`,
+    exame:
+`BEG, mucosas coradas e hidratadas, anictérico e acianótico. Eupneico.
+Temperatura axilar: ____ºC
+Consciente e contactuante. Glasgow=15. Visão e audição preservadas.
+Sem sinais de irritação meníngea. Brudzinski, Kernig e Lasègue negativos. Nuca livre.
+Pulsos carotídeos palpáveis e simétricos.
+Ausência de linfoadenopatia cervical. Ausência de massas e tumores cervicais.
+Movimentos cervicais preservados. Força simétrica dos membros superiores.
+Palpação indolor dos seios da face.
+Orofaringe: hiperemia discreta difusa. Ausência de secreção em retrocavidade.
+AC: BCR em 2 tempos, sem sopros.
+AP: MV+ bilateralmente, sem ruídos adventícios.
+Abdome: plano, flácido, sem visceromegalias. Inocente do ponto de vista cirúrgico. Sem sinais de peritonite. RHA+ normoativos. Blumberg, Murphy e Giordano negativos.
+Extremidades: perfusão distal simétrica; sem edemas ou sinais de TVP.
+Ausência de lesões cutâneas em tronco, dorso e extremidades.`,
+    conduta:
+`- Em virtude do provável quadro viral, opto pelo uso de sintomáticos.
+- Orientações gerais e quanto aos sinais de gravidade.
+- Repouso.
+- Retorno oportuno se necessário.
+- Seguimento ambulatorial após tratamento inicial.`,
+  },
+
+  // ── CORPO ESTRANHO OCULAR ─────────────────────────────────────────────────
+  {
+    id: "ce-ocular",
+    title: "CE Ocular",
+    category: "oftalmo",
+    hipotese: "Corpo estranho ocular — sem penetração aparente",
+    hda:
+`Paciente relata trauma com fagulha em região do olho (direito / esquerdo) hoje.
+Dor local e desconforto. Sensação de "areia nos olhos".
+Nega alterações significativas da visão. Nega cefaleia. Nega vômitos.
+
+ANTECEDENTES
+Antecedentes de problemas oculares: ___________________
+Uso de EPI (Equipamento de Proteção Individual): sim / não
+Antecedentes mórbidos: ___________________
+Cirurgias anteriores: ___________________
+Uso de álcool, tabaco e drogas: ___________________
+Alergias medicamentosas: ___________________
+Traumatismos anteriores: sim / não
+Vacinação antitetânica: em dia / não / não sabe`,
+    exame:
+`BEG, corado, hidratado, afebril, anictérico e acianótico. Eupneico.
+Consciente, contactuante, marcha preservada, sem déficits motores em extremidades.
+Glasgow=15; Pupilas isocóricas e fotorreagentes.
+Sensibilidade e força preservadas nas 4 extremidades. Sem sinais de irritação meníngea.
+Movimentos cervicais preservados. Movimentos mandibulares preservados.
+
+Exame oftalmológico geral: presença de hiperemia conjuntival unilateral à _______________.
+Não se observa corpo estranho local, mesmo após eversão da pálpebra.
+
+AC: BCR em 2 tempos, sem sopros.
+AP: MVFD sem RA.
+Abdome: sem particularidades.
+Extremidades: perfusão distal mantida; sem crepitações ou fraturas perceptíveis.`,
+    conduta:
+`- Analgesia.
+- Curativo oclusivo com epitezan.
+- Profilaxia antitetânica.
+- Medicação sintomática para domicílio.
+- Orientações quanto ao tratamento, curativo e seguimento.
+- Orientações sobre sintomas de gravidade e retorno ao hospital se necessário.
+- Seguimento em unidade oftalmológica.`,
+  },
+
+  // ── QUEIMADURA OCULAR COM SOLDA ───────────────────────────────────────────
+  {
+    id: "queimadura-ocular",
+    title: "Queimadura Ocular — Solda",
+    category: "oftalmo",
+    hipotese: "Queimadura ocular por radiação ultravioleta (solda elétrica) — fotoqueratite bilateral",
+    hda:
+`Paciente relata queimadura com solda em região dos olhos hoje.
+Dor local e desconforto. Sensação de "areia nos olhos".
+Visão prejudicada no momento. Não consegue manter os olhos abertos. Visão clara global preservada.
+Nega cefaleia. Nega vômitos.
+Nega uso de EPI (Equipamento de Proteção Individual).
+
+ANTECEDENTES
+Antecedentes de problemas oculares: ___________________
+Antecedentes mórbidos: ___________________
+Cirurgias anteriores: ___________________
+Uso de álcool, tabaco e drogas: ___________________
+Alergias medicamentosas: ___________________
+Traumatismos anteriores: sim / não
+Vacinação antitetânica: em dia / não / não sabe`,
+    exame:
+`BEG, corado, hidratado, afebril, anictérico e acianótico. Eupneico.
+Consciente, contactuante, marcha preservada, sem déficits motores em extremidades.
+Glasgow=15; Pupilas isocóricas e fotorreagentes.
+Sensibilidade e força preservadas nas 4 extremidades. Sem sinais de irritação meníngea.
+Movimentos cervicais preservados. Movimentos mandibulares preservados.
+
+Exame oftalmológico geral: presença de hiperemia conjuntival bilateral.
+Não se observa corpo estranho local, mesmo após eversão da pálpebra.
+Procedidas medidas de hidratação com SF0,9% em região ocular bilateral.
+
+AC: BCR em 2 tempos, sem sopros.
+AP: MVFD sem RA.
+Abdome: sem particularidades.
+Extremidades: perfusão distal mantida; sem crepitações ou fraturas perceptíveis.`,
+    conduta:
+`- Analgesia + hidratação ocular com SF0,9%.
+- Curativo oclusivo bilateral com epitezan.
+- Profilaxia antitetânica.
+- Medicação sintomática para domicílio.
+- Orientações quanto ao tratamento, curativo e seguimento.
+- Orientações sobre sintomas de gravidade e retorno ao hospital se necessário.
+- Seguimento em unidade oftalmológica.`,
+  },
+
+  // ── QUEIMADURA ────────────────────────────────────────────────────────────
+  {
+    id: "queimadura",
+    title: "Queimadura",
+    category: "geral",
+    hipotese: "Queimadura — em classificação de grau e extensão (regra dos 9)",
+    hda:
+`Paciente relata queimadura em região ___________________________________ hoje.
+Dor local intensa.
+Agente causador: ___________________
+Pela regra dos 9, área queimada estimada em ______%.
+
+ANTECEDENTES
+Antecedentes mórbidos: ___________________
+Cirurgias anteriores: ___________________
+Uso de álcool, tabaco e drogas: ___________________
+Alergias medicamentosas: ___________________
+Traumatismos anteriores: sim / não
+Vacinação antitetânica: em dia / não / não sabe`,
+    exame:
+`BEG, corado, hidratado, afebril, anictérico e acianótico. Eupneico.
+Consciente, contactuante, marcha preservada, sem déficits motores em extremidades.
+Glasgow=15; Pupilas isocóricas e fotorreagentes.
+Sensibilidade e força preservadas nas 4 extremidades.
+Movimentos cervicais preservados. Movimentos mandibulares preservados.
+Ausência de queimadura de via aérea. Sem alterações na cavidade oral.
+AC: BCR em 2 tempos, sem sopros.
+AP: MVFD sem RA.
+Abdome: sem particularidades.
+Extremidades: perfusão distal mantida; sem crepitações ou fraturas perceptíveis.
+
+Queimadura de ___º grau em região ___________________________________.
+Outras lesões associadas: ___________________
+(Se queimadura elétrica) Ponto de entrada: ___________ / Ponto de saída: ___________`,
+    conduta:
+`- Analgesia.
+- Curativo com ___________________
+- Profilaxia antitetânica.
+- Medicação sintomática para domicílio.
+- Orientações quanto ao tratamento da ferida, curativo e seguimento.
+- Orientações sobre sintomas de gravidade e retorno ao hospital se necessário.
+- Seguimento em unidade de queimados.`,
+  },
+
+  // ── MORDEDURA ANIMAL ──────────────────────────────────────────────────────
+  {
+    id: "mordedura",
+    title: "Mordedura Animal",
+    category: "geral",
+    hipotese: "Ferimento por mordedura animal — avaliar necessidade de profilaxia anti-rábica",
+    hda:
+`Paciente relata ferimento hoje por (cão / gato / animal silvestre) na região ___________.
+Sangramento discreto local. Dor local.
+
+(Se cão ou gato)
+Animal pode ser observado por 10 dias: sim / não
+→ Se sim: sem indicação de profilaxia anti-rábica no momento.
+→ Se não (ou animal com sintomas de raiva / morte no período): encaminhar para profilaxia anti-rábica.
+
+(Se animal silvestre)
+→ Encaminhar para profilaxia anti-rábica obrigatoriamente.
+
+ANTECEDENTES
+Antecedentes mórbidos: ___________________
+Cirurgias anteriores: ___________________
+Uso de álcool, tabaco e drogas: ___________________
+Alergias medicamentosas: ___________________
+Vacinação antitetânica: em dia / não / não sabe`,
+    exame:
+`BEG, corado, hidratado, afebril, anictérico e acianótico. Eupneico.
+Consciente, contactuante, marcha preservada, sem déficits motores em extremidades.
+Glasgow=15; Pupilas isocóricas e fotorreagentes.
+Sensibilidade e força preservadas nas 4 extremidades.
+Movimentos cervicais preservados. Movimentos mandibulares preservados.
+Ausência de espasmos, trismo e convulsões.
+AC: BCR em 2 tempos, sem sopros.
+AP: MVFD sem RA.
+Abdome: sem particularidades.
+Extremidades: perfusão distal mantida; sem crepitações ou fraturas perceptíveis.
+
+Ferimento de mordedura _______________ de ____cm, em topografia _______________, (superficial / profundo), (com / sem) lesão de fáscia ou músculo, sangramento discreto, (com / sem) necessidade de sutura para aproximação de bordos.`,
+    conduta:
+`- Sutura do ferimento sob anestesia local infiltrativa (se necessário) + curativo.
+- Profilaxia antitetânica e anti-rábica (conforme avaliação do caso).
+- Antimicrobianos + sintomáticos.
+- Orientações quanto ao tratamento da ferida, curativo e seguimento.
+- Orientações sobre sintomas de gravidade e retorno ao hospital se necessário.
+- Retirada de pontos em unidade básica de saúde em ____ dias.`,
+  },
+
+  // ── ABDOME AGUDO (SEM DEFINIÇÃO) ──────────────────────────────────────────
+  {
+    id: "abdome-agudo",
+    title: "Abdome Agudo",
+    category: "digestivo",
+    hipotese: "Abdome agudo — em investigação etiológica",
+    hda:
+`Paciente refere dor abdominal difusa, de forte intensidade, com início há ___ dias.
+Refere náuseas e vômitos. Distensão abdominal.
+Nega febre. Refere cefaleia discreta e inapetência após início dos sintomas.
+Mal-estar importante.
+Nega diarreia ou evacuações com sangramentos. Nega hematêmese e melena.
+Nega sintomas urinários (disúria, polaciúria).
+Nega sintomas respiratórios, nasais. Nega dispneia, tosse e hemoptoicos.
+Nega sintomas neurológicos (convulsões, parestesias, alterações motoras).
+Nega alterações visuais, tontura. Nega rigidez de nuca.
+Nega dor cervical, alterações do pescoço ou tumoração cervical.
+Sem outras queixas.
+
+ANTECEDENTES
+Doenças de base e pregressas: ___________________
+Medicamentos em uso: ___________________
+Cirurgias anteriores (abdominais — descrever cicatrizes): ___________________
+Hábitos (etilismo / uso de anti-inflamatórios — interrogar): ___________________
+Última refeição / horário: ___________________
+(Mulher em idade fértil) DUM: ___________________`,
+    exame:
+`REG, mucosas (pálidas / coradas), desidratado, anictérico / ictérico e acianótico. Eupneico.
+Temperatura axilar: ____ºC
+Consciente e contactuante. Glasgow=15. Visão e audição preservadas.
+Sem sinais de irritação meníngea. Brudzinski, Kernig e Lasègue negativos. Nuca livre.
+Pulsos carotídeos palpáveis e simétricos.
+Ausência de linfoadenopatia cervical. Ausência de massas e tumores cervicais.
+AC: BCR em 2 tempos, sem sopros.
+AP: MV+ bilateralmente, sem RA.
+Abdome: plano, tenso, doloroso à palpação difusa. Sinais de peritonite difusa. Ausência de visceromegalias. RHA+. Descompressão brusca positiva.
+Cicatrizes abdominais: ___________________
+Extremidades: perfusão distal simétrica; sem edemas ou sinais de TVP.
+Ausência de lesões cutâneas em tronco, dorso e extremidades.`,
+    conduta:
+`- Investigação clínica — abdome agudo.
+- Sintomáticos e hidratação IV.
+- Jejum — possibilidade de cirurgia.
+- Orientações gerais e quanto aos sinais de gravidade.
+- Repouso.`,
+  },
+
+  // ── APENDICITE AGUDA ──────────────────────────────────────────────────────
+  {
+    id: "apendicite",
+    title: "Apendicite Aguda",
+    category: "digestivo",
+    hipotese: "Apendicite aguda",
+    hda:
+`Paciente refere dor abdominal inicialmente em epigastro, tipo cólica, com migração e localização em fossa ilíaca direita, com início há ___ dias.
+Relata alterações do trânsito intestinal (obstipação / diarreia).
+Febre não medida. Refere cefaleia discreta e inapetência após início dos sintomas.
+Mal-estar. Nega / refere evacuações com sangramentos. Nega hematêmese e melena.
+Refere disúria e polaciúria discreta.
+Nega sintomas respiratórios, nasais. Nega dispneia, tosse e hemoptoicos.
+Nega sintomas neurológicos (convulsões, parestesias, alterações motoras).
+Nega alterações visuais, tontura. Nega rigidez de nuca.
+Sem outras queixas.
+
+ANTECEDENTES
+Doenças de base e pregressas: ___________________
+Medicamentos em uso: ___________________
+Cirurgias anteriores (abdominais): ___________________
+Hábitos (tabagismo, etilismo, drogas): ___________________
+Última refeição / horário: ___________________
+Dor semelhante anterior: sim / não
+(Mulher em idade fértil) DUM: ___________________`,
+    exame:
+`BEG/REG, mucosas (pálidas / coradas), hidratado / desidratado, anictérico e acianótico. Eupneico.
+Temperatura axilar: ____ºC
+Consciente e contactuante. Glasgow=15. Visão e audição preservadas.
+Sem sinais de irritação meníngea. Brudzinski, Kernig e Lasègue negativos. Nuca livre.
+Pulsos carotídeos palpáveis e simétricos.
+Ausência de linfoadenopatia cervical. Ausência de massas e tumores cervicais.
+AC: BCR em 2 tempos, sem sopros.
+AP: MV+ bilateralmente, sem RA.
+Abdome: plano, flácido, doloroso à palpação em FI direita, com defesa involuntária. Sinais de peritonite presentes. Ausência de visceromegalias. RHA+. Blumberg e Rovsing positivos. Jobert, Murphy e Giordano negativos.
+Extremidades: perfusão distal simétrica; sem edemas ou sinais de TVP.
+Ausência de lesões cutâneas em tronco, dorso e extremidades.`,
+    conduta:
+`- Investigação clínica — abdome agudo.
+- Antimicrobianos + sintomáticos. Hidratação IV.
+- Jejum até 2ª ordem — possibilidade de cirurgia de urgência.
+- Orientações gerais e quanto aos sinais de gravidade. Repouso.
+- Reavaliação após exames.`,
+  },
+
+  // ── COLECISTITE AGUDA ─────────────────────────────────────────────────────
+  {
+    id: "colecistite",
+    title: "Colecistite Aguda",
+    category: "digestivo",
+    hipotese: "Colecistite aguda",
+    hda:
+`Paciente refere dor abdominal inicialmente em epigastro e hipocôndrio, tipo cólica, com início há ___ dias.
+Relata início após alimentação copiosa. Refere náuseas e vômitos.
+Febre não medida. Refere cefaleia discreta e inapetência após início dos sintomas.
+Mal-estar. Nega diarreia ou evacuações com sangramentos. Nega hematêmese e melena.
+Nega sintomas urinários (disúria, polaciúria).
+Nega sintomas respiratórios, nasais. Nega dispneia, tosse e hemoptoicos.
+Nega sintomas neurológicos (convulsões, parestesias, alterações motoras).
+Nega alterações visuais, tontura. Nega rigidez de nuca.
+Nega lesões de pele na topografia do flanco direito.
+Sem outras queixas.
+
+ANTECEDENTES
+Doenças de base e pregressas: ___________________
+Medicamentos em uso: ___________________
+Cirurgias anteriores (abdominais): ___________________
+Hábitos (tabagismo, etilismo, drogas): ___________________
+Última refeição / horário: ___________________
+Dor semelhante anterior: sim / não
+Endoscopia digestiva alta / USG abdome prévio: ___________________
+(Mulher em idade fértil) DUM: ___________________
+Multiparidade: ___________________`,
+    exame:
+`BEG/REG, mucosas (pálidas / coradas), hidratado / desidratado, anictérico e acianótico. Eupneico. Obesidade: sim / não
+Temperatura axilar: ____ºC
+Consciente e contactuante. Glasgow=15. Visão e audição preservadas.
+Sem sinais de irritação meníngea. Brudzinski, Kernig e Lasègue negativos. Nuca livre.
+Pulsos carotídeos palpáveis e simétricos.
+Ausência de linfoadenopatia cervical. Ausência de massas e tumores cervicais.
+AC: BCR em 2 tempos, sem sopros.
+AP: MV+ bilateralmente, sem RA.
+Abdome: plano, flácido, doloroso à palpação em hipocôndrio direito, com defesa involuntária. Sinais de peritonite presentes. Ausência de visceromegalias. RHA+. Murphy positivo. Blumberg e Rovsing negativos. Jobert e Giordano negativos.
+Extremidades: perfusão distal simétrica; sem edemas ou sinais de TVP.
+Ausência de lesões cutâneas em tronco, dorso e extremidades.`,
+    conduta:
+`- Investigação clínica — abdome agudo.
+- Antimicrobianos + sintomáticos. Hidratação IV.
+- Jejum até 2ª ordem — possibilidade de cirurgia de urgência.
+- Orientações gerais e quanto aos sinais de gravidade. Repouso.
+- Reavaliação após exames.`,
+  },
+
+  // ── CÓLICA BILIAR ─────────────────────────────────────────────────────────
+  {
+    id: "colica-biliar",
+    title: "Cólica Biliar",
+    category: "digestivo",
+    hipotese: "Cólica biliar — colelitíase sintomática",
+    hda:
+`Paciente refere dor abdominal em epigastro e hipocôndrio, tipo cólica, com início hoje após alimentação copiosa. Refere náuseas e vômitos.
+Nega febre. Refere cefaleia discreta e inapetência após início dos sintomas.
+Mal-estar. Nega diarreia ou evacuações com sangramentos. Nega hematêmese e melena.
+Nega sintomas urinários (disúria, polaciúria).
+Nega sintomas respiratórios, nasais. Nega dispneia, tosse e hemoptoicos.
+Nega sintomas neurológicos (convulsões, parestesias, alterações motoras).
+Nega alterações visuais, tontura. Nega rigidez de nuca.
+Nega lesões de pele na topografia do flanco direito.
+Sem outras queixas.
+
+Relata diagnóstico de colelitíase. USG confirmado: sim / não
+Quadro semelhante anterior: sim / não. Está aguardando cirurgia: sim / não. Já teve pancreatite: sim / não.
+
+ANTECEDENTES
+Doenças de base e pregressas: ___________________
+Medicamentos em uso: ___________________
+Cirurgias anteriores (abdominais): ___________________
+Hábitos (tabagismo, etilismo, drogas): ___________________
+Última refeição / horário: ___________________
+Endoscopia digestiva alta prévia: ___________________
+(Mulher em idade fértil) DUM: ___________________
+Multiparidade: ___________________`,
+    exame:
+`BEG/REG, mucosas (pálidas / coradas), hidratado / desidratado, anictérico / ictérico e acianótico. Eupneico. Obesidade: sim / não
+Temperatura axilar: ____ºC
+Consciente e contactuante. Glasgow=15. Visão e audição preservadas.
+Sem sinais de irritação meníngea. Brudzinski, Kernig e Lasègue negativos. Nuca livre.
+Pulsos carotídeos palpáveis e simétricos.
+Ausência de linfoadenopatia cervical. Ausência de massas e tumores cervicais.
+AC: BCR em 2 tempos, sem sopros.
+AP: MV+ bilateralmente, sem RA.
+Abdome: plano, flácido, doloroso à palpação em hipocôndrio direito, com defesa involuntária. Sinais de peritonite presentes. Ausência de visceromegalias. RHA+. Murphy positivo. Blumberg e Rovsing negativos. Jobert e Giordano negativos.
+Extremidades: perfusão distal simétrica; sem edemas ou sinais de TVP.
+Ausência de lesões cutâneas em tronco, dorso e extremidades.`,
+    conduta:
+`- Investigação clínica — abdome agudo.
+- Antimicrobianos + sintomáticos. Hidratação IV.
+- Jejum até 2ª ordem — possibilidade de cirurgia de urgência.
+- Orientações gerais e quanto aos sinais de gravidade. Repouso.
+- Reavaliação após exames.`,
+  },
+
+  // ── CÓLICA INTESTINAL ─────────────────────────────────────────────────────
+  {
+    id: "colica-intestinal",
+    title: "Cólica Intestinal",
+    category: "digestivo",
+    hipotese: "Cólica intestinal — obstipação / distensão gasosa",
+    hda:
+`Paciente refere dor abdominal difusa, tipo cólica, com início hoje.
+Refere náuseas e vômitos. Obstipado. Sensação de plenitude.
+Nega febre. Refere cefaleia discreta e inapetência após início dos sintomas.
+Mal-estar. Nega diarreia ou evacuações com sangramentos. Nega hematêmese e melena.
+Nega sintomas urinários (disúria, polaciúria).
+Nega sintomas respiratórios, nasais. Nega dispneia, tosse e hemoptoicos.
+Nega sintomas neurológicos (convulsões, parestesias, alterações motoras).
+Nega alterações visuais, tontura. Nega rigidez de nuca.
+Sem outras queixas.
+
+ANTECEDENTES
+Doenças de base e pregressas: ___________________
+Medicamentos em uso: ___________________
+Cirurgias anteriores (abdominais): ___________________
+Hábitos (tabagismo, etilismo, drogas): ___________________
+Última refeição / horário: ___________________
+(Mulher em idade fértil) DUM: ___________________`,
+    exame:
+`BEG/REG, mucosas (pálidas / coradas), hidratado / desidratado, anictérico / ictérico e acianótico. Eupneico.
+Temperatura axilar: ____ºC
+Consciente e contactuante. Glasgow=15. Visão e audição preservadas.
+Sem sinais de irritação meníngea. Brudzinski, Kernig e Lasègue negativos. Nuca livre.
+Pulsos carotídeos palpáveis e simétricos.
+Ausência de linfoadenopatia cervical. Ausência de massas e tumores cervicais.
+AC: BCR em 2 tempos, sem sopros.
+AP: MV+ bilateralmente, sem RA.
+Abdome: plano, flácido, doloroso à palpação difusa. Sem sinais de peritonite. Ausência de visceromegalias. RHA+ hiperativos. Timpânico à percussão. Murphy, Blumberg e Rovsing negativos. Jobert e Giordano negativos.
+Extremidades: perfusão distal simétrica; sem edemas ou sinais de TVP.
+Ausência de lesões cutâneas em tronco, dorso e extremidades.`,
+    conduta:
+`- Investigação clínica.
+- Sintomáticos.
+- Medidas laxativas.
+- Orientações gerais e quanto aos sinais de gravidade. Repouso.
+- Seguimento ambulatorial após melhora inicial.`,
+  },
+
+  // ── METRORRAGIA ───────────────────────────────────────────────────────────
+  {
+    id: "metrorragia",
+    title: "Metrorragia",
+    category: "geral",
+    hipotese: "Sangramento uterino anormal (metrorragia) — em investigação etiológica",
+    hda:
+`Paciente refere dor abdominal difusa, tipo cólica, principalmente em hipogastro, associada a sangramento vaginal de grande monta, com início há ___ dias.
+Relata / nega quadros anteriores semelhantes.
+Nega sintomas irritativos do trato urinário inferior (disúria, polaciúria).
+Nega alterações do trânsito intestinal.
+Nega febre. Refere cefaleia discreta e fraqueza.
+Mal-estar. Nega evacuações com sangramentos. Nega hematêmese e melena.
+Nega sintomas respiratórios, nasais. Nega dispneia, tosse e hemoptoicos.
+Nega sintomas neurológicos (convulsões, parestesias, alterações motoras).
+Nega alterações visuais, tontura. Nega rigidez de nuca.
+Sem outras queixas.
+
+ANTECEDENTES
+Doenças de base e pregressas: ___________________
+Antecedente de sangramento vaginal / investigação prévia: ___________________
+Uso de estrogênios: sim / não
+Medicamentos em uso: ___________________
+Cirurgias anteriores (abdominais / ginecológicas): ___________________
+Hábitos (tabagismo, etilismo, drogas): ___________________
+USG abdome / transvaginal prévio: ___________________
+DUM: ___________________`,
+    exame:
+`BEG/REG, mucosas (pálidas / coradas), hidratado / desidratado, anictérico e acianótico. Eupneico/Taquipneico.
+Temperatura axilar: ____ºC
+Consciente e contactuante. Glasgow=15. Visão e audição preservadas.
+Sem sinais de irritação meníngea. Brudzinski, Kernig e Lasègue negativos. Nuca livre.
+Pulsos carotídeos palpáveis e simétricos.
+Ausência de linfoadenopatia cervical. Ausência de massas e tumores cervicais.
+Movimentos cervicais preservados. Força simétrica dos membros superiores.
+Palpação indolor dos seios da face. Teste de olfato preservado.
+Orofaringe: sem alterações.
+AC: BCR em 2 tempos, sem sopros.
+AP: MV+ bilateralmente, sem RA.
+Abdome: plano, flácido, doloroso à palpação em hipogastro, sem sinais de defesa. Ausência de peritonite. Ausência de visceromegalias. Inocente do ponto de vista cirúrgico. RHA+. Blumberg, Rovsing, Jobert, Murphy e Giordano negativos.
+Toque retal: não realizado / realizado — descrever achados.
+Toque vaginal: não realizado / realizado — descrever achados.
+Extremidades: perfusão distal simétrica; sem edemas ou sinais de TVP.
+Ausência de lesões cutâneas em tronco, dorso e extremidades.`,
+    conduta:
+`- Investigação clínica (abdome agudo se necessário).
+- Exames laboratoriais para estimativa de perda sanguínea e necessidade de transfusão.
+- Sintomáticos e reposição volêmica inicial.
+- Jejum até 2ª ordem (se suspeita de abdome agudo).
+- Orientações gerais e quanto aos sinais de gravidade. Repouso.
+- Reavaliação após exames.
+- Se melhora clínica: alta com sintomáticos.
+- Agendamento com ginecologia para seguimento e definição terapêutica.
+- Orientações sobre sintomas de gravidade e retorno ao PS se necessário.`,
+  },
+
+  // ── BRADICARDIA SINTOMÁTICA ───────────────────────────────────────────────
+  {
+    id: "bradicardia",
+    title: "Bradicardia Sintomática",
+    category: "critico",
+    hipotese: "Bradicardia sintomática — em investigação etiológica",
+    hda:
+`Paciente refere mal-estar e fraqueza, com início há ___ dias.
+Dor torácica: sim / não — caracterizar irradiação, qualidade e tempo de início se presente.
+Náuseas e vômitos: sim / não.
+Dispneia: sim / não.
+Síncope / tontura: sim / não.
+Nega febre.
+Nega diarreia com ou sem sangramentos. Nega sintomas dispépticos.
+Nega hematêmese e melena. Nega sintomas urinários.
+Nega tosse e hemoptoicos.
+Nega sintomas neurológicos (convulsões, parestesias, alterações motoras).
+Nega rigidez de nuca.
+Nega dor cervical, alterações do pescoço ou tumoração cervical.
+Sem outras queixas.
+
+ANTECEDENTES
+Doenças de base e pregressas: ___________________
+Antecedente de doença coronariana / stents: ___________________
+Medicamentos em uso: ___________________
+(Homem) Uso de inibidores da fosfodiesterase: sim / não
+Cirurgias cardíacas prévias / marcapasso implantado: ___________________
+Hábitos (tabagismo, etilismo, drogas): ___________________
+Última refeição / horário: ___________________
+(Mulher em idade fértil) DUM: ___________________
+Antecedentes familiares de infarto: sim / não`,
+    exame:
+`REG, mucosas (pálidas / coradas), anictérico / ictérico e acianótico. Eupneico.
+Temperatura axilar: ____ºC. Sudorese profusa.
+Consciente e contactuante. Glasgow=15. Visão e audição preservadas.
+Sem sinais de irritação meníngea. Brudzinski, Kernig e Lasègue negativos. Nuca livre.
+Pulsos carotídeos palpáveis e simétricos.
+Ausência / presença de turgência jugular.
+Ausência de linfoadenopatia cervical. Ausência de massas e tumores cervicais.
+AC: BCR em 2 tempos, sem sopros. FC = ______bpm.
+⚠ ECG de entrada: ritmo ___________________ — bloqueio ___________________ — sinais isquêmicos: ___________________
+AP: MV+ bilateralmente, sem RA. Presença / ausência de crepitantes pulmonares bilaterais.
+Abdome: plano, tenso, doloroso à palpação epigástrica. Ausência de visceromegalias. RHA+. Murphy, Blumberg e Rovsing negativos. Jobert e Giordano negativos. Sem sinais de peritonite.
+Extremidades: perfusão distal simétrica; sem edemas ou sinais de TVP. TEC ____s.
+Ausência de lesões cutâneas em tronco, dorso e extremidades.
+
+CRITÉRIOS DE INSTABILIDADE (ACLS)
+□ Hipotensão (PAS <90 mmHg ou PAM <65 mmHg)
+□ Sinais de choque (TEC >3 s)
+□ Congestão pulmonar
+□ Dor torácica típica
+□ Rebaixamento do nível de consciência / síncope`,
+    conduta:
+`- 1ª linha: atropina 1mg IV em bólus (máximo 3mg — repetir a cada 5 min).
+- 2ª linha: marcapasso transcutâneo (se disponível) ou infusão contínua de dopamina / epinefrina.
+- Jejum para implante de marcapasso transvenoso ou definitivo (se necessário).
+- Exames laboratoriais para classificação.
+- Repouso no leito. Atenção ao uso de betabloqueadores em uso regular.
+- Orientações gerais e quanto aos sinais de gravidade.
+- Se IAMSST: encaminhamento à hemodinâmica para ICP.
+- Solicitada avaliação da cardiologia.`,
+  },
+
+  // ── OBSTRUÇÃO ARTERIAL AGUDA ──────────────────────────────────────────────
+  {
+    id: "oaa",
+    title: "Obstrução Arterial Aguda",
+    category: "vascular",
+    hipotese: "Obstrução arterial aguda (OAA) — isquemia aguda de membro",
+    hda:
+`Paciente refere dor em perna (direita / esquerda), com início há ___ dias.
+Nega febre, cefaleia e inapetência. Nega dor torácica e dispneia.
+Refere piora da dor ao caminhar. Sinais de claudicação intermitente.
+Nega hemoptoicos. Nega sangramentos.
+Nega sintomas neurológicos (convulsões, parestesias, alterações motoras).
+Nega alterações visuais, tontura. Nega rigidez de nuca. Nega vômitos.
+Nega dor cervical, alterações do pescoço ou tumoração cervical.
+Nega dor abdominal (exceto ao tossir).
+Sem outras queixas (urinárias ou intestinais).
+
+ANTECEDENTES
+Doenças de base e pregressas: ___________________
+Antecedente de arritmia cardíaca / FA crônica: ___________________
+Antecedente de doença arteriosclerótica: ___________________
+Medicamentos em uso: ___________________
+Uso de anticoncepcional oral: sim / não
+Antecedente de TVP ou TEP: sim / não
+Cirurgias anteriores: ___________________
+Hábitos (tabagismo, etilismo, drogas): ___________________`,
+    exame:
+`BEG, mucosas coradas e hidratadas, anictérico e acianótico. Eupneico.
+Temperatura axilar: ____ºC
+Consciente e contactuante. Glasgow=15. Visão e audição preservadas.
+Sem sinais de irritação meníngea. Brudzinski, Kernig e Lasègue negativos. Nuca livre.
+Pulsos carotídeos palpáveis e simétricos.
+Ausência de linfoadenopatia cervical. Ausência de massas e tumores cervicais.
+Movimentos cervicais preservados. Força simétrica dos membros superiores.
+Orofaringe: sem alterações.
+AC: BC (rítmicas / arrítmicas) em 2 tempos, sem sopros. Ritmo de FA: sim / não
+AP: MV+ bilateralmente, sem ruídos adventícios.
+Abdome: plano, flácido, sem visceromegalias. Inocente do ponto de vista cirúrgico. Sem sinais de peritonite. RHA+ normoativos. Blumberg, Murphy e Giordano negativos.
+Extremidades: perfusão distal assimétrica; ausência de pulso à (direita / esquerda) a partir do nível ___________. Palidez cutânea. Dor à palpação da perna (direita / esquerda).
+Presença / ausência de lesões tróficas.
+Ausência de lesões cutâneas em tronco.`,
+    conduta:
+`- Investigação diagnóstica urgente (Doppler arterial / angiotomografia).
+- Exames laboratoriais + ECG.
+- Analgesia. Repouso.
+- Orientações gerais e quanto aos sinais de gravidade.
+- Avaliação da cirurgia vascular agora.`,
+  },
   // ── INSUFICIÊNCIA RESPIRATÓRIA AGUDA ─────────────────────────────────────
   {
     id: "ira",
