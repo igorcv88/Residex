@@ -17,6 +17,7 @@ import Politrauma from './pages/Politrauma';
 import ViaAerea from './pages/ViaAerea';
 import CicloMenstrual from './pages/CicloMenstrual';
 import TriagemNeonatal from './pages/TriagemNeonatal';
+import Anamneses from './pages/Anamneses';
 
 export const routes = [
   {
@@ -36,6 +37,15 @@ export const routes = [
     categoria: 'Emergencia',
     descricao:
       'Calculadora de medicações pediátricas e protocolos de diversas emergencias pediatricas',
+  },
+  {
+    path: '/Anamneses',
+    element: <Anamneses />,
+    title: 'Anamneses',
+    icon: '📖',
+    categoria: 'Emergencia',
+    descricao:
+      'Compilado interativo de inumeras historias clinicas padrão para os casos mais comuns do pronto socorro',
   },
   {
     path: '/IctericiaNeonatal',
