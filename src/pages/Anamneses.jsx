@@ -139,6 +139,48 @@ Ausência de lesões cutâneas em tronco, dorso e extremidades.`,
 - Retorno oportuno se necessário.
 - Seguimento ambulatorial após tratamento inicial.`,
   },
+// ── IVAS PEDIATRIA ────────────────────────────────────────────────────────
+  {
+    id: "ivas-ped",
+    title: "IVAS — Ped",
+    category: "pediatria",
+    hipotese: "Infecção de vias aéreas superiores (IVAS) — provável etiologia viral",
+    hda:
+`Paciente acompanhado pelo(a) pai/mãe/responsável.
+Refere mal-estar + coriza hialina + febre não medida + inapetência com início há ___ dias.
+Dor de garganta discreta, tosse seca e mialgia. Queda do estado geral.
+Nega dor torácica. Nega hemoptise. Nega chiado no peito e dispneia.
+Nega sintomas neurológicos (convulsões, parestesias, alterações motoras).
+Nega alterações visuais, tontura. Nega rigidez de nuca. Nega vômitos.
+Nega dor cervical, alterações do pescoço ou tumoração cervical.
+Sem outras queixas (urinárias ou intestinais).
+
+ANTECEDENTES
+Doenças de base e pregressas: ___________________
+Medicamentos em uso (nome e posologia): ___________________
+Cirurgias anteriores (nasal, amigdalectomia, cervical): ___________________`,
+    exame:
+`BEG, mucosas coradas e hidratadas, anictérico e acianótico. Eupneico.
+Temperatura axilar: ____ºC
+Consciente. Contactuante. Atividade normal.
+Glasgow=15. Visão e audição preservadas.
+Sem sinais de irritação meníngea. Nuca livre. Pulsos carotídeos palpáveis e simétricos.
+Ausência de linfoadenopatia cervical. Ausência de massas e tumores cervicais.
+Movimentos cervicais preservados. Força simétrica dos membros superiores.
+Otoscopia: normal.
+Orofaringe: hiperemia discreta difusa. Ausência de secreção em retrocavidade.
+AC: BCR em 2 tempos, sem sopros.
+AP: MV+ bilateralmente, sem ruídos adventícios.
+Abdome: plano, flácido, sem visceromegalias. Inocente do ponto de vista cirúrgico. Sem sinais de peritonite. RHA+ normoativos. Blumberg, Murphy e Giordano negativos.
+Extremidades: perfusão distal simétrica; sem edemas ou sinais de TVP.
+Ausência de lesões cutâneas em tronco, dorso e extremidades.`,
+    conduta:
+`- Em virtude do provável quadro viral, opto pelo uso de sintomáticos.
+- Orientações gerais e quanto aos sinais de gravidade.
+- Repouso. Afastamento da escola.
+- Retorno oportuno se necessário.
+- Seguimento ambulatorial após tratamento inicial.`,
+  },
   // ── OTITE EXTERNA ─────────────────────────────────────────────────────────
   {
     id: "otite-externa",
@@ -992,7 +1034,7 @@ export default function Anamneses() {
     <div
       style={{
         background: T.bgPage,
-        height: "100vh",
+        height: "100dvh",
         fontFamily: "'Palatino Linotype','Book Antiqua',Palatino,serif",
         color: T.textBody,
         display: "flex",
@@ -1053,6 +1095,10 @@ export default function Anamneses() {
           .anm-list {
             width: 100% !important;
             border-right: none !important;
+            flex: 1 !important;
+            display: flex !important;
+            flex-direction: column !important;
+            overflow-y: auto !important
             border-bottom: 1px solid ${T.borderSection};
           }
           .anm-list-hidden { display: none !important; }
