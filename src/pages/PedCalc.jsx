@@ -3152,13 +3152,15 @@ const DRUGS = [
     const isAdult = w >= 50;
 
     return [
-      // ─── VO ───────────────────────────────────────────────
       {
-        label: "Dose VO (10-15 mg/kg/dose)",
-        value: `${Math.min(w * 12, 750).toFixed(0)} mg/dose`,
-        freq: "6/6h VO",
-        sub: "Max 4 g/dia",
-        highlight: false,
+        label: "EV Halexminofeno 10 mg/mL",
+        value: `${volEV.toFixed(0)} mL`,
+        freq: "Infundir em 15 min",
+        sub:
+          volEV >= 100
+            ? "Bolsa inteira (100 mL) — não diluir"
+            : `Retirar ${(100 - volEV).toFixed(0)} mL da bolsa antes de infundir`,
+        highlight: true,
       },
       {
         label: "Gotas 200 mg/mL (10 mg/gota)",
@@ -3181,16 +3183,12 @@ const DRUGS = [
         sub: "Regra: Peso ÷ 10 em mL",
         highlight: false,
       },
-      // ─── EV ───────────────────────────────────────────────
       {
-        label: "Volume da bolsa Halexminofeno 10 mg/mL",
-        value: `${volEV.toFixed(0)} mL`,
-        freq: "Infundir em 15 min",
-        sub:
-          volEV >= 100
-            ? "Bolsa inteira (100 mL) — não diluir"
-            : `Retirar ${(100 - volEV).toFixed(0)} mL da bolsa antes de infundir`,
-        highlight: true,
+        label: "Dose VO (10-15 mg/kg/dose)",
+        value: `${Math.min(w * 12, 750).toFixed(0)} mg/dose`,
+        freq: "6/6h VO",
+        sub: "Max 4 g/dia",
+        highlight: false,
       },
     ];
   },
