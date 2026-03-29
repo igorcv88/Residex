@@ -35,13 +35,13 @@ const DRUGS = [
     category: "antibioticos",
     color: "#10B981",
     inputType: "weight",
-    presentation: "FA 50mg/mL (2mL) | FA 250mg/mL — HIAS",
+    presentation: "FA 50mg/mL (2mL) | FA 250mg/mL",
     dilution: "Max 10mg/mL em SF0,9% ou SG5%",
     infusion: "30-60 min (lactentes: 1-2h)",
     calc: (w) => [
       {
         label: "Convencional (15-22,5mg/kg/dia ÷ 3×)",
-        value: `${Math.min(w * 7.5, 500).toFixed(0)}–${Math.min(w * 7.5, 500).toFixed(0)} mg/dose`,
+        value: `${Math.min(w * 15, 500).toFixed(0)}–${Math.min(w * 22.5, 500).toFixed(0)} mg/dose`,
         freq: "8/8h",
         sub: `15-22,5mg/kg/dia | Max 1,5g/dia`,
         highlight: true,
@@ -2746,7 +2746,7 @@ const DRUGS = [
     inputType: "weight",
     presentation: "FA 10mg/mL",
     dilution: "EV: diluir em SF0,9% ou SG5%",
-    infusion: "EV lento | IM exclusivo se plaquetopenia grave",
+    infusion: "EV lento | IM (contraindicado se plaquetopenia grave)",
     calc: (w) => [
       {
         label: "1mg/kg EV ou IM",
