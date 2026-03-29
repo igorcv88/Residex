@@ -25,14 +25,14 @@ const CheckIcon = () => (
 
 const CATEGORIES = [
   { id: "todos",        name: "Todos",         color: "#64748b" },
+  { id: "pediatria",    name: "Pediatria",      color: "#10B981" },
+  { id: "orl",          name: "ORL",            color: "#EC4899" },
+  { id: "geral",        name: "Geral",          color: "#6366F1" },
   { id: "critico",      name: "Crítico",        color: "#EF4444" },
   { id: "respiratorio", name: "Respiratório",   color: "#0EA5E9" },
   { id: "vascular",     name: "Vascular",       color: "#8B5CF6" },
   { id: "digestivo",    name: "Digestivo",      color: "#F59E0B" },
   { id: "trauma",       name: "Trauma",         color: "#F97316" },
-  { id: "pediatria",    name: "Pediatria",      color: "#10B981" },
-  { id: "orl",          name: "ORL",            color: "#EC4899" },
-  { id: "geral",        name: "Geral",          color: "#6366F1" },
 ];
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -42,43 +42,58 @@ const CATEGORIES = [
 // ─────────────────────────────────────────────────────────────────────────────
 
 const ANAMNESES = [
-  // ── ABSCESSO ──────────────────────────────────────────────────────────────
+  // ── PNEUMONIA VIRAL PEDIATRIA ─────────────────────────────────────────────
   {
-    id: "abscesso",
-    title: "Abscesso",
-    category: "geral",
-    hipotese: "Abscesso cutâneo com celulite adjacente",
+    id: "pneumonia-viral-ped",
+    title: "Pneumonia Viral — Ped",
+    category: "pediatria",
+    hipotese: "Pneumonia viral (Pediatria) — possível Influenza / COVID-19",
     hda:
-`Paciente relata dor + tumoração em região ___________________ com início há ____ dias.
-Febre não medida.
-Observa área de hiperemia + saída de secreção local.
-Sem outras queixas.
+`Paciente acompanhado pela mãe/pai/responsável.
+Refere dor torácica inespecífica, associada à tosse seca sem expectoração, com início há ___ dias.
+Refere febre, cefaleia discreta e inapetência após início dos sintomas.
+Dispneia ocasional, com piora progressiva. Queda do estado geral.
+Refere contato com pessoas com sintomatologia semelhante.
+Nega coriza e dor facial. Nega hemoptoicos.
+Nega sintomas neurológicos (convulsões, parestesias, alterações motoras).
+Nega alterações visuais, tontura. Nega rigidez de nuca. Nega vômitos.
+Nega dor cervical, alterações do pescoço ou tumoração cervical.
+Nega dor abdominal (exceto ao tossir).
+Sem outras queixas (urinárias ou intestinais).
+Nega dor em panturrilhas.
 
 ANTECEDENTES
-Antecedentes mórbidos: ___________________
-Cirurgias anteriores: ___________________
-Antecedentes alérgicos: ___________________
+Doenças de base e pregressas: ___________________
+Antecedente de asma ou pneumonia: ___________________
+Contato com pessoas com sintomatologia semelhante: ___________________
 Medicamentos em uso: ___________________
-Quadros de abscessos anteriores: ___________________`,
+Cirurgias anteriores: ___________________`,
     exame:
-`BEG, corado, hidratado, afebril, anictérico e acianótico. Eupneico. Consciente e contactuante.
-Glasgow=15; sem alterações neurológicas.
+`BEG/REG, mucosas coradas e hidratadas, anictérico e acianótico. Eupneico/Taquipneico.
+Temperatura axilar: ____ºC
+Consciente. Atividade normal. Glasgow=15. Visão e audição preservadas.
+Sem sinais de irritação meníngea. Nuca livre. Pulsos carotídeos palpáveis e simétricos.
+Ausência de linfoadenopatia cervical. Ausência de massas e tumores cervicais.
+Movimentos cervicais preservados. Força simétrica dos membros superiores.
+Orofaringe: sem alterações. Ausência de secreção em retrocavidade.
+Otoscopia: normal.
 AC: BCR em 2 tempos, sem sopros.
-AP: MVFD sem RA.
-Abdome: flácido, RHA+; sem sinais de peritonite.
-Extremidades: perfusão distal mantida; sem edemas. Sem sinais de TVP.
+AP: MV+ bilateralmente, com roncos difusos. Tosse durante manobras inspiratórias.
+Abdome: plano, flácido, sem visceromegalias. Inocente do ponto de vista cirúrgico. Sem sinais de peritonite. RHA+ normoativos. Blumberg, Murphy e Giordano negativos.
+Extremidades: perfusão distal simétrica; sem edemas ou sinais de TVP.
+Ausência de lesões cutâneas em tronco, dorso e extremidades.
 
-Exame local: presença de abscesso em região _______________, com flogose local. Ponto de flutuação presente, com necessidade de drenagem. Celulite associada adjacente.`,
+⚠ Atentar para protocolos de isolamento (Influenza / COVID-19)`,
     conduta:
-`- Drenagem de abscesso + curativo local.
-- Antibioticoterapia compatível + sintomáticos.
-- Orientações quanto ao seguimento e curativos.
-- Seguimento ambulatorial.
-- Curativo em unidade de saúde básica.
-- Repouso + limpeza diária local.
-- Profilaxia antitetânica.`,
+`- Investigação radiológica.
+- Início de antivirais + sintomáticos.
+- Considerar Oseltamivir.
+- Orientações gerais e quanto aos sinais de gravidade.
+- Repouso. Dieta regular. Sono adequado. Afastamento da escola.
+- Orientações sobre proteção individual e contato com pessoas.
+- Retorno oportuno se necessário.
+- Seguimento ambulatorial após tratamento inicial.`,
   },
-
   // ── GECA PEDIATRIA ────────────────────────────────────────────────────────
   {
     id: "geca-ped",
@@ -124,7 +139,6 @@ Ausência de lesões cutâneas em tronco, dorso e extremidades.`,
 - Retorno oportuno se necessário.
 - Seguimento ambulatorial após tratamento inicial.`,
   },
-
   // ── OTITE EXTERNA ─────────────────────────────────────────────────────────
   {
     id: "otite-externa",
@@ -171,6 +185,42 @@ Ausência de lesões cutâneas em tronco, dorso e extremidades.`,
 - Repouso.
 - Retorno oportuno se necessário.
 - Seguimento ambulatorial após tratamento inicial.`,
+  },
+  // ── ABSCESSO ──────────────────────────────────────────────────────────────
+  {
+    id: "abscesso",
+    title: "Abscesso",
+    category: "geral",
+    hipotese: "Abscesso cutâneo com celulite adjacente",
+    hda:
+`Paciente relata dor + tumoração em região ___________________ com início há ____ dias.
+Febre não medida.
+Observa área de hiperemia + saída de secreção local.
+Sem outras queixas.
+
+ANTECEDENTES
+Antecedentes mórbidos: ___________________
+Cirurgias anteriores: ___________________
+Antecedentes alérgicos: ___________________
+Medicamentos em uso: ___________________
+Quadros de abscessos anteriores: ___________________`,
+    exame:
+`BEG, corado, hidratado, afebril, anictérico e acianótico. Eupneico. Consciente e contactuante.
+Glasgow=15; sem alterações neurológicas.
+AC: BCR em 2 tempos, sem sopros.
+AP: MVFD sem RA.
+Abdome: flácido, RHA+; sem sinais de peritonite.
+Extremidades: perfusão distal mantida; sem edemas. Sem sinais de TVP.
+
+Exame local: presença de abscesso em região _______________, com flogose local. Ponto de flutuação presente, com necessidade de drenagem. Celulite associada adjacente.`,
+    conduta:
+`- Drenagem de abscesso + curativo local.
+- Antibioticoterapia compatível + sintomáticos.
+- Orientações quanto ao seguimento e curativos.
+- Seguimento ambulatorial.
+- Curativo em unidade de saúde básica.
+- Repouso + limpeza diária local.
+- Profilaxia antitetânica.`,
   },
 
   // ── TEP ───────────────────────────────────────────────────────────────────
@@ -688,60 +738,6 @@ CURB-65: Confusão / Ureia >50 / FR >30 / PA <90x60 mmHg / Idade >65 anos
 - Retorno oportuno se necessário.
 - Seguimento ambulatorial após tratamento inicial.`,
   },
-
-  // ── PNEUMONIA VIRAL PEDIATRIA ─────────────────────────────────────────────
-  {
-    id: "pneumonia-viral-ped",
-    title: "Pneumonia Viral — Ped",
-    category: "pediatria",
-    hipotese: "Pneumonia viral (Pediatria) — possível Influenza / COVID-19",
-    hda:
-`Paciente acompanhado pela mãe/pai/responsável.
-Refere dor torácica inespecífica, associada à tosse seca sem expectoração, com início há ___ dias.
-Refere febre, cefaleia discreta e inapetência após início dos sintomas.
-Dispneia ocasional, com piora progressiva. Queda do estado geral.
-Refere contato com pessoas com sintomatologia semelhante.
-Nega coriza e dor facial. Nega hemoptoicos.
-Nega sintomas neurológicos (convulsões, parestesias, alterações motoras).
-Nega alterações visuais, tontura. Nega rigidez de nuca. Nega vômitos.
-Nega dor cervical, alterações do pescoço ou tumoração cervical.
-Nega dor abdominal (exceto ao tossir).
-Sem outras queixas (urinárias ou intestinais).
-Nega dor em panturrilhas.
-
-ANTECEDENTES
-Doenças de base e pregressas: ___________________
-Antecedente de asma ou pneumonia: ___________________
-Contato com pessoas com sintomatologia semelhante: ___________________
-Medicamentos em uso: ___________________
-Cirurgias anteriores: ___________________`,
-    exame:
-`BEG/REG, mucosas coradas e hidratadas, anictérico e acianótico. Eupneico/Taquipneico.
-Temperatura axilar: ____ºC
-Consciente. Atividade normal. Glasgow=15. Visão e audição preservadas.
-Sem sinais de irritação meníngea. Nuca livre. Pulsos carotídeos palpáveis e simétricos.
-Ausência de linfoadenopatia cervical. Ausência de massas e tumores cervicais.
-Movimentos cervicais preservados. Força simétrica dos membros superiores.
-Orofaringe: sem alterações. Ausência de secreção em retrocavidade.
-Otoscopia: normal.
-AC: BCR em 2 tempos, sem sopros.
-AP: MV+ bilateralmente, com roncos difusos. Tosse durante manobras inspiratórias.
-Abdome: plano, flácido, sem visceromegalias. Inocente do ponto de vista cirúrgico. Sem sinais de peritonite. RHA+ normoativos. Blumberg, Murphy e Giordano negativos.
-Extremidades: perfusão distal simétrica; sem edemas ou sinais de TVP.
-Ausência de lesões cutâneas em tronco, dorso e extremidades.
-
-⚠ Atentar para protocolos de isolamento (Influenza / COVID-19)`,
-    conduta:
-`- Investigação radiológica.
-- Início de antivirais + sintomáticos.
-- Considerar Oseltamivir.
-- Orientações gerais e quanto aos sinais de gravidade.
-- Repouso. Dieta regular. Sono adequado. Afastamento da escola.
-- Orientações sobre proteção individual e contato com pessoas.
-- Retorno oportuno se necessário.
-- Seguimento ambulatorial após tratamento inicial.`,
-  },
-
   // ── POLITRAUMA LEVE ───────────────────────────────────────────────────────
   {
     id: "politrauma-leve",
