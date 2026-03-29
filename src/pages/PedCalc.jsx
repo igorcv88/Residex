@@ -3184,15 +3184,12 @@ const DRUGS = [
       // ─── EV ───────────────────────────────────────────────
       {
         label: "Volume da bolsa Halexminofeno 10 mg/mL",
-        value: `${volEV.toFixed(0)} mL da bolsa`,
+        value: `${volEV.toFixed(0)} mL`,
         freq: "Infundir em 15 min",
         sub:
           volEV >= 100
             ? "Bolsa inteira (100 mL) — não diluir"
             : `Retirar ${(100 - volEV).toFixed(0)} mL da bolsa antes de infundir`,
-                    sub: isAdult
-            ? "Adulto ≥ 50 kg → dose fixa 1000 mg"
-            : `15 mg/kg — Max 1000 mg/dose`,
         highlight: true,
       },
     ];
