@@ -379,16 +379,54 @@ const WEEKS = [
     topics:[{name:"Vias biliares — colecistite, coledocolitíase, CA",wipr:81,h:8,inst:"USP líder + ENARE crescente",mode:"Estudo completo"},{name:"Arritmias cardíacas e PCR",wipr:81,h:7,inst:"ENARE+USP+UNIFESP",mode:"Estudo completo"},{name:"Assistência ao pré-natal",wipr:81,h:5,inst:"ENARE+USP+UNIFESP",mode:"Estudo completo"}]},
   { n:5,  focus:"Sangramentos gest + DAC + Vigilância epi", col:"#EF4444", h:21,
     topics:[{name:"Sangramentos gestacionais — DPP, plac. prévia, atonia",wipr:81,h:7,inst:"ENARE+USP+UNIFESP",mode:"Estudo completo"},{name:"DAC — síndromes coronarianas agudas e crônicas",wipr:79,h:8,inst:"ENARE+USP+UNIFESP",mode:"Estudo completo"},{name:"Vigilância epidemiológica — sistemas e notificação",wipr:78,h:6,inst:"ENARE forte · 2.5q/prova",mode:"Estudo completo"}]},
-  { n:6,  focus:"SOP + Neonato II + Síndromes febris", col:"#F97316", h:18,
-    topics:[{name:"Amenorreia e síndrome dos ovários policísticos",wipr:75,h:6,inst:"ENARE crescente",mode:"Estudo completo"},{name:"Neonato II — TORCH e distúrbios metabólicos",wipr:75,h:7,inst:"ENARE+USP+UNIFESP",mode:"Estudo completo"},{name:"Síndromes febris — meningite, dengue, chikungunya",wipr:74,h:5,inst:"ENARE+USP+UNIFESP",mode:"Estudo completo"}]},
+ // substitui o objeto { n:6, ... } existente
+{
+  n:6, focus:"PREV3 + SOP + Neonato II + Síndromes febris", col:"#F97316", h:21,
+  topics:[
+    { name:"Testes epidemiológicos — Se, Sp, VPP, VPN, RV, acurácia, NNT", wipr:76, h:5,
+      inst:"ENARE forte · 2q/prova · USP+UNIFESP constantes", mode:"Estudo completo" },
+    { name:"Amenorreia e síndrome dos ovários policísticos", wipr:75, h:6,
+      inst:"ENARE crescente", mode:"Estudo completo" },
+    { name:"Neonato II — TORCH e distúrbios metabólicos", wipr:75, h:6,
+      inst:"ENARE+USP+UNIFESP", mode:"Estudo completo" },
+    { name:"Síndromes febris — meningite, dengue, chikungunya", wipr:74, h:4,
+      inst:"ENARE+USP+UNIFESP", mode:"Estudo completo" },
+  ]
+},
   { n:7,  focus:"Valvopatias + Dislipidemia + Abdome agudo", col:"#F97316", h:17,
     topics:[{name:"Valvopatias e semiologia cardíaca",wipr:73,h:6,inst:"ENARE+USP+UNIFESP",mode:"Estudo completo"},{name:"Síndrome metabólica e dislipidemia",wipr:73,h:5,inst:"crescente todas as bancas",mode:"Estudo completo"},{name:"Abdome agudo — obstrutivo, vascular e perfurativo",wipr:72,h:6,inst:"ENARE+USP+UNIFESP",mode:"Estudo completo"}]},
   { n:8,  focus:"HIV + Esôfago + Vulvovaginites + Abdome inflam", col:"#F97316", h:17,
     topics:[{name:"HIV/AIDS — TARV, profilaxias, infecções oportunistas",wipr:71,h:5,inst:"crescente todas as bancas",mode:"Estudo completo"},{name:"Esôfago — DRGE, Barrett, megaesôfago, CA",wipr:70,h:5,inst:"USP+ENARE+UNIFESP",mode:"Estudo completo"},{name:"Vulvovaginites, cervicites e DSTs",wipr:69,h:4,inst:"ENARE+USP+UNIFESP",mode:"Visão geral"},{name:"Abdome agudo inflamatório — apendicite, diverticulite",wipr:67,h:3,inst:"ENARE+USP+UNIFESP",mode:"Visão geral"}]},
-  { n:9,  focus:"Doenças gest + Diarreias + Suprarrenal", col:"#F97316", h:16,
-    topics:[{name:"Gestação — isoimunização, TORCH, infecções",wipr:68,h:5,inst:"ENARE+USP+UNIFESP",mode:"Visão geral"},{name:"Diarreias, parasitoses intestinais e DII",wipr:67,h:6,inst:"ENARE+USP+UNIFESP",mode:"Visão geral"},{name:"Suprarrenal, hipófise e hipotálamo",wipr:66,h:5,inst:"ENARE+USP+UNIFESP",mode:"Visão geral"}]},
-  { n:10, focus:"Dist nutricionais + Estômago + Hérnias", col:"#F97316", h:14,
-    topics:[{name:"Distúrbios nutricionais pediátricos",wipr:66,h:5,inst:"ENARE+USP+UNIFESP",mode:"Visão geral"},{name:"Estômago — úlcera péptica e câncer gástrico",wipr:63,h:4,inst:"USP forte",mode:"Visão geral"},{name:"Hérnias — inguinal, femoral, umbilical, hiatal",wipr:60,h:3,inst:"ENARE+USP",mode:"Visão geral"},{name:"Tumores hepáticos — CHC, metástases, abscesso",wipr:60,h:2,inst:"ENARE+USP",mode:"Visão geral"}]},
+  // substitui o objeto { n:9, ... } existente
+{
+  n:9, focus:"Doenças gest + PED8 + Diarreias + Suprarrenal", col:"#F97316", h:21,
+  topics:[
+    { name:"Gestação — isoimunização, TORCH, infecções", wipr:68, h:5,
+      inst:"ENARE+USP+UNIFESP", mode:"Visão geral" },
+    { name:"Doenças exantemáticas — exantema súbito, Kawasaki, sarampo, varicela", wipr:68, h:5,
+      inst:"ENARE domina · Kawasaki recorrente todas as bancas", mode:"Estudo completo" },
+    { name:"Diarreias, parasitoses intestinais e DII", wipr:67, h:6,
+      inst:"ENARE+USP+UNIFESP", mode:"Visão geral" },
+    { name:"Suprarrenal, hipófise e hipotálamo", wipr:66, h:5,
+      inst:"ENARE+USP+UNIFESP", mode:"Visão geral" },
+  ]
+},
+ // substitui o objeto { n:10, ... } existente
+{
+  n:10, focus:"Dist nutricionais + PED6 + Estômago + Hérnias", col:"#F97316", h:19,
+  topics:[
+    { name:"Distúrbios nutricionais pediátricos", wipr:66, h:4,
+      inst:"ENARE+USP+UNIFESP", mode:"Visão geral" },
+    { name:"Uropediatria — ITU, DMSA, RVU, s.nefrótica, s.nefrítica, SHU", wipr:66, h:5,
+      inst:"USP líder (1.5q) · ENARE+UNIFESP presentes", mode:"Estudo completo" },
+    { name:"Estômago — úlcera péptica e câncer gástrico", wipr:63, h:4,
+      inst:"USP forte", mode:"Visão geral" },
+    { name:"Hérnias — inguinal, femoral, umbilical, hiatal", wipr:60, h:3,
+      inst:"ENARE+USP", mode:"Visão geral" },
+    { name:"Tumores hepáticos — CHC, metástases, abscesso", wipr:60, h:1,
+      inst:"ENARE+USP", mode:"Visão geral" },
+  ]
+},
   { n:11, focus:"Neonato III + Violência + SUA + Urgência HAS", col:"#10B981", h:13,
     topics:[{name:"Neonato III — miscelânea neonatal",wipr:63,h:3,inst:"ENARE+USP+UNIFESP",mode:"Visão geral"},{name:"Violência sexual e abordagem na APS",wipr:63,h:3,inst:"ENARE crescente",mode:"Visão geral"},{name:"SUA e dismenorreia",wipr:61,h:3,inst:"ENARE+USP+UNIFESP",mode:"Visão geral"},{name:"Urgência e emergência hipertensiva",wipr:61,h:2,inst:"ENARE+USP+UNIFESP",mode:"Visão geral"},{name:"CCP — tireoide e paratireoide",wipr:61,h:2,inst:"ENARE+USP+UNIFESP",mode:"Visão geral"}]},
   { n:12, focus:"Anestesia + Toxicologia + Puberais + Alimentação", col:"#10B981", h:12,
