@@ -342,6 +342,9 @@ const RAW = [
   { spec:"CG",   name:"Queimaduras e trauma de extremidades",                code:"CG1-trauma",  nE:1.0,nU:0.5,nF:0.5, cE:1,cU:0,cF:0, trend:"d", simp:.80, old:36 },
   { spec:"PED",  name:"Síndromes pondero-estaturais",                        code:"PED3-pond",   nE:0.5,nU:0.5,nF:0.5, cE:1,cU:0,cF:0, trend:"d", simp:.80, old:25 },
   { spec:"PREV", name:"Saúde do trabalhador — NR, doenças ocupacionais",     code:"PREV1",       nE:0.5,nU:0.5,nF:0.5, cE:1,cU:0,cF:1, trend:"d", simp:.70, old:22 },
+  { spec:"PREV", name:"Testes epidemiológicos — Se, Sp, VPP, VPN, RV, acurácia, NNT", code:"PREV3",       nE:2.0, nU:1.5, nF:1.5, cE:1,cU:1,cF:1, trend:"e", simp:.90, old:73 },
+  { spec:"PED",  name:"Doenças exantemáticas — exantema súbito, Kawasaki, sarampo, varicela", code:"PED8", nE:1.5, nU:1.0, nF:1.0, cE:1,cU:1,cF:1, trend:"e", simp:.80, old:66 },
+  { spec:"PED",  name:"Uropediatria — ITU, DMSA, RVU, s.nefrótica, s.nefrítica, SHU",        code:"PED6", nE:1.0, nU:1.5, nF:1.0, cE:1,cU:1,cF:1, trend:"e", simp:.65, old:65 },
 ];
 
 function calcWIPR(t) {
@@ -398,6 +401,11 @@ const WEEKS = [
     topics:[{name:"Saúde do trabalhador — NR, doenças ocupacionais",wipr:40,h:3,inst:"ENARE+UNIFESP",mode:"Visão rápida"}]},
   { n:16, focus:"Revisão ativa — banco de questões críticos", col:"#EF4444", h:18,
     topics:[{name:"Revisão: Epidemiologia + Vigilância",wipr:0,h:5,inst:"ENARE prioridade máxima",mode:"Revisão"},{name:"Revisão: HAS + IC + Arritmias + DAC",wipr:0,h:5,inst:"ENARE+USP+UNIFESP",mode:"Revisão"},{name:"Revisão: DHG/DMG + Pré-natal + Sangramentos + SOP",wipr:0,h:4,inst:"ENARE+USP+UNIFESP",mode:"Revisão"},{name:"Revisão: Bacterianas/ITU + Febris + HIV",wipr:0,h:4,inst:"ENARE crescente",mode:"Revisão"}]},
+// ── Adicionar ao final do array WEEKS, antes do fechamento ]; ────────
+  { n:21, focus:"Testes epidemiológicos + Doenças exantemáticas", col:"#F97316", h:15,
+    topics:[{name:"Testes epidemiológicos — Se, Sp, VPP, VPN, RV, acurácia, NNT", wipr:76, h:8,inst:"ENARE forte · 2q/prova · USP+UNIFESP constantes", mode:"Estudo completo" },{ name:"Doenças exantemáticas — exantema súbito, Kawasaki, sarampo, varicela", wipr:68, h:7,inst:"ENARE domina (1.5q) · Kawasaki recorrente todas as bancas", mode:"Estudo completo" }]},
+  { n:22, focus:"Uropediatria", col:"#10B981", h:8,
+    topics:[{name:"Uropediatria — ITU, DMSA, RVU, s.nefrótica, s.nefrítica, SHU", wipr:66, h:8,inst:"USP líder (1.5q) · ENARE+UNIFESP presentes", mode:"Estudo completo" }]},
 ];
 
 // ── Mode colors ─────────────────────────────────────────────────────
