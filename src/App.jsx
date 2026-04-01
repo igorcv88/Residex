@@ -439,11 +439,6 @@ const WEEKS = [
     topics:[{name:"Saúde do trabalhador — NR, doenças ocupacionais",wipr:40,h:3,inst:"ENARE+UNIFESP",mode:"Visão rápida"}]},
   { n:16, focus:"Revisão ativa — banco de questões críticos", col:"#EF4444", h:18,
     topics:[{name:"Revisão: Epidemiologia + Vigilância",wipr:0,h:5,inst:"ENARE prioridade máxima",mode:"Revisão"},{name:"Revisão: HAS + IC + Arritmias + DAC",wipr:0,h:5,inst:"ENARE+USP+UNIFESP",mode:"Revisão"},{name:"Revisão: DHG/DMG + Pré-natal + Sangramentos + SOP",wipr:0,h:4,inst:"ENARE+USP+UNIFESP",mode:"Revisão"},{name:"Revisão: Bacterianas/ITU + Febris + HIV",wipr:0,h:4,inst:"ENARE crescente",mode:"Revisão"}]},
-// ── Adicionar ao final do array WEEKS, antes do fechamento ]; ────────
-  { n:21, focus:"Testes epidemiológicos + Doenças exantemáticas", col:"#F97316", h:15,
-    topics:[{name:"Testes epidemiológicos — Se, Sp, VPP, VPN, RV, acurácia, NNT", wipr:76, h:8,inst:"ENARE forte · 2q/prova · USP+UNIFESP constantes", mode:"Estudo completo" },{ name:"Doenças exantemáticas — exantema súbito, Kawasaki, sarampo, varicela", wipr:68, h:7,inst:"ENARE domina (1.5q) · Kawasaki recorrente todas as bancas", mode:"Estudo completo" }]},
-  { n:22, focus:"Uropediatria", col:"#10B981", h:8,
-    topics:[{name:"Uropediatria — ITU, DMSA, RVU, s.nefrótica, s.nefrítica, SHU", wipr:66, h:8,inst:"USP líder (1.5q) · ENARE+UNIFESP presentes", mode:"Estudo completo" }]},
 ];
 
 // ── Mode colors ─────────────────────────────────────────────────────
