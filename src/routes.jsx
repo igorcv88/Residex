@@ -18,6 +18,7 @@ import ViaAerea from './pages/ViaAerea';
 import CicloMenstrual from './pages/CicloMenstrual';
 import TriagemNeonatal from './pages/TriagemNeonatal';
 import Anamneses from './pages/Anamneses';
+import ComplicacoesInsuficienciaHepatica from './pages/ComplicacoesInsuficienciaHepatica';
 
 export const routes = [
   {
@@ -78,10 +79,19 @@ export const routes = [
     path: '/InsuficienciaHepatica',
     element: <InsuficienciaHepatica />,
     title: 'Insuficiencia Hepatica',
-    icon: '🥵😵‍💫',
+    icon: '🥵',
     categoria: 'Clinica',
     descricao:
       'Cirrose, hepatite fulminante, DHEM, doença alcoólica, CBP, CEP, hepatopatia medicamentosa, hemocromatose e Doença de Wilson — causas, critérios e tratamento.',
+  },
+      {
+    path: '/ComplicacoesInsuficienciaHepatica',
+    element: <ComplicacoesInsuficienciaHepatica />,
+    title: 'Insuficiência Hepática — Complicações',
+    icon: '😵‍💫',
+    categoria: 'Clinica',
+    descricao:
+      'Encefalopatia Hepática (West Haven, rifaximina), Síndrome Hepato-Pulmonar (tríade, ortodeoxia, MELD exception), fisiopatologia detalhada da HP.',
   },
   {
     path: '/Hepato101',
