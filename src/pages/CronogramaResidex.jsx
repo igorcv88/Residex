@@ -8,9 +8,9 @@ const BG3 = "#f3f8ff";
 const BORDER = "#111827";
 const BORDER2 = "#1e2a3a";
 const T_PRI = "#000000";
-const T_SEC = "#0d1220";
+const T_SEC = "#000000";
 const T_MUT = "#0d1220";
-const T_DIM = "#64748b";
+const T_DIM = "#000000";
 const FONT = "'Palatino Linotype','Book Antiqua',Palatino,serif";
 const MONO = "monospace";
 
