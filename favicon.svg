@@ -31,4 +31,6 @@
 	s-2.472,9.624-5.504,9.624C154.064,467.537,155.36,463.225,155.36,457.913z"></path><ellipse style="fill:#1B8796;" cx="161.608" cy="457.913" rx="4.168" ry="5.664"></ellipse><g>
 	<rect x="386.168" y="354.833" style="fill:#4E595E;" width="8" height="24"></rect>
 	<rect x="378.168" y="362.833" style="fill:#4E595E;" width="24" height="8"></rect>
-</g></svg>
+</g><style>@media (prefers-color-scheme: light) { :root { filter: none; } }
+@media (prefers-color-scheme: dark) { :root { filter: none; } }
+</style></svg>
