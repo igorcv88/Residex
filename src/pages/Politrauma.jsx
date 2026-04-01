@@ -1,5 +1,4 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import MedPanelPage from "./medpanel-layout";
 
 const sections = [
   {
@@ -53,10 +52,30 @@ const sections = [
           type: "grid",
           title: "Preparação para o Atendimento",
           items: [
-            { label: "1. Briefing Pré-atendimento", value: "Sala de trauma com todos os componentes e equipamentos verificados antes da chegada", highlight: true },
-            { label: "2. Comunicação com a Rede", value: "Informação da APH → regulação conforme gravidade → centro de trauma capacitado", highlight: false },
-            { label: "Sala de Trauma", value: "Aquecida, iluminada, monitor, desfibrilador, acesso venoso, material de via aérea, drenos disponíveis", highlight: false },
-            { label: "EPI Completo", value: "Luvas, máscara, avental, protetor ocular — precaução universal obrigatória", highlight: false },
+            {
+              label: "1. Briefing Pré-atendimento",
+              value:
+                "Sala de trauma com todos os componentes e equipamentos verificados antes da chegada",
+              highlight: true,
+            },
+            {
+              label: "2. Comunicação com a Rede",
+              value:
+                "Informação da APH → regulação conforme gravidade → centro de trauma capacitado",
+              highlight: false,
+            },
+            {
+              label: "Sala de Trauma",
+              value:
+                "Aquecida, iluminada, monitor, desfibrilador, acesso venoso, material de via aérea, drenos disponíveis",
+              highlight: false,
+            },
+            {
+              label: "EPI Completo",
+              value:
+                "Luvas, máscara, avental, protetor ocular — precaução universal obrigatória",
+              highlight: false,
+            },
           ],
         },
         {
@@ -84,33 +103,108 @@ const sections = [
           type: "grid",
           title: "Mecanismos e Padrões de Lesão Esperados",
           items: [
-            { label: "Atropelamento", value: "Fraturas, ferimentos descolantes, TCE grave, lesões torácicas/abdominais/pélvicas (tríade de Waddell em crianças)", highlight: true },
-            { label: "Acidente de Motocicleta", value: "Rádio/úmero, fraturas, lesões torácicas e abdominais — alta energia por ausência de proteção estrutural", highlight: false },
-            { label: "Colisão Veicular — Frontal", value: "Principalmente lesões torácicas: esterno, aorta, coração. Joelho → fêmur → quadril", highlight: true },
-            { label: "Colisão — Lateral", value: "Grandes vasos, baço, fígado, abdome, pelve — lesão ipsilateral ao impacto", highlight: false },
-            { label: "Colisão — Traseira", value: "Hiperextensão cervical — lesão ligamentar C1-C2 mesmo sem imagem alterada", highlight: false },
-            { label: "Queda", value: "Altura, ponto de contato, tipo de solo, queda livre, escorregamento, múltiplos níveis — calcâneo + coluna + crânio na queda em pé", highlight: false },
+            {
+              label: "Atropelamento",
+              value:
+                "Fraturas, ferimentos descolantes, TCE grave, lesões torácicas/abdominais/pélvicas (tríade de Waddell em crianças)",
+              highlight: true,
+            },
+            {
+              label: "Acidente de Motocicleta",
+              value:
+                "Rádio/úmero, fraturas, lesões torácicas e abdominais — alta energia por ausência de proteção estrutural",
+              highlight: false,
+            },
+            {
+              label: "Colisão Veicular — Frontal",
+              value:
+                "Principalmente lesões torácicas: esterno, aorta, coração. Joelho → fêmur → quadril",
+              highlight: true,
+            },
+            {
+              label: "Colisão — Lateral",
+              value:
+                "Grandes vasos, baço, fígado, abdome, pelve — lesão ipsilateral ao impacto",
+              highlight: false,
+            },
+            {
+              label: "Colisão — Traseira",
+              value:
+                "Hiperextensão cervical — lesão ligamentar C1-C2 mesmo sem imagem alterada",
+              highlight: false,
+            },
+            {
+              label: "Queda",
+              value:
+                "Altura, ponto de contato, tipo de solo, queda livre, escorregamento, múltiplos níveis — calcâneo + coluna + crânio na queda em pé",
+              highlight: false,
+            },
           ],
         },
         {
           type: "grid",
           title: "Arma de Fogo — Cinemática Balística",
           items: [
-            { label: "Calibre", value: "Diretamente proporcional à transferência de energia cinética", highlight: false },
-            { label: "Velocidade", value: "EC = ½mv² — velocidade é o determinante quadrático da energia cinética", highlight: true },
-            { label: "Trajetória", value: "Entrada, ricochete, trajetória intracavitária irregular — não assumir trajetória direta", highlight: true },
-            { label: "Distância", value: "Inversamente proporcional à lesão — queima-roupa: cavidade permanente maior", highlight: false },
-            { label: "Cavitação Temporária", value: "Até 30x maior que o projétil em armas de alta velocidade — lesão por onda de choque a distância", highlight: true },
-            { label: "Objetos Implantados", value: "NÃO REMOVER objetos implantados na cena — estabilizar e transportar", highlight: true },
+            {
+              label: "Calibre",
+              value:
+                "Diretamente proporcional à transferência de energia cinética",
+              highlight: false,
+            },
+            {
+              label: "Velocidade",
+              value:
+                "EC = ½mv² — velocidade é o determinante quadrático da energia cinética",
+              highlight: true,
+            },
+            {
+              label: "Trajetória",
+              value:
+                "Entrada, ricochete, trajetória intracavitária irregular — não assumir trajetória direta",
+              highlight: true,
+            },
+            {
+              label: "Distância",
+              value:
+                "Inversamente proporcional à lesão — queima-roupa: cavidade permanente maior",
+              highlight: false,
+            },
+            {
+              label: "Cavitação Temporária",
+              value:
+                "Até 30x maior que o projétil em armas de alta velocidade — lesão por onda de choque a distância",
+              highlight: true,
+            },
+            {
+              label: "Objetos Implantados",
+              value:
+                "NÃO REMOVER objetos implantados na cena — estabilizar e transportar",
+              highlight: true,
+            },
           ],
         },
         {
           type: "grid",
           title: "Arma Branca",
           items: [
-            { label: "Profundas", value: "Heteroagressão — força externa maior, trajetória imprevisível", highlight: false },
-            { label: "Extitação/Superficiais", value: "Autoagressão — padrão de lesões hesitantes, superficiais e paralelas", highlight: false },
-            { label: "Regra geral", value: "Ferida de entrada ≠ profundidade da lesão — sempre explorar cirurgicamente se penetrante em cavidade", highlight: true },
+            {
+              label: "Profundas",
+              value:
+                "Heteroagressão — força externa maior, trajetória imprevisível",
+              highlight: false,
+            },
+            {
+              label: "Extitação/Superficiais",
+              value:
+                "Autoagressão — padrão de lesões hesitantes, superficiais e paralelas",
+              highlight: false,
+            },
+            {
+              label: "Regra geral",
+              value:
+                "Ferida de entrada ≠ profundidade da lesão — sempre explorar cirurgicamente se penetrante em cavidade",
+              highlight: true,
+            },
           ],
         },
         {
@@ -132,10 +226,22 @@ const sections = [
           type: "flow",
           title: "Sequência Pré-Hospitalar",
           steps: [
-            { text: "PRIORIDADE SEGURANÇA NA CENA — não criar nova vítima. Checar riscos antes de aproximar", color: "#EF4444" },
-            { text: "ATENDIMENTO RÁPIDO — avaliação primária e estabilização mínima na cena (scoop and run vs stay and play)", color: "#0EA5E9" },
-            { text: "COMUNICAÇÃO MIST: Mecanismo | Injury (lesões) | Sinais Vitais | Tratamentos instituídos", color: "#10B981" },
-            { text: "REGULAÇÃO: informar APH → central de regulação → destino conforme gravidade e capacidade do centro", color: "#6366F1" },
+            {
+              text: "PRIORIDADE SEGURANÇA NA CENA — não criar nova vítima. Checar riscos antes de aproximar",
+              color: "#EF4444",
+            },
+            {
+              text: "ATENDIMENTO RÁPIDO — avaliação primária e estabilização mínima na cena (scoop and run vs stay and play)",
+              color: "#0EA5E9",
+            },
+            {
+              text: "COMUNICAÇÃO MIST: Mecanismo | Injury (lesões) | Sinais Vitais | Tratamentos instituídos",
+              color: "#10B981",
+            },
+            {
+              text: "REGULAÇÃO: informar APH → central de regulação → destino conforme gravidade e capacidade do centro",
+              color: "#6366F1",
+            },
           ],
         },
         {
@@ -195,11 +301,10 @@ const sections = [
               ],
             },
             {
-              condition: "Múltiplas Vítimas (< 5 pessoas) — Sistema CONSEGUE ATENDER",
+              condition:
+                "Múltiplas Vítimas (< 5 pessoas) — Sistema CONSEGUE ATENDER",
               color: "#F59E0B",
-              actions: [
-                "Vermelho → Amarelo → Verde: prioridade por gravidade",
-              ],
+              actions: ["Vermelho → Amarelo → Verde: prioridade por gravidade"],
             },
             {
               condition: "Vítimas em Massa — Sistema NÃO COMPORTA",
@@ -209,7 +314,8 @@ const sections = [
               ],
             },
             {
-              condition: "Desastre — Sistema de Saúde Distribuído (Padrão Nacional)",
+              condition:
+                "Desastre — Sistema de Saúde Distribuído (Padrão Nacional)",
               color: "#0EA5E9",
               actions: [
                 "Montagem de posto avançado na área de atendimento",
@@ -236,27 +342,59 @@ const sections = [
         {
           type: "alert",
           color: "#EF4444",
-          title: "X vem antes do A — Sangramento Exsanguinante é Prioridade Máxima",
+          title:
+            "X vem antes do A — Sangramento Exsanguinante é Prioridade Máxima",
           text: "O 'X' foi adicionado ao ABCDE pelo Committee on TCCC (2013) e incorporado ao ATLS 10ª edição. Hemorragia externa maciça mata em minutos — antes que qualquer comprometimento de via aérea. Controle do sangramento precede a abertura da via aérea.",
         },
         {
           type: "grid",
           title: "Tipos de Lesões Exsanguinantes",
           items: [
-            { label: "Sangram muito e rápido", value: "Grandes vasos em membros, couro cabeludo, pescoço, virilha, axila", highlight: true },
-            { label: "Lesão arterial incompleta", value: "Pior que completa — retração parcial da artéria mantém o sangramento ativo", highlight: true },
-            { label: "Lesão venosa completa", value: "Grande volume, mas mais lento — pressão venosa menor", highlight: false },
-            { label: "Lesão arterial completa", value: "Retração e vasoespasmo da artéria seccionada — pode sangrar menos que a incompleta", highlight: false },
+            {
+              label: "Sangram muito e rápido",
+              value:
+                "Grandes vasos em membros, couro cabeludo, pescoço, virilha, axila",
+              highlight: true,
+            },
+            {
+              label: "Lesão arterial incompleta",
+              value:
+                "Pior que completa — retração parcial da artéria mantém o sangramento ativo",
+              highlight: true,
+            },
+            {
+              label: "Lesão venosa completa",
+              value: "Grande volume, mas mais lento — pressão venosa menor",
+              highlight: false,
+            },
+            {
+              label: "Lesão arterial completa",
+              value:
+                "Retração e vasoespasmo da artéria seccionada — pode sangrar menos que a incompleta",
+              highlight: false,
+            },
           ],
         },
         {
           type: "flow",
           title: "Tratamento Escalonado — Controle de Hemorragia Externa",
           steps: [
-            { text: "COMPRESSÃO DIRETA — primeira linha, sempre. Mínimo 5 minutos de pressão contínua sem tirar para ver", color: "#EF4444" },
-            { text: "PACKING — tamponamento da ferida com gaze/curativo hemostático. Comprimir o trajeto, não só a superfície", color: "#F59E0B" },
-            { text: "TORNIQUETE — 5 cm proximal à lesão. Apertar até ausência de pulso distal. Anotar horário. Tempo máximo 2 horas (evitar gangrena)", color: "#EC4899" },
-            { text: "CURATIVO COMPRESSIVO — complementar ao packing em lesões de tronco/virilha onde torniquete não é possível", color: "#8B5CF6" },
+            {
+              text: "COMPRESSÃO DIRETA — primeira linha, sempre. Mínimo 5 minutos de pressão contínua sem tirar para ver",
+              color: "#EF4444",
+            },
+            {
+              text: "PACKING — tamponamento da ferida com gaze/curativo hemostático. Comprimir o trajeto, não só a superfície",
+              color: "#F59E0B",
+            },
+            {
+              text: "TORNIQUETE — 5 cm proximal à lesão. Apertar até ausência de pulso distal. Anotar horário. Tempo máximo 2 horas (evitar gangrena)",
+              color: "#EC4899",
+            },
+            {
+              text: "CURATIVO COMPRESSIVO — complementar ao packing em lesões de tronco/virilha onde torniquete não é possível",
+              color: "#8B5CF6",
+            },
           ],
         },
         {
@@ -317,12 +455,41 @@ const sections = [
           type: "grid",
           title: "B — Respiração: Avaliação Sistemática",
           items: [
-            { label: "Inspeção", value: "FR, amplitude, simetria, ferimentos aspirativos, movimentos paradoxais, ingurgitamento jugular", highlight: false },
-            { label: "Palpação", value: "Crepitação, enfisema subcutâneo, dor à compressão, desvio de traqueia", highlight: true },
-            { label: "Ausculta", value: "Murmúrio vesicular bilateral — ausência = pneumotórax ou hemotórax", highlight: true },
-            { label: "Percussão", value: "Timpanismo = pneumotórax | Macicez = hemotórax", highlight: true },
-            { label: "Complementares", value: "RX de tórax (AP em trauma fechado) | FAST | TC se estável", highlight: false },
-            { label: "Tratamento", value: "97% resolvem com dreno de tórax — RESEQUE com dreno se pneumo/hemotórax confirmado", highlight: true },
+            {
+              label: "Inspeção",
+              value:
+                "FR, amplitude, simetria, ferimentos aspirativos, movimentos paradoxais, ingurgitamento jugular",
+              highlight: false,
+            },
+            {
+              label: "Palpação",
+              value:
+                "Crepitação, enfisema subcutâneo, dor à compressão, desvio de traqueia",
+              highlight: true,
+            },
+            {
+              label: "Ausculta",
+              value:
+                "Murmúrio vesicular bilateral — ausência = pneumotórax ou hemotórax",
+              highlight: true,
+            },
+            {
+              label: "Percussão",
+              value: "Timpanismo = pneumotórax | Macicez = hemotórax",
+              highlight: true,
+            },
+            {
+              label: "Complementares",
+              value:
+                "RX de tórax (AP em trauma fechado) | FAST | TC se estável",
+              highlight: false,
+            },
+            {
+              label: "Tratamento",
+              value:
+                "97% resolvem com dreno de tórax — RESEQUE com dreno se pneumo/hemotórax confirmado",
+              highlight: true,
+            },
           ],
         },
         {
@@ -367,20 +534,58 @@ const sections = [
           type: "grid",
           title: "D — Disability: Avaliação Neurológica",
           items: [
-            { label: "ECG", value: "Escala de Coma de Glasgow — documentar ANTES de sedar", highlight: true },
-            { label: "Pupilas", value: "Tamanho, simetria, fotorreatividade bilateral", highlight: true },
-            { label: "Lateralização", value: "Movimentos assimétricos — sugere lesão focal intracraniana", highlight: false },
-            { label: "Evitar Lesão Secundária", value: "Elevar cabeceira 30° | Cuidado com Na e CO₂ | Normoglicemia | Normotermia", highlight: true },
+            {
+              label: "ECG",
+              value: "Escala de Coma de Glasgow — documentar ANTES de sedar",
+              highlight: true,
+            },
+            {
+              label: "Pupilas",
+              value: "Tamanho, simetria, fotorreatividade bilateral",
+              highlight: true,
+            },
+            {
+              label: "Lateralização",
+              value:
+                "Movimentos assimétricos — sugere lesão focal intracraniana",
+              highlight: false,
+            },
+            {
+              label: "Evitar Lesão Secundária",
+              value:
+                "Elevar cabeceira 30° | Cuidado com Na e CO₂ | Normoglicemia | Normotermia",
+              highlight: true,
+            },
           ],
         },
         {
           type: "grid",
           title: "E — Exposição",
           items: [
-            { label: "Expor todo o paciente", value: "Tirar toda a roupa — não se pode tratar o que não se vê. Tesoura de trauma", highlight: true },
-            { label: "Aquecimento", value: "Prevenir hipotermia — cobrir com manta aluminizada após exposição. Tríade da morte: hipotermia + acidose + coagulopatia", highlight: true },
-            { label: "Avaliar o dorso", value: "Log-roll (4 pessoas): inspecionar coluna torso-lombar e glúteos — retirar prancha rígida após", highlight: true },
-            { label: "Retirar prancha rígida", value: "Após log-roll — prancha causa úlceras por pressão se mantida > 30 min. Não é dispositivo de transporte definitivo", highlight: false },
+            {
+              label: "Expor todo o paciente",
+              value:
+                "Tirar toda a roupa — não se pode tratar o que não se vê. Tesoura de trauma",
+              highlight: true,
+            },
+            {
+              label: "Aquecimento",
+              value:
+                "Prevenir hipotermia — cobrir com manta aluminizada após exposição. Tríade da morte: hipotermia + acidose + coagulopatia",
+              highlight: true,
+            },
+            {
+              label: "Avaliar o dorso",
+              value:
+                "Log-roll (4 pessoas): inspecionar coluna torso-lombar e glúteos — retirar prancha rígida após",
+              highlight: true,
+            },
+            {
+              label: "Retirar prancha rígida",
+              value:
+                "Após log-roll — prancha causa úlceras por pressão se mantida > 30 min. Não é dispositivo de transporte definitivo",
+              highlight: false,
+            },
           ],
         },
         {
@@ -402,38 +607,106 @@ const sections = [
           type: "grid",
           title: "Cardiorrespiratório",
           items: [
-            { label: "ECG Contínuo", value: "Monitor cardíaco — CORRIGIR A CAUSA, não corrigir o ECG pelo ECG. Arritmia pós-trauma = pensar contusão miocárdica", highlight: true },
-            { label: "Oximetria de Pulso", value: "SatO₂ alvo > 94% — não confiável em hipoperfusão periférica, intoxicação por CO ou metemoglobinemia", highlight: false },
-            { label: "Capnografia", value: "EtCO₂ = CO₂ do ar expirado. METABOLISMO FUNCIONANDO: EtCO₂ ≈ PaCO₂ − 2 a 5. Queda súbita = parada circulatória, êmbolo, broncoespasmo ou dislodgamento do tubo", highlight: true },
-            { label: "PNI / PAM invasiva", value: "PAM = parâmetro de perfusão real. Alvo no trauma: PAM > 65 mmHg. Linha arterial se instável", highlight: false },
+            {
+              label: "ECG Contínuo",
+              value:
+                "Monitor cardíaco — CORRIGIR A CAUSA, não corrigir o ECG pelo ECG. Arritmia pós-trauma = pensar contusão miocárdica",
+              highlight: true,
+            },
+            {
+              label: "Oximetria de Pulso",
+              value:
+                "SatO₂ alvo > 94% — não confiável em hipoperfusão periférica, intoxicação por CO ou metemoglobinemia",
+              highlight: false,
+            },
+            {
+              label: "Capnografia",
+              value:
+                "EtCO₂ = CO₂ do ar expirado. METABOLISMO FUNCIONANDO: EtCO₂ ≈ PaCO₂ − 2 a 5. Queda súbita = parada circulatória, êmbolo, broncoespasmo ou dislodgamento do tubo",
+              highlight: true,
+            },
+            {
+              label: "PNI / PAM invasiva",
+              value:
+                "PAM = parâmetro de perfusão real. Alvo no trauma: PAM > 65 mmHg. Linha arterial se instável",
+              highlight: false,
+            },
           ],
         },
         {
           type: "grid",
           title: "SVO₂ — Saturação Venosa Central de O₂",
           items: [
-            { label: "Normal", value: "65–75% — reflete extração tecidual de O₂ em equilíbrio", highlight: false },
-            { label: "Baixa (< 65%)", value: "Alto consumo de O₂ ou baixo débito cardíaco — choque, anemia severa, hipertermia", highlight: true },
-            { label: "Alta (> 75%)", value: "Shunting artério-venoso, intoxicação por CN⁻, sepse (vasoplegia) — O₂ não sendo extraído", highlight: true },
-            { label: "Onde medir", value: "CVC em jugular interna/subclávia → amostra venosa mista = CATETER DE SWAN-GANZ (artéria pulmonar)", highlight: false },
+            {
+              label: "Normal",
+              value: "65–75% — reflete extração tecidual de O₂ em equilíbrio",
+              highlight: false,
+            },
+            {
+              label: "Baixa (< 65%)",
+              value:
+                "Alto consumo de O₂ ou baixo débito cardíaco — choque, anemia severa, hipertermia",
+              highlight: true,
+            },
+            {
+              label: "Alta (> 75%)",
+              value:
+                "Shunting artério-venoso, intoxicação por CN⁻, sepse (vasoplegia) — O₂ não sendo extraído",
+              highlight: true,
+            },
+            {
+              label: "Onde medir",
+              value:
+                "CVC em jugular interna/subclávia → amostra venosa mista = CATETER DE SWAN-GANZ (artéria pulmonar)",
+              highlight: false,
+            },
           ],
         },
         {
           type: "grid",
           title: "Temperatura",
           items: [
-            { label: "Padrão ouro de perfusão tecidual", value: "Temperatura é proxy do estado perfusional — extremidades frias = baixo débito", highlight: true },
-            { label: "0,04 mL/kg/h — Adulto", value: "Débito urinário mínimo alvo no adulto em reposição. Cateter vesical de demora em todo trauma grave", highlight: true },
-            { label: "1 mL/kg/h — Criança", value: "Débito urinário alvo em crianças durante ressuscitação", highlight: true },
-            { label: "0,5 mL/kg/h — Queimadura", value: "Fórmula de Parkland: 4 mL × kg × % SCQ (50% nas primeiras 8h, 50% nas 16h seguintes)", highlight: false },
+            {
+              label: "Padrão ouro de perfusão tecidual",
+              value:
+                "Temperatura é proxy do estado perfusional — extremidades frias = baixo débito",
+              highlight: true,
+            },
+            {
+              label: "0,04 mL/kg/h — Adulto",
+              value:
+                "Débito urinário mínimo alvo no adulto em reposição. Cateter vesical de demora em todo trauma grave",
+              highlight: true,
+            },
+            {
+              label: "1 mL/kg/h — Criança",
+              value: "Débito urinário alvo em crianças durante ressuscitação",
+              highlight: true,
+            },
+            {
+              label: "0,5 mL/kg/h — Queimadura",
+              value:
+                "Fórmula de Parkland: 4 mL × kg × % SCQ (50% nas primeiras 8h, 50% nas 16h seguintes)",
+              highlight: false,
+            },
           ],
         },
         {
           type: "grid",
           title: "Sondas",
           items: [
-            { label: "Sonda Gástrica", value: "Descompressão gástrica — reduz risco de broncoaspiração e melhora ventilação mecânica. Orogástrica se suspeita de fratura de base de crânio", highlight: true },
-            { label: "Sonda Vesical", value: "Monitorar débito urinário e hematúria. CONTRAINDICADA se suspeita de ruptura uretral: sangue no meato, escroto/períneo em 'borboleta', próstata elevada ao TR", highlight: true },
+            {
+              label: "Sonda Gástrica",
+              value:
+                "Descompressão gástrica — reduz risco de broncoaspiração e melhora ventilação mecânica. Orogástrica se suspeita de fratura de base de crânio",
+              highlight: true,
+            },
+            {
+              label: "Sonda Vesical",
+              value:
+                "Monitorar débito urinário e hematúria. CONTRAINDICADA se suspeita de ruptura uretral: sangue no meato, escroto/períneo em 'borboleta', próstata elevada ao TR",
+              highlight: true,
+            },
           ],
         },
         {
@@ -472,12 +745,42 @@ const sections = [
           type: "grid",
           title: "Laboratório Inicial",
           items: [
-            { label: "Hemograma", value: "Hb/Ht — anemia por diluição nas primeiras horas subestima a perda real. Usar lactato + BE como proxy", highlight: false },
-            { label: "Gasometria Arterial", value: "pH, BE, PaCO₂, PaO₂, lactato. BE < −6: acidose metabólica significativa. Lactato > 4: hipoperfusão grave", highlight: true },
-            { label: "Coagulograma", value: "TAP/INR, TTPA, fibrinogênio — monitorar coagulopatia consumptiva (tríade letal)", highlight: true },
-            { label: "Tipagem sanguínea", value: "ABO + Rh — indispensável antes de transfusão. Crossmatch de urgência se disponível", highlight: true },
-            { label: "β-HCG", value: "TODAS as mulheres em idade fértil — gravidez muda drasticamente o manejo (volume, radiação, cirurgia)", highlight: true },
-            { label: "Glicemia", value: "Hiper e hipoglicemia são lesões secundárias — corrigir ativamente", highlight: false },
+            {
+              label: "Hemograma",
+              value:
+                "Hb/Ht — anemia por diluição nas primeiras horas subestima a perda real. Usar lactato + BE como proxy",
+              highlight: false,
+            },
+            {
+              label: "Gasometria Arterial",
+              value:
+                "pH, BE, PaCO₂, PaO₂, lactato. BE < −6: acidose metabólica significativa. Lactato > 4: hipoperfusão grave",
+              highlight: true,
+            },
+            {
+              label: "Coagulograma",
+              value:
+                "TAP/INR, TTPA, fibrinogênio — monitorar coagulopatia consumptiva (tríade letal)",
+              highlight: true,
+            },
+            {
+              label: "Tipagem sanguínea",
+              value:
+                "ABO + Rh — indispensável antes de transfusão. Crossmatch de urgência se disponível",
+              highlight: true,
+            },
+            {
+              label: "β-HCG",
+              value:
+                "TODAS as mulheres em idade fértil — gravidez muda drasticamente o manejo (volume, radiação, cirurgia)",
+              highlight: true,
+            },
+            {
+              label: "Glicemia",
+              value:
+                "Hiper e hipoglicemia são lesões secundárias — corrigir ativamente",
+              highlight: false,
+            },
           ],
         },
         {
@@ -505,33 +808,94 @@ const sections = [
           type: "grid",
           title: "AMPLE — História Dirigida no Trauma",
           items: [
-            { label: "A — Alergias", value: "Alergias medicamentosas — especialmente látex, antibióticos, contraste iodado", highlight: false },
-            { label: "M — Medicamentos", value: "Anticoagulantes (Warfarina, Dabigatran, Rivaroxabana), antiplaquetários, insulina, betabloqueadores — impactam o manejo", highlight: true },
-            { label: "P — Passado Médico / Cirúrgico", value: "Cirurgias abdominais prévias, hepatopatia, nefropatia, cardiopatia — risco cirúrgico e complicações", highlight: false },
-            { label: "L — Last Meal (Última Refeição)", value: "Risco de broncoaspiração durante IOT e anestesia — jejum recente = IOT com sequência rápida", highlight: true },
-            { label: "A — Ambiente / Evento", value: "Ambiente onde ocorreu o trauma — incêndio (CO, cianeto), afogamento, soterramento, temperatura extrema", highlight: true },
+            {
+              label: "A — Alergias",
+              value:
+                "Alergias medicamentosas — especialmente látex, antibióticos, contraste iodado",
+              highlight: false,
+            },
+            {
+              label: "M — Medicamentos",
+              value:
+                "Anticoagulantes (Warfarina, Dabigatran, Rivaroxabana), antiplaquetários, insulina, betabloqueadores — impactam o manejo",
+              highlight: true,
+            },
+            {
+              label: "P — Passado Médico / Cirúrgico",
+              value:
+                "Cirurgias abdominais prévias, hepatopatia, nefropatia, cardiopatia — risco cirúrgico e complicações",
+              highlight: false,
+            },
+            {
+              label: "L — Last Meal (Última Refeição)",
+              value:
+                "Risco de broncoaspiração durante IOT e anestesia — jejum recente = IOT com sequência rápida",
+              highlight: true,
+            },
+            {
+              label: "A — Ambiente / Evento",
+              value:
+                "Ambiente onde ocorreu o trauma — incêndio (CO, cianeto), afogamento, soterramento, temperatura extrema",
+              highlight: true,
+            },
           ],
         },
         {
           type: "flow",
           title: "Exame Físico Completo — Da Cabeça aos Pés",
           steps: [
-            { text: "CABEÇA E FACE: couro cabeludo, crânio, pupilas, ouvidos (otorreia), nariz, boca, mandíbula", color: "#84CC16" },
-            { text: "PESCOÇO: veias jugulares, traqueia, coluna cervical, sopros carotídeos", color: "#0EA5E9" },
-            { text: "TÓRAX: inspeção completa, ausculta, percussão, costelas, esterno, clavículas", color: "#6366F1" },
-            { text: "ABDOME: inspeção, ausculta, palpação, percussão — procurar rigidez, distensão, hematomas", color: "#EC4899" },
-            { text: "PELVE E PERÍNEO: compressão lateral e anterior única (repetir agrava sangramento), uretra, vagina, reto", color: "#F59E0B" },
-            { text: "MEMBROS: pulsos, perfusão, fraturas, deformidades, compartimentos", color: "#F97316" },
-            { text: "DORSO / LOG-ROLL: coluna torácica e lombar, glúteos, região sacral, reto (tônus)", color: "#10B981" },
+            {
+              text: "CABEÇA E FACE: couro cabeludo, crânio, pupilas, ouvidos (otorreia), nariz, boca, mandíbula",
+              color: "#84CC16",
+            },
+            {
+              text: "PESCOÇO: veias jugulares, traqueia, coluna cervical, sopros carotídeos",
+              color: "#0EA5E9",
+            },
+            {
+              text: "TÓRAX: inspeção completa, ausculta, percussão, costelas, esterno, clavículas",
+              color: "#6366F1",
+            },
+            {
+              text: "ABDOME: inspeção, ausculta, palpação, percussão — procurar rigidez, distensão, hematomas",
+              color: "#EC4899",
+            },
+            {
+              text: "PELVE E PERÍNEO: compressão lateral e anterior única (repetir agrava sangramento), uretra, vagina, reto",
+              color: "#F59E0B",
+            },
+            {
+              text: "MEMBROS: pulsos, perfusão, fraturas, deformidades, compartimentos",
+              color: "#F97316",
+            },
+            {
+              text: "DORSO / LOG-ROLL: coluna torácica e lombar, glúteos, região sacral, reto (tônus)",
+              color: "#10B981",
+            },
           ],
         },
         {
           type: "grid",
           title: "Rever o Torniquete na Avaliação Secundária",
           items: [
-            { label: "Reavaliação obrigatória", value: "Verificar posicionamento, tempo de aplicação (anotar hora), presença de pulso distal", highlight: true },
-            { label: "Conversão", value: "Se estável e hemostasia possível → converter para packing + curativo compressivo para aumentar tempo de segurança", highlight: false },
-            { label: "NÃO soltar sem preparo", value: "Nunca remover torniquete sem ter controle da fonte do sangramento — síndrome de reperfusão pode ser letal", highlight: true },
+            {
+              label: "Reavaliação obrigatória",
+              value:
+                "Verificar posicionamento, tempo de aplicação (anotar hora), presença de pulso distal",
+              highlight: true,
+            },
+            {
+              label: "Conversão",
+              value:
+                "Se estável e hemostasia possível → converter para packing + curativo compressivo para aumentar tempo de segurança",
+              highlight: false,
+            },
+            {
+              label: "NÃO soltar sem preparo",
+              value:
+                "Nunca remover torniquete sem ter controle da fonte do sangramento — síndrome de reperfusão pode ser letal",
+              highlight: true,
+            },
           ],
         },
         {
@@ -551,267 +915,11 @@ const sections = [
 ];
 
 export default function Politrauma() {
-  const [active, setActive] = useState(sections[0].id);
-  const navigate = useNavigate();
-  const sec = sections.find((s) => s.id === active);
-  const color = sec.color;
-
-  const renderBlock = (block, idx) => {
-    if (block.type === "alert") {
-      return (
-        <div key={idx} style={{
-          background: `${block.color}10`,
-          border: `1px solid ${block.color}40`,
-          borderLeft: `3px solid ${block.color}`,
-          borderRadius: 8, padding: "14px 18px", marginBottom: 16,
-        }}>
-          <div style={{
-            fontSize: 11, fontFamily: "monospace", color: block.color,
-            textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 6,
-          }}>⚠ {block.title}</div>
-          <div style={{ fontSize: 13, color: "#cbd5e1", lineHeight: 1.75 }}>{block.text}</div>
-        </div>
-      );
-    }
-
-    if (block.type === "obs") {
-      return (
-        <div key={idx} style={{
-          background: "#0c1220", border: "1px solid #1e293b",
-          borderLeft: "3px solid #6366F1", borderRadius: 8,
-          padding: "14px 18px", marginBottom: 16,
-        }}>
-          <div style={{
-            fontSize: 11, fontFamily: "monospace", color: "#818cf8",
-            textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 6,
-          }}>◆ {block.title}</div>
-          <div style={{ fontSize: 13, color: "#94a3b8", lineHeight: 1.75 }}>{block.text}</div>
-        </div>
-      );
-    }
-
-    if (block.type === "grid") {
-      return (
-        <div key={idx} style={{ marginBottom: 20 }}>
-          <div style={{
-            fontSize: 10, fontFamily: "monospace", color: "#475569",
-            textTransform: "uppercase", letterSpacing: "0.12em", marginBottom: 10,
-          }}>{block.title}</div>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))", gap: 8 }}>
-            {block.items.map((item, i) => (
-              <div key={i} style={{
-                background: item.highlight ? `${color}0d` : "#080d18",
-                border: `1px solid ${item.highlight ? color + "33" : "#1a2235"}`,
-                borderRadius: 6, padding: "10px 14px",
-              }}>
-                <div style={{
-                  fontSize: 10, color: item.highlight ? color : "#6366f1",
-                  fontFamily: "monospace", marginBottom: 4,
-                  textTransform: "uppercase", letterSpacing: "0.05em",
-                }}>{item.label}</div>
-                <div style={{ fontSize: 12.5, color: item.highlight ? "#f1f5f9" : "#94a3b8", lineHeight: 1.6 }}>
-                  {item.value}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      );
-    }
-
-    if (block.type === "flow") {
-      return (
-        <div key={idx} style={{ marginBottom: 20 }}>
-          <div style={{
-            fontSize: 10, fontFamily: "monospace", color: "#475569",
-            textTransform: "uppercase", letterSpacing: "0.12em", marginBottom: 10,
-          }}>{block.title}</div>
-          <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-            {block.steps.map((step, i) => (
-              <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: 10 }}>
-                <div style={{ flexShrink: 0, display: "flex", flexDirection: "column", alignItems: "center" }}>
-                  <div style={{
-                    width: 28, height: 28, borderRadius: "50%",
-                    background: `${step.color}20`, border: `1px solid ${step.color}60`,
-                    color: step.color, fontSize: 11, fontFamily: "monospace",
-                    display: "flex", alignItems: "center", justifyContent: "center",
-                  }}>{i + 1}</div>
-                  {i < block.steps.length - 1 && (
-                    <div style={{ width: 1, height: 12, background: "#1e2a3a" }} />
-                  )}
-                </div>
-                <div style={{
-                  background: `${step.color}0d`, border: `1px solid ${step.color}25`,
-                  borderRadius: 6, padding: "9px 14px", flex: 1,
-                  fontSize: 12.5, color: "#cbd5e1", lineHeight: 1.6, marginTop: 2,
-                }}>{step.text}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      );
-    }
-
-    if (block.type === "grades") {
-      return (
-        <div key={idx} style={{ marginBottom: 20 }}>
-          <div style={{
-            fontSize: 10, fontFamily: "monospace", color: "#475569",
-            textTransform: "uppercase", letterSpacing: "0.12em", marginBottom: 10,
-          }}>{block.title}</div>
-          <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-            {block.grades.map((g, i) => (
-              <div key={i} style={{
-                background: `${g.color}08`, border: `1px solid ${g.color}30`,
-                borderRadius: 8, padding: "12px 16px", display: "flex", gap: 14, alignItems: "flex-start",
-              }}>
-                <div style={{
-                  background: `${g.color}20`, border: `1px solid ${g.color}50`,
-                  color: g.color, fontSize: 10, fontFamily: "monospace",
-                  padding: "4px 10px", borderRadius: 4, flexShrink: 0,
-                  whiteSpace: "nowrap", marginTop: 2,
-                }}>{g.grade}</div>
-                <div>
-                  {g.items.map((item, j) => (
-                    <div key={j} style={{
-                      fontSize: 12.5, color: "#94a3b8", lineHeight: 1.65,
-                      display: "flex", gap: 6,
-                    }}>
-                      <span style={{ color: g.color, flexShrink: 0 }}>·</span>{item}
-                    </div>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      );
-    }
-
-    if (block.type === "decision") {
-      return (
-        <div key={idx} style={{ marginBottom: 20 }}>
-          <div style={{
-            fontSize: 10, fontFamily: "monospace", color: "#475569",
-            textTransform: "uppercase", letterSpacing: "0.12em", marginBottom: 10,
-          }}>{block.title}</div>
-          <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-            {block.decisions.map((d, i) => (
-              <div key={i} style={{
-                background: `${d.color}08`, border: `1px solid ${d.color}30`,
-                borderRadius: 8, padding: "12px 16px",
-              }}>
-                <div style={{
-                  fontSize: 11, color: d.color, fontFamily: "monospace",
-                  marginBottom: 8, textTransform: "uppercase", letterSpacing: "0.07em",
-                }}>{d.condition}</div>
-                {d.actions.map((a, j) => (
-                  <div key={j} style={{
-                    fontSize: 12.5, color: "#94a3b8", lineHeight: 1.65, display: "flex", gap: 6,
-                  }}>
-                    <span style={{ color: d.color, flexShrink: 0 }}>→</span>{a}
-                  </div>
-                ))}
-              </div>
-            ))}
-          </div>
-        </div>
-      );
-    }
-
-    return null;
-  };
-
   return (
-    <div style={{
-      background: "#06080f", minHeight: "100vh",
-      fontFamily: "'Palatino Linotype', 'Book Antiqua', Palatino, serif",
-      color: "#dde3f0", display: "flex", flexDirection: "column",
-    }}>
-      <button onClick={() => navigate("/")} style={{
-        background: "transparent", border: "1px solid #1e2a3a",
-        color: "#64748b", padding: "6px 14px", borderRadius: 6,
-        cursor: "pointer", fontFamily: "monospace", fontSize: 12,
-        width: "fit-content", margin: "16px 0 0 28px",
-        display: "inline-flex", alignItems: "center", gap: 5,
-      }}>← MedPanel</button>
-
-      <div style={{ borderBottom: "1px solid #111827", padding: "16px 28px", background: "#080b14" }}>
-        <div style={{
-          fontSize: 10, letterSpacing: "0.35em", color: "#374151",
-          fontFamily: "monospace", textTransform: "uppercase", marginBottom: 4,
-        }}>Cirurgia do Trauma · Referência para Residência</div>
-        <h1 style={{ margin: 0, fontSize: 20, fontWeight: 400, color: "#f1f5f9", letterSpacing: "0.01em" }}>
-          Atendimento ao Politraumatizado — Guia Completo
-        </h1>
-        <div style={{ fontSize: 11, color: "#374151", marginTop: 4, fontFamily: "monospace" }}>
-          Conceitos · Mecanismo · Pré-Hospitalar · X Exsanguinante · ABCDE · Medidas Auxiliares · Aval. Secundária
-        </div>
-      </div>
-
-      <div style={{ display: "flex", flex: 1, overflow: "hidden" }}>
-        <div style={{
-          width: 170, borderRight: "1px solid #0f1623",
-          background: "#080b14", padding: "12px 0",
-          flexShrink: 0, overflowY: "auto",
-        }}>
-          {sections.map((s) => (
-            <button key={s.id} onClick={() => setActive(s.id)} style={{
-              width: "100%",
-              background: active === s.id ? `${s.color}12` : "transparent",
-              border: "none",
-              borderLeft: `2px solid ${active === s.id ? s.color : "transparent"}`,
-              color: active === s.id ? "#f1f5f9" : "#4b5563",
-              padding: "10px 16px", cursor: "pointer", textAlign: "left",
-              fontSize: 12, fontFamily: "monospace", transition: "all 0.15s",
-            }}>
-              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                <div style={{
-                  width: 5, height: 5, borderRadius: "50%",
-                  background: active === s.id ? s.color : "#1f2937", flexShrink: 0,
-                }} />
-                {s.name}
-              </div>
-            </button>
-          ))}
-        </div>
-
-        <div style={{ flex: 1, overflowY: "auto", padding: "24px 28px" }}>
-          <div style={{
-            display: "flex", alignItems: "center", gap: 12,
-            marginBottom: 24, paddingBottom: 14, borderBottom: `1px solid ${color}22`,
-          }}>
-            <div style={{
-              background: `${color}18`, border: `1px solid ${color}44`,
-              color, padding: "4px 16px", borderRadius: 4, fontSize: 10,
-              fontFamily: "monospace", letterSpacing: "0.1em", textTransform: "uppercase",
-            }}>{sec.name}</div>
-            <div style={{ fontSize: 17, fontWeight: 400, color: "#e2e8f0" }}>
-              {sec.content.title}
-            </div>
-          </div>
-          {sec.content.blocks.map((block, idx) => renderBlock(block, idx))}
-        </div>
-      </div>
-
-      <div style={{
-        borderTop: "1px solid #0f1623", padding: "10px 28px",
-        background: "#080b14", display: "flex",
-        justifyContent: "space-between", alignItems: "center",
-      }}>
-        <div style={{ fontSize: 10, color: "#1f2937", fontFamily: "monospace" }}>
-          {sections.findIndex((s) => s.id === active) + 1}/{sections.length} · {sec.name}
-        </div>
-        <div style={{ display: "flex", gap: 5 }}>
-          {sections.map((s) => (
-            <div key={s.id} onClick={() => setActive(s.id)} style={{
-              width: active === s.id ? 20 : 6, height: 6, borderRadius: 3,
-              background: active === s.id ? s.color : "#1f2937",
-              cursor: "pointer", transition: "all 0.2s",
-            }} />
-          ))}
-        </div>
-      </div>
-    </div>
+    <MedPanelPage
+      sections={sections}
+      specialty="Cirurgia do Trauma"
+      title="Politrauma — Guia Completo"
+    />
   );
 }

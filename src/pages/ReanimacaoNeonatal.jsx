@@ -1,5 +1,4 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import MedPanelPage from "./medpanel-layout";
 
 const sections = [
   {
@@ -66,21 +65,25 @@ const sections = [
           items: [
             {
               label: "Extremo Baixo Peso",
-              value: "< 1.000g — altíssimo risco. Mortalidade inversamente proporcional ao peso. Sala aquecida a 26°C + saco plástico sem secar.",
+              value:
+                "< 1.000g — altíssimo risco. Mortalidade inversamente proporcional ao peso. Sala aquecida a 26°C + saco plástico sem secar.",
               highlight: true,
             },
             {
               label: "Muito Baixo Peso",
-              value: "1.000 – 1.499g — alto risco. Saco plástico + touca de lã/plástico + campo aquecido.",
+              value:
+                "1.000 – 1.499g — alto risco. Saco plástico + touca de lã/plástico + campo aquecido.",
               highlight: true,
             },
             {
               label: "Baixo Peso",
-              value: "1.500 – 2.499g — risco intermediário. Secar vigorosamente + campo aquecido.",
+              value:
+                "1.500 – 2.499g — risco intermediário. Secar vigorosamente + campo aquecido.",
             },
             {
               label: "Peso Normal",
-              value: "> 2.500g — risco habitual. Avaliação dos 3 critérios ao nascimento determina conduta.",
+              value:
+                "> 2.500g — risco habitual. Avaliação dos 3 critérios ao nascimento determina conduta.",
             },
           ],
         },
@@ -144,29 +147,35 @@ const sections = [
           items: [
             {
               label: "IG < 36 semanas",
-              value: "Prematuridade em qualquer grau é o principal fator de risco individual. Quanto menor a IG, maior a probabilidade e complexidade da reanimação.",
+              value:
+                "Prematuridade em qualquer grau é o principal fator de risco individual. Quanto menor a IG, maior a probabilidade e complexidade da reanimação.",
               highlight: true,
             },
             {
               label: "Diabetes Materna",
-              value: "Hipoglicemia neonatal, macrossomia, tocotraumatismo. Controle glicêmico pré-natal influencia diretamente o desfecho neonatal.",
+              value:
+                "Hipoglicemia neonatal, macrossomia, tocotraumatismo. Controle glicêmico pré-natal influencia diretamente o desfecho neonatal.",
               highlight: true,
             },
             {
               label: "Hipertensão Materna",
-              value: "RCIU, oligodrâmnio, insuficiência placentária. Uso de sulfato de magnésio (tocólise) pode causar depressão neonatal.",
+              value:
+                "RCIU, oligodrâmnio, insuficiência placentária. Uso de sulfato de magnésio (tocólise) pode causar depressão neonatal.",
             },
             {
               label: "Uso de Drogas / Opioides",
-              value: "Depressão respiratória por opioides maternos intraparto → considerar naloxona. Uso crônico → síndrome de abstinência neonatal.",
+              value:
+                "Depressão respiratória por opioides maternos intraparto → considerar naloxona. Uso crônico → síndrome de abstinência neonatal.",
             },
             {
               label: "Infecção Materna / Febre",
-              value: "Corioamnionite, febre intraparto → risco de sepse neonatal precoce. Antibioticoterapia materna influencia conduta neonatal (ver sepse neonatal).",
+              value:
+                "Corioamnionite, febre intraparto → risco de sepse neonatal precoce. Antibioticoterapia materna influencia conduta neonatal (ver sepse neonatal).",
             },
             {
               label: "Anomalias Fetais / Oligodrâmnio",
-              value: "Má-formações cardiovasculares, pulmonares ou abdominais elevam muito a complexidade. Equipe especializada com material específico.",
+              value:
+                "Má-formações cardiovasculares, pulmonares ou abdominais elevam muito a complexidade. Equipe especializada com material específico.",
             },
           ],
         },
@@ -176,29 +185,35 @@ const sections = [
           items: [
             {
               label: "Líquido Amniótico Meconial",
-              value: "Meconial espesso: risco de síndrome de aspiração de mecônio. RN vigoroso (choro + tônus bom): NÃO aspirar rotineiramente — evidência Cochrane 2018 (JAMA Peds).",
+              value:
+                "Meconial espesso: risco de síndrome de aspiração de mecônio. RN vigoroso (choro + tônus bom): NÃO aspirar rotineiramente — evidência Cochrane 2018 (JAMA Peds).",
               highlight: true,
             },
             {
               label: "Desacelerações Fetais Tardias",
-              value: "Padrão de sofrimento fetal agudo. Equipe neonatal DEVE ser chamada. Impacto direto na disponibilidade de manobras de reanimação.",
+              value:
+                "Padrão de sofrimento fetal agudo. Equipe neonatal DEVE ser chamada. Impacto direto na disponibilidade de manobras de reanimação.",
               highlight: true,
             },
             {
               label: "Prolapso de Cordão",
-              value: "Emergência obstétrica → comprometimento imediato do fluxo umbilical. Cesárea de emergência → RN com risco de asfixia grave.",
+              value:
+                "Emergência obstétrica → comprometimento imediato do fluxo umbilical. Cesárea de emergência → RN com risco de asfixia grave.",
             },
             {
               label: "Descolamento Prematuro de Placenta",
-              value: "Choque materno + hipoxia fetal aguda. RN pode nascer exangue. Ter volume (SF 10 mL/kg) e concentrado de hemácias disponível.",
+              value:
+                "Choque materno + hipoxia fetal aguda. RN pode nascer exangue. Ter volume (SF 10 mL/kg) e concentrado de hemácias disponível.",
             },
             {
               label: "Anestesia Geral Materna",
-              value: "Depressão do SNC neonatal por agentes inalatórios ou barbitúricos. Intubação neonatal pode ser necessária.",
+              value:
+                "Depressão do SNC neonatal por agentes inalatórios ou barbitúricos. Intubação neonatal pode ser necessária.",
             },
             {
               label: "Parto Difícil / Instrumentado",
-              value: "Fórcipe, vácuo extrator → risco de trauma cranioencefálico, hemorragia intracraniana, lesão medular cervical.",
+              value:
+                "Fórcipe, vácuo extrator → risco de trauma cranioencefálico, hemorragia intracraniana, lesão medular cervical.",
             },
           ],
         },
@@ -316,29 +331,35 @@ const sections = [
           items: [
             {
               label: "Frequência Cardíaca — Parâmetro Principal",
-              value: "FC é o PRINCIPAL PARÂMETRO para todas as decisões da reanimação. Ausculta cardiaca por 6 segundos × 10 = FC/min. Monitor cardíaco de 3 eletrodos: mais preciso que oxímetro ou ausculta na FC baixa.",
+              value:
+                "FC é o PRINCIPAL PARÂMETRO para todas as decisões da reanimação. Ausculta cardiaca por 6 segundos × 10 = FC/min. Monitor cardíaco de 3 eletrodos: mais preciso que oxímetro ou ausculta na FC baixa.",
               highlight: true,
             },
             {
               label: "FC > 100 bpm",
-              value: "Reanimação eficaz ou RN vigoroso. Desmame progressivo da VPP. Monitorar saturação.",
+              value:
+                "Reanimação eficaz ou RN vigoroso. Desmame progressivo da VPP. Monitorar saturação.",
             },
             {
               label: "FC 60–99 bpm",
-              value: "VPP imediata com técnica correta. Avaliar eficácia pela elevação da FC. Se sem melhora em 30 seg → ventilação via cânula traqueal + compressões.",
+              value:
+                "VPP imediata com técnica correta. Avaliar eficácia pela elevação da FC. Se sem melhora em 30 seg → ventilação via cânula traqueal + compressões.",
             },
             {
               label: "FC < 60 bpm",
-              value: "VPP + compressões cardíacas simultaneamente. Se não melhorar → adrenalina.",
+              value:
+                "VPP + compressões cardíacas simultaneamente. Se não melhorar → adrenalina.",
               highlight: true,
             },
             {
               label: "Respiração/Choro",
-              value: "Choro vigoroso = via aérea pérvia + drive respiratório presente. Apneia primária vs secundária: distinguir pela resposta à estimulação. Apneia que não responde → VPP imediata.",
+              value:
+                "Choro vigoroso = via aérea pérvia + drive respiratório presente. Apneia primária vs secundária: distinguir pela resposta à estimulação. Apneia que não responde → VPP imediata.",
             },
             {
               label: "Saturação O₂ Pré-Ductal",
-              value: "Oxímetro: mão ou punho DIREITO (pré-ductal). Saturação normal ao nascer NÃO é 95–100% — veja a curva por minuto de vida.",
+              value:
+                "Oxímetro: mão ou punho DIREITO (pré-ductal). Saturação normal ao nascer NÃO é 95–100% — veja a curva por minuto de vida.",
               highlight: true,
             },
           ],
@@ -348,17 +369,26 @@ const sections = [
           title: "Saturação Pré-Ductal Esperada por Minuto de Vida (SBP 2021)",
           organ: "Minuto",
           grades: [
-            { grade: "1 min", color: "#EF4444", items: ["60–65% — normal ao nascer, não alarmar"] },
+            {
+              grade: "1 min",
+              color: "#EF4444",
+              items: ["60–65% — normal ao nascer, não alarmar"],
+            },
             { grade: "2 min", color: "#F97316", items: ["65–70%"] },
             { grade: "3 min", color: "#F59E0B", items: ["70–75%"] },
             { grade: "4 min", color: "#84CC16", items: ["75–80%"] },
             { grade: "5 min", color: "#10B981", items: ["80–85%"] },
-            { grade: "10 min", color: "#6366F1", items: ["85–95% — alvo atingido"] },
+            {
+              grade: "10 min",
+              color: "#6366F1",
+              items: ["85–95% — alvo atingido"],
+            },
           ],
         },
         {
           type: "obs",
-          title: "Líquido Amniótico Meconial — Mudança de Paradigma (JAMA Pediatrics 2015)",
+          title:
+            "Líquido Amniótico Meconial — Mudança de Paradigma (JAMA Pediatrics 2015)",
           text: "A aspiração orofaríngea intraparto foi ABANDONADA pelas diretrizes SBP 2021 e ILCOR 2021 — não reduz síndrome de aspiração de mecônio (SAM) e atrasa o início da reanimação. Para RN com líquido MECONIAL ESPESSO: (1) Se VIGOROSO (choro + tônus bom + FC > 100) → clampeamento tardio + colo da mãe + observação. (2) Se NÃO VIGOROSO (apneia ou tônus flácido) → VPP imediata; intubação e aspiração subglótica apenas se houver grande quantidade de mecônio e obstrução das vias aéreas confirmada — não mais de forma sistemática. Estudo RCT multinacional (Gupta et al., NEJM 2019) não demonstrou benefício da aspiração traqueal profilática.",
         },
       ],
@@ -413,21 +443,25 @@ const sections = [
           items: [
             {
               label: "M — Máscara",
-              value: "Tamanho 0 (prematuros) ou 1 (a termo). Cobrir nariz E boca — não os olhos. Apoio no mento. Vedação sem compressão excessiva.",
+              value:
+                "Tamanho 0 (prematuros) ou 1 (a termo). Cobrir nariz E boca — não os olhos. Apoio no mento. Vedação sem compressão excessiva.",
               highlight: true,
             },
             {
               label: "R — Respiração",
-              value: "40–60 ventilações por minuto. Observar expansão torácica SIMÉTRICA e DISCRETA. Expansão excessiva = pressão excessiva = risco de pneumotórax.",
+              value:
+                "40–60 ventilações por minuto. Observar expansão torácica SIMÉTRICA e DISCRETA. Expansão excessiva = pressão excessiva = risco de pneumotórax.",
               highlight: true,
             },
             {
               label: "P — Pressão",
-              value: "PIP inicial: 20–25 cmH₂O (termo) / 20 cmH₂O (prematuro). Aumentar se não houver expansão torácica. PEEP: 5 cmH₂O.",
+              value:
+                "PIP inicial: 20–25 cmH₂O (termo) / 20 cmH₂O (prematuro). Aumentar se não houver expansão torácica. PEEP: 5 cmH₂O.",
             },
             {
               label: "A — Avaliação",
-              value: "Após 30 segundos de VPP: avaliar FC, saturação, respiração. FC é o principal parâmetro de sucesso.",
+              value:
+                "Após 30 segundos de VPP: avaliar FC, saturação, respiração. FC é o principal parâmetro de sucesso.",
             },
           ],
         },
@@ -568,21 +602,25 @@ const sections = [
           items: [
             {
               label: "Concentração Correta — DILUIÇÃO OBRIGATÓRIA",
-              value: "Adrenalina 1:10.000 (0,1 mg/mL). Se disponível apenas 1:1.000 → DILUIR 1 mL em 9 mL de SF 0,9% → obter 1:10.000. NUNCA usar 1:1.000 sem diluir.",
+              value:
+                "Adrenalina 1:10.000 (0,1 mg/mL). Se disponível apenas 1:1.000 → DILUIR 1 mL em 9 mL de SF 0,9% → obter 1:10.000. NUNCA usar 1:1.000 sem diluir.",
               highlight: true,
             },
             {
               label: "Via Endovenosa (CATETER UMBILICAL) — PREFERENCIAL",
-              value: "Dose: 0,01–0,03 mg/kg IV = 0,1–0,3 mL/kg da solução 1:10.000. Cateter venoso umbilical: inserir 2–4 cm até refluxo sanguíneo livre. Flush com 0,5–1 mL de SF após cada dose.",
+              value:
+                "Dose: 0,01–0,03 mg/kg IV = 0,1–0,3 mL/kg da solução 1:10.000. Cateter venoso umbilical: inserir 2–4 cm até refluxo sanguíneo livre. Flush com 0,5–1 mL de SF após cada dose.",
               highlight: true,
             },
             {
               label: "Via Endotraqueal — Menor Eficácia",
-              value: "Apenas enquanto acesso IV não disponível. Dose: 0,05–0,1 mg/kg ET = 0,5–1 mL/kg da solução 1:10.000. Absorção imprevisível — transicionar para IV assim que possível.",
+              value:
+                "Apenas enquanto acesso IV não disponível. Dose: 0,05–0,1 mg/kg ET = 0,5–1 mL/kg da solução 1:10.000. Absorção imprevisível — transicionar para IV assim que possível.",
             },
             {
               label: "Intervalo e Repetição",
-              value: "Repetir a cada 3–5 minutos. Máximo 3–4 doses. Após cada dose ET: 5 ventilações para dispersão pulmonar.",
+              value:
+                "Repetir a cada 3–5 minutos. Máximo 3–4 doses. Após cada dose ET: 5 ventilações para dispersão pulmonar.",
             },
           ],
         },
@@ -667,29 +705,35 @@ const sections = [
           items: [
             {
               label: "Critérios de Elegibilidade",
-              value: "≥ 36 semanas + ≥ 1800g + ≤ 6 horas de vida + encefalopatia moderada ou grave (Sarnat II–III ou Thompson ≥ 7) + EHI confirmada (pH < 7,0 ou BE < −16 no cordão, ou Apgar ≤ 5 no 10° min).",
+              value:
+                "≥ 36 semanas + ≥ 1800g + ≤ 6 horas de vida + encefalopatia moderada ou grave (Sarnat II–III ou Thompson ≥ 7) + EHI confirmada (pH < 7,0 ou BE < −16 no cordão, ou Apgar ≤ 5 no 10° min).",
               highlight: true,
             },
             {
               label: "Protocolo de Hipotermia",
-              value: "Meta de temperatura corporal central: 33–34°C por 72 horas. Reaquecimento lento: 0,5°C por hora ao final das 72h. NÃO iniciar em < 36 semanas — risco de HIV e instabilidade.",
+              value:
+                "Meta de temperatura corporal central: 33–34°C por 72 horas. Reaquecimento lento: 0,5°C por hora ao final das 72h. NÃO iniciar em < 36 semanas — risco de HIV e instabilidade.",
               highlight: true,
             },
             {
               label: "Benefício Documentado",
-              value: "NNT: ~7–8 para reduzir morte ou incapacidade grave (meta-análise Jacobs et al., Cochrane 2013; confirmada por TOBY, CoolCap e NICHD trials). Reduz mortalidade em ~25% e incapacidade em ~25% em elegíveis.",
+              value:
+                "NNT: ~7–8 para reduzir morte ou incapacidade grave (meta-análise Jacobs et al., Cochrane 2013; confirmada por TOBY, CoolCap e NICHD trials). Reduz mortalidade em ~25% e incapacidade em ~25% em elegíveis.",
             },
             {
               label: "Evitar na Sala de Parto",
-              value: "NÃO expor o RN ao frio passivamente como 'hipotermia' — risco sem controle de temperatura. Iniciar hipotermia ATIVA controlada em UTI com equipamento específico ou bolsas de gelo + monitorização contínua.",
+              value:
+                "NÃO expor o RN ao frio passivamente como 'hipotermia' — risco sem controle de temperatura. Iniciar hipotermia ATIVA controlada em UTI com equipamento específico ou bolsas de gelo + monitorização contínua.",
             },
             {
               label: "Pré-Hipotermia — Evitar",
-              value: "NUNCA administrar: soluções hipotônicas, glicose 50%, bicarbonato de sódio, sulfato de magnésio ou fenitoína antes da confirmação do protocolo — alteram desfechos.",
+              value:
+                "NUNCA administrar: soluções hipotônicas, glicose 50%, bicarbonato de sódio, sulfato de magnésio ou fenitoína antes da confirmação do protocolo — alteram desfechos.",
             },
             {
               label: "EEG e RM",
-              value: "EEG amplitudeintegrado (aEEG): avaliar atividade de fundo nas primeiras horas. RM encefálica: realizar no 4°–7° dia de vida — preditor de desfecho neurológico.",
+              value:
+                "EEG amplitudeintegrado (aEEG): avaliar atividade de fundo nas primeiras horas. RM encefálica: realizar no 4°–7° dia de vida — preditor de desfecho neurológico.",
             },
           ],
         },
@@ -763,173 +807,11 @@ const sections = [
 ];
 
 export default function ReanimacaoNeonatal() {
-  const [active, setActive] = useState(sections[0].id);
-  const navigate = useNavigate();
-  const sec = sections.find((s) => s.id === active);
-  const color = sec.color;
-
-  const renderBlock = (block, idx) => {
-    if (block.type === "alert") {
-      return (
-        <div key={idx} style={{ background: `${block.color}10`, border: `1px solid ${block.color}33`, borderLeft: `3px solid ${block.color}`, borderRadius: 6, padding: "14px 18px", marginBottom: 16 }}>
-          <div style={{ fontSize: 10, fontFamily: "monospace", color: block.color, letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: 6 }}>⚡ {block.title}</div>
-          <div style={{ fontSize: 13, color: "#e2e8f0", lineHeight: 1.75 }}>{block.text}</div>
-        </div>
-      );
-    }
-    if (block.type === "obs") {
-      return (
-        <div key={idx} style={{ background: "#0a0f1a", border: "1px solid #1e2a3a", borderLeft: `3px solid ${color}`, borderRadius: 6, padding: "14px 18px", marginBottom: 16 }}>
-          <div style={{ fontSize: 10, fontFamily: "monospace", color, letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: 6 }}>🔬 {block.title}</div>
-          <div style={{ fontSize: 13, color: "#94a3b8", lineHeight: 1.75 }}>{block.text}</div>
-        </div>
-      );
-    }
-    if (block.type === "grid") {
-      return (
-        <div key={idx} style={{ marginBottom: 20 }}>
-          <div style={{ fontSize: 10, fontFamily: "monospace", color: "#4b5563", letterSpacing: "0.15em", textTransform: "uppercase", marginBottom: 10 }}>{block.title}</div>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
-            {block.items.map((item, i) => (
-              <div key={i} style={{ background: item.highlight ? `${color}0a` : "#080d18", border: `1px solid ${item.highlight ? color + "33" : "#111827"}`, borderRadius: 5, padding: "10px 14px" }}>
-                <div style={{ fontSize: 10, fontFamily: "monospace", color: item.highlight ? color : "#374151", letterSpacing: "0.05em", marginBottom: 4 }}>{item.label}</div>
-                <div style={{ fontSize: 12, color: "#cbd5e1", lineHeight: 1.65 }}>{item.value}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      );
-    }
-    if (block.type === "flow") {
-      return (
-        <div key={idx} style={{ marginBottom: 20 }}>
-          <div style={{ fontSize: 10, fontFamily: "monospace", color: "#4b5563", letterSpacing: "0.15em", textTransform: "uppercase", marginBottom: 10 }}>{block.title}</div>
-          <div style={{ borderLeft: "1px solid #1f2937", marginLeft: 9 }}>
-            {block.steps.map((step, i) => (
-              <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: 12, marginBottom: 6, marginLeft: -9 }}>
-                <div style={{ width: 18, height: 18, borderRadius: "50%", background: `${step.color}22`, border: `1px solid ${step.color}66`, flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center", marginTop: 1 }}>
-                  <div style={{ width: 6, height: 6, borderRadius: "50%", background: step.color }} />
-                </div>
-                <div style={{ fontSize: 12, color: "#cbd5e1", lineHeight: 1.65, paddingTop: 1 }}>{step.text}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      );
-    }
-    if (block.type === "grades") {
-      return (
-        <div key={idx} style={{ marginBottom: 20 }}>
-          <div style={{ fontSize: 10, fontFamily: "monospace", color: "#4b5563", letterSpacing: "0.15em", textTransform: "uppercase", marginBottom: 10 }}>{block.title}</div>
-          <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-            {block.grades.map((grade, i) => (
-              <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: 12, background: `${grade.color}08`, border: `1px solid ${grade.color}22`, borderLeft: `3px solid ${grade.color}`, borderRadius: 5, padding: "10px 14px" }}>
-                <div style={{ fontSize: 11, fontWeight: 700, color: grade.color, fontFamily: "monospace", minWidth: 52, marginTop: 1, flexShrink: 0 }}>{grade.grade}</div>
-                <div style={{ flex: 1 }}>
-                  {grade.items.map((item, j) => (
-                    <div key={j} style={{ fontSize: 12, color: "#cbd5e1", lineHeight: 1.65 }}>{item}</div>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      );
-    }
-    if (block.type === "phases") {
-      return (
-        <div key={idx} style={{ marginBottom: 20 }}>
-          <div style={{ fontSize: 10, fontFamily: "monospace", color: "#4b5563", letterSpacing: "0.15em", textTransform: "uppercase", marginBottom: 10 }}>{block.title}</div>
-          <div style={{ display: "grid", gridTemplateColumns: `repeat(${Math.min(block.phases.length, 2)}, 1fr)`, gap: 10 }}>
-            {block.phases.map((phase, i) => (
-              <div key={i} style={{ background: `${phase.color}08`, border: `1px solid ${phase.color}33`, borderRadius: 6, padding: "14px" }}>
-                <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 10 }}>
-                  <div style={{ padding: "2px 8px", borderRadius: 4, background: `${phase.color}22`, border: `1px solid ${phase.color}66`, fontSize: 10, fontWeight: 700, color: phase.color, fontFamily: "monospace", letterSpacing: "0.04em", flexShrink: 0 }}>{phase.number}</div>
-                  <div style={{ fontSize: 12, color: phase.color, fontFamily: "monospace", letterSpacing: "0.04em" }}>{phase.name}</div>
-                </div>
-                <ul style={{ margin: 0, paddingLeft: 16 }}>
-                  {phase.items.map((item, j) => (
-                    <li key={j} style={{ fontSize: 12, color: "#cbd5e1", lineHeight: 1.7, marginBottom: 2 }}>{item}</li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
-        </div>
-      );
-    }
-    if (block.type === "decision") {
-      const cols = block.decisions.length;
-      return (
-        <div key={idx} style={{ marginBottom: 20 }}>
-          <div style={{ fontSize: 10, fontFamily: "monospace", color: "#4b5563", letterSpacing: "0.15em", textTransform: "uppercase", marginBottom: 10 }}>{block.title}</div>
-          <div style={{ display: "grid", gridTemplateColumns: cols <= 2 ? `repeat(${cols}, 1fr)` : "1fr 1fr", gap: 10 }}>
-            {block.decisions.map((d, i) => (
-              <div key={i} style={{ background: `${d.color}08`, border: `1px solid ${d.color}33`, borderTop: `2px solid ${d.color}`, borderRadius: 6, padding: "12px 14px" }}>
-                <div style={{ fontSize: 10, fontFamily: "monospace", color: d.color, letterSpacing: "0.08em", marginBottom: 10, textTransform: "uppercase" }}>{d.condition}</div>
-                <ul style={{ margin: 0, paddingLeft: 16 }}>
-                  {d.actions.map((action, j) => (
-                    <li key={j} style={{ fontSize: 12, color: "#cbd5e1", lineHeight: 1.7, marginBottom: 2 }}>{action}</li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
-        </div>
-      );
-    }
-    return null;
-  };
-
   return (
-    <div style={{ background: "#06080f", minHeight: "100vh", fontFamily: "'Palatino Linotype', 'Book Antiqua', Palatino, serif", color: "#dde3f0", display: "flex", flexDirection: "column" }}>
-      <button onClick={() => navigate("/")} style={{ background: "transparent", border: "1px solid #1e2a3a", color: "#64748b", padding: "6px 14px", borderRadius: 6, cursor: "pointer", fontFamily: "monospace", fontSize: 12, width: "fit-content", margin: "16px 0 0 28px", display: "inline-flex", alignItems: "center", gap: 5 }}>
-        ← MedPanel
-      </button>
-
-      <div style={{ borderBottom: "1px solid #111827", padding: "16px 28px", background: "#080b14" }}>
-        <div style={{ fontSize: 10, letterSpacing: "0.35em", color: "#374151", fontFamily: "monospace", textTransform: "uppercase", marginBottom: 4 }}>
-          Pediatria · Neonatologia · Referência para Residência
-        </div>
-        <h1 style={{ margin: 0, fontSize: 20, fontWeight: 400, color: "#f1f5f9", letterSpacing: "0.01em" }}>
-          Reanimação Neonatal — Guia Completo
-        </h1>
-        <div style={{ fontSize: 11, color: "#374151", marginTop: 4, fontFamily: "monospace" }}>
-          Classificação · Anteparto · Fluxograma · VPP · Compressão / Drogas · Pós-Reanimação
-        </div>
-      </div>
-
-      <div style={{ display: "flex", flex: 1, overflow: "hidden" }}>
-        <div style={{ width: 170, borderRight: "1px solid #0f1623", background: "#080b14", padding: "12px 0", flexShrink: 0, overflowY: "auto" }}>
-          {sections.map((s) => (
-            <button key={s.id} onClick={() => setActive(s.id)} style={{ width: "100%", background: active === s.id ? `${s.color}12` : "transparent", border: "none", borderLeft: `2px solid ${active === s.id ? s.color : "transparent"}`, color: active === s.id ? "#f1f5f9" : "#4b5563", padding: "10px 16px", cursor: "pointer", textAlign: "left", fontSize: 12, fontFamily: "monospace", transition: "all 0.15s" }}>
-              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                <div style={{ width: 5, height: 5, borderRadius: "50%", background: active === s.id ? s.color : "#1f2937", flexShrink: 0 }} />
-                {s.name}
-              </div>
-            </button>
-          ))}
-        </div>
-
-        <div style={{ flex: 1, overflowY: "auto", padding: "24px 28px" }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 24, paddingBottom: 14, borderBottom: `1px solid ${color}22` }}>
-            <div style={{ background: `${color}18`, border: `1px solid ${color}44`, color, padding: "4px 16px", borderRadius: 4, fontSize: 10, fontFamily: "monospace", letterSpacing: "0.1em", textTransform: "uppercase" }}>{sec.name}</div>
-            <div style={{ fontSize: 17, fontWeight: 400, color: "#e2e8f0" }}>{sec.content.title}</div>
-          </div>
-          {sec.content.blocks.map((block, idx) => renderBlock(block, idx))}
-        </div>
-      </div>
-
-      <div style={{ borderTop: "1px solid #0f1623", padding: "10px 28px", background: "#080b14", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-        <div style={{ fontSize: 10, color: "#1f2937", fontFamily: "monospace" }}>
-          {sections.findIndex((s) => s.id === active) + 1}/{sections.length} · {sec.name}
-        </div>
-        <div style={{ display: "flex", gap: 5 }}>
-          {sections.map((s) => (
-            <div key={s.id} onClick={() => setActive(s.id)} style={{ width: active === s.id ? 20 : 6, height: 6, borderRadius: 3, background: active === s.id ? s.color : "#1f2937", cursor: "pointer", transition: "all 0.2s" }} />
-          ))}
-        </div>
-      </div>
-    </div>
+    <MedPanelPage
+      sections={sections}
+      specialty="Pediatria"
+      title="Reanimação Neonatal — Guia Completo"
+    />
   );
 }

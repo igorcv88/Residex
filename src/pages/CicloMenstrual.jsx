@@ -1,5 +1,4 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import MedPanelPage from "./medpanel-layout";
 
 const sections = [
   {
@@ -20,8 +19,16 @@ const sections = [
           title: "Parâmetros Normais do Ciclo Menstrual (FIGO 2011)",
           items: [
             { label: "Duração do fluxo", value: "3–8 dias", highlight: true },
-            { label: "Volume do fluxo", value: "5–80 mL por ciclo", highlight: true },
-            { label: "Intervalo intermenstrual", value: "24–38 dias", highlight: true },
+            {
+              label: "Volume do fluxo",
+              value: "5–80 mL por ciclo",
+              highlight: true,
+            },
+            {
+              label: "Intervalo intermenstrual",
+              value: "24–38 dias",
+              highlight: true,
+            },
             {
               label: "Regularidade ciclo a ciclo",
               value: "Variação ≤ 10 dias (considerado regular)",
@@ -113,10 +120,15 @@ const sections = [
             { label: "Estrutura", value: "Decapeptídeo", highlight: false },
             {
               label: "Origem embriológica",
-              value: "Neurônios migram dos placódios olfatórios nasais → hipotálamo",
+              value:
+                "Neurônios migram dos placódios olfatórios nasais → hipotálamo",
               highlight: true,
             },
-            { label: "Meia-vida", value: "~10 minutos (degradação rápida)", highlight: false },
+            {
+              label: "Meia-vida",
+              value: "~10 minutos (degradação rápida)",
+              highlight: false,
+            },
             {
               label: "Padrão de secreção",
               value: "Pulsátil obrigatório (pulso a cada 60–90 min)",
@@ -145,22 +157,26 @@ const sections = [
           items: [
             {
               label: "Estimulam GnRH",
-              value: "Noradrenalina, adrenalina, dopamina (baixa dose), serotonina",
+              value:
+                "Noradrenalina, adrenalina, dopamina (baixa dose), serotonina",
               highlight: false,
             },
             {
               label: "Inibem GnRH",
-              value: "β-endorfinas, opioides endógenos, GABA, melatonina, prolactina alta, dopamina (alta dose)",
+              value:
+                "β-endorfinas, opioides endógenos, GABA, melatonina, prolactina alta, dopamina (alta dose)",
               highlight: true,
             },
             {
               label: "Kisspeptina (KNDy)",
-              value: "Neurônios do núcleo arqueado: principal gatilho do pulso de GnRH — alvo terapêutico emergente",
+              value:
+                "Neurônios do núcleo arqueado: principal gatilho do pulso de GnRH — alvo terapêutico emergente",
               highlight: true,
             },
             {
               label: "Estrogênio (baixas doses)",
-              value: "Feedback negativo hipofisário; em altas doses por ≥ 36h → feedback POSITIVO",
+              value:
+                "Feedback negativo hipofisário; em altas doses por ≥ 36h → feedback POSITIVO",
               highlight: false,
             },
             {
@@ -170,7 +186,8 @@ const sections = [
             },
             {
               label: "Atletas de alto rendimento",
-              value: "Hipoestrogenismo por opioides endógenos ↑ → supressão do eixo → amenorreia hipotalâmica",
+              value:
+                "Hipoestrogenismo por opioides endógenos ↑ → supressão do eixo → amenorreia hipotalâmica",
               highlight: false,
             },
           ],
@@ -224,27 +241,32 @@ const sections = [
           items: [
             {
               label: "FSH",
-              value: "Recrutamento e crescimento folicular; estimula granulosa → aromatase → E2",
+              value:
+                "Recrutamento e crescimento folicular; estimula granulosa → aromatase → E2",
               highlight: true,
             },
             {
               label: "LH",
-              value: "Estimula teca → androgênios; pico → ovulação; luteotrófico (mantém corpo lúteo)",
+              value:
+                "Estimula teca → androgênios; pico → ovulação; luteotrófico (mantém corpo lúteo)",
               highlight: true,
             },
             {
               label: "Inibina B",
-              value: "Granulosa fase folicular → inibe FSH seletivamente; marcador de reserva ovariana",
+              value:
+                "Granulosa fase folicular → inibe FSH seletivamente; marcador de reserva ovariana",
               highlight: false,
             },
             {
               label: "Inibina A",
-              value: "Corpo lúteo → cai no final da fase lútea → FSH sobe → novo ciclo",
+              value:
+                "Corpo lúteo → cai no final da fase lútea → FSH sobe → novo ciclo",
               highlight: false,
             },
             {
               label: "Prolactina",
-              value: "Inibe GnRH; hiperprolactinemia → amenorreia hipotalâmica (diagn. diferencial)",
+              value:
+                "Inibe GnRH; hiperprolactinemia → amenorreia hipotalâmica (diagn. diferencial)",
               highlight: false,
             },
           ],
@@ -270,24 +292,28 @@ const sections = [
           items: [
             {
               label: "Estradiol (E2)",
-              value: "Mais potente; produzido pela granulosa folicular; domina na menacme",
+              value:
+                "Mais potente; produzido pela granulosa folicular; domina na menacme",
               highlight: true,
             },
             {
               label: "Estrona (E1)",
-              value: "Conversão periférica de androstenediona; domina na pós-menopausa",
+              value:
+                "Conversão periférica de androstenediona; domina na pós-menopausa",
               highlight: false,
             },
             {
               label: "Estriol (E3)",
-              value: "Mais fraco; produzido pela placenta; útil no TGI pós-menopausa (efeito local)",
+              value:
+                "Mais fraco; produzido pela placenta; útil no TGI pós-menopausa (efeito local)",
               highlight: false,
             },
           ],
         },
         {
           type: "flow",
-          title: "Via de Biossíntese do Estradiol — Teoria das 2 Células (2 Gonadotrofinas)",
+          title:
+            "Via de Biossíntese do Estradiol — Teoria das 2 Células (2 Gonadotrofinas)",
           steps: [
             {
               text: "LDL plasmático → captado pela célula da TECA ovariana (via LH-R)",
@@ -322,17 +348,20 @@ const sections = [
           items: [
             {
               label: "Vagina",
-              value: "Proliferação epitelial, ↑ glicogênio → Lactobacillus → acidifica pH (proteção)",
+              value:
+                "Proliferação epitelial, ↑ glicogênio → Lactobacillus → acidifica pH (proteção)",
               highlight: false,
             },
             {
               label: "Colo uterino",
-              value: "Muco claro, filante, abundante — máximo na fase folicular tardia",
+              value:
+                "Muco claro, filante, abundante — máximo na fase folicular tardia",
               highlight: true,
             },
             {
               label: "Endométrio",
-              value: "Fase proliferativa: espessamento, tubulação glandular, vascularização",
+              value:
+                "Fase proliferativa: espessamento, tubulação glandular, vascularização",
               highlight: true,
             },
             {
@@ -342,17 +371,20 @@ const sections = [
             },
             {
               label: "Tubas uterinas",
-              value: "Ativa peristalse tubária (facilita transporte do ovócito até o útero)",
+              value:
+                "Ativa peristalse tubária (facilita transporte do ovócito até o útero)",
               highlight: false,
             },
             {
               label: "Osso",
-              value: "Inibe reabsorção osteoclástica → queda na menopausa → osteoporose",
+              value:
+                "Inibe reabsorção osteoclástica → queda na menopausa → osteoporose",
               highlight: true,
             },
             {
               label: "Sistema vascular",
-              value: "↑ NO → vasodilatação; ↑ HDL, ↓ LDL — cardioprotector antes da menopausa",
+              value:
+                "↑ NO → vasodilatação; ↑ HDL, ↓ LDL — cardioprotector antes da menopausa",
               highlight: false,
             },
             {
@@ -368,42 +400,50 @@ const sections = [
           items: [
             {
               label: "Vagina",
-              value: "Inibe inervação sensorial; reduz resposta estrogênica do epitélio",
+              value:
+                "Inibe inervação sensorial; reduz resposta estrogênica do epitélio",
               highlight: false,
             },
             {
               label: "Colo uterino",
-              value: "Muco espesso, opaco, não filante — fecha o colo na fase lútea",
+              value:
+                "Muco espesso, opaco, não filante — fecha o colo na fase lútea",
               highlight: true,
             },
             {
               label: "Endométrio",
-              value: "Fase secretora: diferenciação glandular, glicogênio, decidualização",
+              value:
+                "Fase secretora: diferenciação glandular, glicogênio, decidualização",
               highlight: true,
             },
             {
               label: "Mama",
-              value: "Desenvolvimento lobular e acinar (prepara estrutura para lactação)",
+              value:
+                "Desenvolvimento lobular e acinar (prepara estrutura para lactação)",
               highlight: false,
             },
             {
               label: "Tubas uterinas",
-              value: "Inibe peristalse tubária (fase lútea → reduz risco de gravidez ectópica?)",
+              value:
+                "Inibe peristalse tubária (fase lútea → reduz risco de gravidez ectópica?)",
               highlight: false,
             },
             {
               label: "Temperatura basal",
-              value: "Efeito termogênico hipotalâmico: ↑ 0,3–0,5°C pós-ovulação",
+              value:
+                "Efeito termogênico hipotalâmico: ↑ 0,3–0,5°C pós-ovulação",
               highlight: true,
             },
             {
               label: "GnRH / eixo",
-              value: "Reduz frequência dos pulsos de GnRH → supressão parcial na fase lútea",
+              value:
+                "Reduz frequência dos pulsos de GnRH → supressão parcial na fase lútea",
               highlight: false,
             },
             {
               label: "Rim",
-              value: "Antialdosterona (derivado de espironolactona na drospirenona) → natriurese leve",
+              value:
+                "Antialdosterona (derivado de espironolactona na drospirenona) → natriurese leve",
               highlight: false,
             },
           ],
@@ -414,7 +454,8 @@ const sections = [
           items: [
             {
               label: "25% — Ovário",
-              value: "Testosterona e androstenediona pelas células da teca (LH-dependente)",
+              value:
+                "Testosterona e androstenediona pelas células da teca (LH-dependente)",
               highlight: false,
             },
             {
@@ -424,17 +465,20 @@ const sections = [
             },
             {
               label: "50% — Conversão periférica",
-              value: "Androstenediona → testosterona no tecido adiposo, pele e fígado",
+              value:
+                "Androstenediona → testosterona no tecido adiposo, pele e fígado",
               highlight: true,
             },
             {
               label: "SHBG — Aumentado por",
-              value: "Estrogênio, tiroxina (T4), TH, gravidez → ↓ testosterona livre",
+              value:
+                "Estrogênio, tiroxina (T4), TH, gravidez → ↓ testosterona livre",
               highlight: false,
             },
             {
               label: "SHBG — Reduzido por",
-              value: "Insulina, androgênios, GH, obesidade, hipotireoidismo → ↑ testosterona livre",
+              value:
+                "Insulina, androgênios, GH, obesidade, hipotireoidismo → ↑ testosterona livre",
               highlight: true,
             },
           ],
@@ -577,17 +621,20 @@ const sections = [
           items: [
             {
               label: "Temperatura basal",
-              value: "↑ 0,3–0,5°C após ovulação (P4 termogênica) — retrospectivo; confirma ovulação passada",
+              value:
+                "↑ 0,3–0,5°C após ovulação (P4 termogênica) — retrospectivo; confirma ovulação passada",
               highlight: false,
             },
             {
               label: "Muco cervical (Spinnbarkeit)",
-              value: "Máximo filante, claro, elástico no pico de E2 — prospectivo; melhor método natural",
+              value:
+                "Máximo filante, claro, elástico no pico de E2 — prospectivo; melhor método natural",
               highlight: true,
             },
             {
               label: "LH urinário (kit OTC)",
-              value: "Detecta pico 24–36h antes da ovulação — melhor marcador prático para coito programado",
+              value:
+                "Detecta pico 24–36h antes da ovulação — melhor marcador prático para coito programado",
               highlight: true,
             },
             {
@@ -602,7 +649,8 @@ const sections = [
             },
             {
               label: "Janela fértil total",
-              value: "5 dias antes da ovulação + dia da ovulação = 6 dias; pico de fecundabilidade D-1 e D0",
+              value:
+                "5 dias antes da ovulação + dia da ovulação = 6 dias; pico de fecundabilidade D-1 e D0",
               highlight: false,
             },
           ],
@@ -664,17 +712,20 @@ const sections = [
           items: [
             {
               label: "Camada basal (1/3 inferior)",
-              value: "Não menstrua; mantida pelos estrogênios basais; responsável pela regeneração pós-menstrual",
+              value:
+                "Não menstrua; mantida pelos estrogênios basais; responsável pela regeneração pós-menstrual",
               highlight: false,
             },
             {
               label: "Camada funcional",
-              value: "Responde ao ciclo hormonal; espessa na proliferação, secretora na fase lútea, descama na menstruação",
+              value:
+                "Responde ao ciclo hormonal; espessa na proliferação, secretora na fase lútea, descama na menstruação",
               highlight: true,
             },
             {
               label: "Espessura — referência USG",
-              value: "2–4 mm (menstrual) → 8–12 mm (secretora) → > 4–5 mm na pós-menopausa = biópsia",
+              value:
+                "2–4 mm (menstrual) → 8–12 mm (secretora) → > 4–5 mm na pós-menopausa = biópsia",
               highlight: true,
             },
           ],
@@ -777,32 +828,38 @@ const sections = [
           items: [
             {
               label: "SPM — Prevalência",
-              value: "3–8% das mulheres em menacme; sintomas leves a moderados; pouca interferência na vida",
+              value:
+                "3–8% das mulheres em menacme; sintomas leves a moderados; pouca interferência na vida",
               highlight: false,
             },
             {
               label: "TDPM — Prevalência",
-              value: "~2%; forma grave e incapacitante; DSM-5 o classifica como transtorno depressivo",
+              value:
+                "~2%; forma grave e incapacitante; DSM-5 o classifica como transtorno depressivo",
               highlight: true,
             },
             {
               label: "Critério temporal (ambos)",
-              value: "Sintomas nos 5 dias antes da menstruação, cessam no 1º–4º dia do fluxo",
+              value:
+                "Sintomas nos 5 dias antes da menstruação, cessam no 1º–4º dia do fluxo",
               highlight: true,
             },
             {
               label: "SPM — Critério mínimo",
-              value: "≥ 1 sintoma somático + ≥ 1 sintoma afetivo por ≥ 3 ciclos consecutivos",
+              value:
+                "≥ 1 sintoma somático + ≥ 1 sintoma afetivo por ≥ 3 ciclos consecutivos",
               highlight: false,
             },
             {
               label: "TDPM — Critério DSM-5",
-              value: "≥ 5 sintomas, com ≥ 1 dos 4 core: labilidade afetiva, irritabilidade/raiva, humor deprimido, ansiedade/tensão",
+              value:
+                "≥ 5 sintomas, com ≥ 1 dos 4 core: labilidade afetiva, irritabilidade/raiva, humor deprimido, ansiedade/tensão",
               highlight: true,
             },
             {
               label: "Confirmação (ambos)",
-              value: "Diário prospectivo ≥ 2 ciclos; exclui transtornos subjacentes",
+              value:
+                "Diário prospectivo ≥ 2 ciclos; exclui transtornos subjacentes",
               highlight: false,
             },
           ],
@@ -847,32 +904,38 @@ const sections = [
           items: [
             {
               label: "Fluoxetina",
-              value: "20 mg/d contínuo ou D14–D28. Meia-vida longa (5–6 dias) facilita uso intermitente. Aprovado FDA para TDPM. NNT ≈ 4–5.",
+              value:
+                "20 mg/d contínuo ou D14–D28. Meia-vida longa (5–6 dias) facilita uso intermitente. Aprovado FDA para TDPM. NNT ≈ 4–5.",
               highlight: true,
             },
             {
               label: "Sertralina",
-              value: "50–150 mg/d contínuo ou intermitente. Aprovado FDA. Boa tolerabilidade. Primeira escolha na prática.",
+              value:
+                "50–150 mg/d contínuo ou intermitente. Aprovado FDA. Boa tolerabilidade. Primeira escolha na prática.",
               highlight: false,
             },
             {
               label: "Drospirenona (ACS)",
-              value: "Progestágeno derivado da espironolactona: antiandrogênico + antimineralocorticóide. Yaz aprovado FDA para TDPM. Reduz retenção hídrica.",
+              value:
+                "Progestágeno derivado da espironolactona: antiandrogênico + antimineralocorticóide. Yaz aprovado FDA para TDPM. Reduz retenção hídrica.",
               highlight: true,
             },
             {
               label: "Análogos GnRH",
-              value: "Menopausa farmacológica reversível. Máximo 6 meses SEM add-back. Com add-back: pode usar cronicamente.",
+              value:
+                "Menopausa farmacológica reversível. Máximo 6 meses SEM add-back. Com add-back: pode usar cronicamente.",
               highlight: true,
             },
             {
               label: "Bromocriptina",
-              value: "Agonista D2 → ↓ prolactina. Útil se mastalgia cíclica proeminente. Menos eficaz para sintomas afetivos.",
+              value:
+                "Agonista D2 → ↓ prolactina. Útil se mastalgia cíclica proeminente. Menos eficaz para sintomas afetivos.",
               highlight: false,
             },
             {
               label: "⚠ Progestágeno isolado — CONTRAINDICADO",
-              value: "NÃO eficaz no SPM/TDPM. Pode PIORAR sintomas (base GABA). Nunca usar como monoterapia.",
+              value:
+                "NÃO eficaz no SPM/TDPM. Pode PIORAR sintomas (base GABA). Nunca usar como monoterapia.",
               highlight: true,
             },
           ],
@@ -893,739 +956,11 @@ const sections = [
 ];
 
 export default function CicloMenstrual() {
-  const [active, setActive] = useState(sections[0].id);
-  const navigate = useNavigate();
-  const sec = sections.find((s) => s.id === active);
-  const color = sec.color;
-
-  const renderBlock = (block, idx) => {
-    if (block.type === "alert") {
-      return (
-        <div
-          key={idx}
-          style={{
-            background: `${block.color}10`,
-            border: `1px solid ${block.color}33`,
-            borderLeft: `3px solid ${block.color}`,
-            borderRadius: 6,
-            padding: "12px 16px",
-            marginBottom: 14,
-          }}
-        >
-          <div
-            style={{
-              fontSize: 10,
-              fontFamily: "monospace",
-              color: block.color,
-              letterSpacing: "0.12em",
-              textTransform: "uppercase",
-              marginBottom: 5,
-            }}
-          >
-            ⚡ {block.title}
-          </div>
-          <div
-            style={{ fontSize: 13, color: "#e2e8f0", lineHeight: 1.7 }}
-          >
-            {block.text}
-          </div>
-        </div>
-      );
-    }
-
-    if (block.type === "obs") {
-      return (
-        <div
-          key={idx}
-          style={{
-            background: "#0a0f1e",
-            border: "1px solid #1e2a3a",
-            borderLeft: "3px solid #334155",
-            borderRadius: 6,
-            padding: "12px 16px",
-            marginBottom: 14,
-          }}
-        >
-          <div
-            style={{
-              fontSize: 10,
-              fontFamily: "monospace",
-              color: "#64748b",
-              letterSpacing: "0.12em",
-              textTransform: "uppercase",
-              marginBottom: 5,
-            }}
-          >
-            🔬 {block.title}
-          </div>
-          <div
-            style={{ fontSize: 13, color: "#94a3b8", lineHeight: 1.7 }}
-          >
-            {block.text}
-          </div>
-        </div>
-      );
-    }
-
-    if (block.type === "grid") {
-      return (
-        <div key={idx} style={{ marginBottom: 14 }}>
-          <div
-            style={{
-              fontSize: 10,
-              fontFamily: "monospace",
-              color: "#4b5563",
-              letterSpacing: "0.2em",
-              textTransform: "uppercase",
-              marginBottom: 8,
-            }}
-          >
-            {block.title}
-          </div>
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))",
-              gap: 6,
-            }}
-          >
-            {block.items.map((item, i) => (
-              <div
-                key={i}
-                style={{
-                  background: item.highlight ? `${color}0d` : "#080b14",
-                  border: `1px solid ${
-                    item.highlight ? color + "33" : "#0f1623"
-                  }`,
-                  borderRadius: 5,
-                  padding: "8px 12px",
-                }}
-              >
-                <div
-                  style={{
-                    fontSize: 10,
-                    color: item.highlight ? color : "#4b5563",
-                    fontFamily: "monospace",
-                    marginBottom: 3,
-                    letterSpacing: "0.05em",
-                  }}
-                >
-                  {item.label}
-                </div>
-                <div
-                  style={{
-                    fontSize: 12,
-                    color: item.highlight ? "#e2e8f0" : "#6b7280",
-                    lineHeight: 1.55,
-                  }}
-                >
-                  {item.value}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      );
-    }
-
-    if (block.type === "flow") {
-      return (
-        <div key={idx} style={{ marginBottom: 14 }}>
-          <div
-            style={{
-              fontSize: 10,
-              fontFamily: "monospace",
-              color: "#4b5563",
-              letterSpacing: "0.2em",
-              textTransform: "uppercase",
-              marginBottom: 8,
-            }}
-          >
-            {block.title}
-          </div>
-          <div style={{ display: "flex", flexDirection: "column", gap: 0 }}>
-            {block.steps.map((step, i) => (
-              <div
-                key={i}
-                style={{
-                  display: "flex",
-                  alignItems: "flex-start",
-                  gap: 10,
-                  marginBottom: 4,
-                }}
-              >
-                <div
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                    flexShrink: 0,
-                  }}
-                >
-                  <div
-                    style={{
-                      width: 24,
-                      height: 24,
-                      borderRadius: "50%",
-                      background: `${step.color}20`,
-                      border: `1px solid ${step.color}66`,
-                      color: step.color,
-                      fontSize: 10,
-                      fontFamily: "monospace",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      fontWeight: 700,
-                    }}
-                  >
-                    {i + 1}
-                  </div>
-                  {i < block.steps.length - 1 && (
-                    <div
-                      style={{
-                        width: 1,
-                        height: 10,
-                        background: "#1f2937",
-                        marginTop: 2,
-                      }}
-                    />
-                  )}
-                </div>
-                <div
-                  style={{
-                    flex: 1,
-                    background: "#080b14",
-                    border: "1px solid #0f1623",
-                    borderRadius: 5,
-                    padding: "7px 12px",
-                    fontSize: 12,
-                    color: "#94a3b8",
-                    lineHeight: 1.55,
-                  }}
-                >
-                  {step.text}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      );
-    }
-
-    if (block.type === "phases") {
-      return (
-        <div key={idx} style={{ marginBottom: 14 }}>
-          <div
-            style={{
-              fontSize: 10,
-              fontFamily: "monospace",
-              color: "#4b5563",
-              letterSpacing: "0.2em",
-              textTransform: "uppercase",
-              marginBottom: 8,
-            }}
-          >
-            {block.title}
-          </div>
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))",
-              gap: 6,
-            }}
-          >
-            {block.phases.map((phase, i) => (
-              <div
-                key={i}
-                style={{
-                  background: `${phase.color}09`,
-                  border: `1px solid ${phase.color}33`,
-                  borderRadius: 6,
-                  padding: "10px 12px",
-                }}
-              >
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: 8,
-                    marginBottom: 6,
-                  }}
-                >
-                  <div
-                    style={{
-                      minWidth: 30,
-                      height: 30,
-                      borderRadius: "50%",
-                      background: `${phase.color}20`,
-                      border: `1px solid ${phase.color}66`,
-                      color: phase.color,
-                      fontSize: 8,
-                      fontFamily: "monospace",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      fontWeight: 700,
-                      padding: "0 4px",
-                      flexShrink: 0,
-                    }}
-                  >
-                    {phase.number}
-                  </div>
-                  <div
-                    style={{
-                      fontSize: 11,
-                      color: phase.color,
-                      fontFamily: "monospace",
-                      letterSpacing: "0.03em",
-                      lineHeight: 1.3,
-                    }}
-                  >
-                    {phase.name}
-                  </div>
-                </div>
-                <ul style={{ margin: 0, padding: 0, listStyle: "none" }}>
-                  {phase.items.map((item, j) => (
-                    <li
-                      key={j}
-                      style={{
-                        fontSize: 11,
-                        color: "#6b7280",
-                        lineHeight: 1.55,
-                        marginBottom: 3,
-                        paddingLeft: 10,
-                        position: "relative",
-                      }}
-                    >
-                      <span
-                        style={{
-                          position: "absolute",
-                          left: 0,
-                          color: phase.color,
-                          fontSize: 10,
-                        }}
-                      >
-                        ·
-                      </span>
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
-        </div>
-      );
-    }
-
-    if (block.type === "grades") {
-      return (
-        <div key={idx} style={{ marginBottom: 14 }}>
-          <div
-            style={{
-              fontSize: 10,
-              fontFamily: "monospace",
-              color: "#4b5563",
-              letterSpacing: "0.2em",
-              textTransform: "uppercase",
-              marginBottom: 8,
-            }}
-          >
-            {block.title}
-          </div>
-          {block.grades.map((grade, i) => (
-            <div
-              key={i}
-              style={{
-                background: "#080b14",
-                border: `1px solid ${grade.color}33`,
-                borderLeft: `3px solid ${grade.color}`,
-                borderRadius: 5,
-                padding: "8px 12px",
-                display: "flex",
-                gap: 14,
-                alignItems: "flex-start",
-                marginBottom: 5,
-              }}
-            >
-              <div
-                style={{
-                  fontSize: 13,
-                  fontWeight: 700,
-                  color: grade.color,
-                  fontFamily: "monospace",
-                  flexShrink: 0,
-                  minWidth: 24,
-                }}
-              >
-                {grade.grade}
-              </div>
-              <div
-                style={{ fontSize: 12, color: "#6b7280", lineHeight: 1.6 }}
-              >
-                {grade.items.join(" · ")}
-              </div>
-            </div>
-          ))}
-        </div>
-      );
-    }
-
-    if (block.type === "location") {
-      return (
-        <div key={idx} style={{ marginBottom: 14 }}>
-          <div
-            style={{
-              fontSize: 10,
-              fontFamily: "monospace",
-              color: "#4b5563",
-              letterSpacing: "0.2em",
-              textTransform: "uppercase",
-              marginBottom: 8,
-            }}
-          >
-            {block.title}
-          </div>
-          {block.locations.map((loc, i) => (
-            <div
-              key={i}
-              style={{
-                background: "#080b14",
-                border: `1px solid ${loc.color}22`,
-                borderLeft: `3px solid ${loc.color}`,
-                borderRadius: 5,
-                padding: "10px 14px",
-                marginBottom: 6,
-              }}
-            >
-              <div
-                style={{
-                  fontSize: 11,
-                  color: loc.color,
-                  fontFamily: "monospace",
-                  marginBottom: 5,
-                  letterSpacing: "0.08em",
-                }}
-              >
-                {loc.name}
-              </div>
-              {loc.stable && (
-                <div
-                  style={{ fontSize: 11, color: "#6b7280", marginBottom: 3 }}
-                >
-                  <span
-                    style={{
-                      color: "#374151",
-                      fontFamily: "monospace",
-                      fontSize: 10,
-                    }}
-                  >
-                    Estável:{" "}
-                  </span>
-                  {loc.stable.join(" · ")}
-                </div>
-              )}
-              {loc.gold && (
-                <div
-                  style={{ fontSize: 11, color: "#94a3b8", marginBottom: 3 }}
-                >
-                  <span
-                    style={{
-                      color: "#F59E0B",
-                      fontFamily: "monospace",
-                      fontSize: 10,
-                    }}
-                  >
-                    Gold:{" "}
-                  </span>
-                  {loc.gold}
-                </div>
-              )}
-              {loc.obs && (
-                <div style={{ fontSize: 11, color: "#4b5563" }}>
-                  <span style={{ fontFamily: "monospace", fontSize: 10 }}>
-                    Obs:{" "}
-                  </span>
-                  {loc.obs}
-                </div>
-              )}
-            </div>
-          ))}
-        </div>
-      );
-    }
-
-    if (block.type === "decision") {
-      return (
-        <div key={idx} style={{ marginBottom: 14 }}>
-          <div
-            style={{
-              fontSize: 10,
-              fontFamily: "monospace",
-              color: "#4b5563",
-              letterSpacing: "0.2em",
-              textTransform: "uppercase",
-              marginBottom: 8,
-            }}
-          >
-            {block.title}
-          </div>
-          {block.decisions.map((dec, i) => (
-            <div
-              key={i}
-              style={{
-                background: "#080b14",
-                border: `1px solid ${dec.color}22`,
-                borderRadius: 5,
-                padding: "10px 14px",
-                marginBottom: 6,
-                display: "flex",
-                gap: 14,
-                alignItems: "flex-start",
-              }}
-            >
-              <div
-                style={{
-                  background: `${dec.color}18`,
-                  border: `1px solid ${dec.color}44`,
-                  color: dec.color,
-                  padding: "3px 10px",
-                  borderRadius: 4,
-                  fontSize: 10,
-                  fontFamily: "monospace",
-                  flexShrink: 0,
-                  whiteSpace: "nowrap",
-                }}
-              >
-                {dec.condition}
-              </div>
-              <div
-                style={{ fontSize: 12, color: "#6b7280", lineHeight: 1.6 }}
-              >
-                {dec.actions.join(" → ")}
-              </div>
-            </div>
-          ))}
-        </div>
-      );
-    }
-
-    return null;
-  };
-
   return (
-    <div
-      style={{
-        background: "#06080f",
-        minHeight: "100vh",
-        fontFamily:
-          "'Palatino Linotype', 'Book Antiqua', Palatino, serif",
-        color: "#dde3f0",
-        display: "flex",
-        flexDirection: "column",
-      }}
-    >
-      {/* Botão de volta */}
-      <button
-        onClick={() => navigate("/")}
-        style={{
-          background: "transparent",
-          border: "1px solid #1e2a3a",
-          color: "#64748b",
-          padding: "6px 14px",
-          borderRadius: 6,
-          cursor: "pointer",
-          fontFamily: "monospace",
-          fontSize: 12,
-          width: "fit-content",
-          margin: "16px 0 0 28px",
-          display: "inline-flex",
-          alignItems: "center",
-          gap: 5,
-        }}
-      >
-        ← MedPanel
-      </button>
-
-      {/* Header */}
-      <div
-        style={{
-          borderBottom: "1px solid #111827",
-          padding: "16px 28px",
-          background: "#080b14",
-        }}
-      >
-        <div
-          style={{
-            fontSize: 10,
-            letterSpacing: "0.35em",
-            color: "#374151",
-            fontFamily: "monospace",
-            textTransform: "uppercase",
-            marginBottom: 4,
-          }}
-        >
-          Ginecologia · Referência para Residência
-        </div>
-        <h1
-          style={{
-            margin: 0,
-            fontSize: 20,
-            fontWeight: 400,
-            color: "#f1f5f9",
-            letterSpacing: "0.01em",
-          }}
-        >
-          Ciclo Menstrual — Guia Completo
-        </h1>
-        <div
-          style={{
-            fontSize: 11,
-            color: "#374151",
-            marginTop: 4,
-            fontFamily: "monospace",
-          }}
-        >
-          Menstruação · Eixo SNC · Hormônios · Fases do Ciclo · Endométrio ·
-          Transtornos
-        </div>
-      </div>
-
-      <div style={{ display: "flex", flex: 1, overflow: "hidden" }}>
-        {/* Nav lateral */}
-        <div
-          style={{
-            width: 170,
-            borderRight: "1px solid #0f1623",
-            background: "#080b14",
-            padding: "12px 0",
-            flexShrink: 0,
-            overflowY: "auto",
-          }}
-        >
-          {sections.map((s) => (
-            <button
-              key={s.id}
-              onClick={() => setActive(s.id)}
-              style={{
-                width: "100%",
-                background:
-                  active === s.id ? `${s.color}12` : "transparent",
-                border: "none",
-                borderLeft: `2px solid ${
-                  active === s.id ? s.color : "transparent"
-                }`,
-                color: active === s.id ? "#f1f5f9" : "#4b5563",
-                padding: "10px 16px",
-                cursor: "pointer",
-                textAlign: "left",
-                fontSize: 12,
-                fontFamily: "monospace",
-                transition: "all 0.15s",
-              }}
-            >
-              <div
-                style={{ display: "flex", alignItems: "center", gap: 8 }}
-              >
-                <div
-                  style={{
-                    width: 5,
-                    height: 5,
-                    borderRadius: "50%",
-                    background:
-                      active === s.id ? s.color : "#1f2937",
-                    flexShrink: 0,
-                  }}
-                />
-                {s.name}
-              </div>
-            </button>
-          ))}
-        </div>
-
-        {/* Conteúdo principal */}
-        <div
-          style={{ flex: 1, overflowY: "auto", padding: "24px 28px" }}
-        >
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: 12,
-              marginBottom: 24,
-              paddingBottom: 14,
-              borderBottom: `1px solid ${color}22`,
-            }}
-          >
-            <div
-              style={{
-                background: `${color}18`,
-                border: `1px solid ${color}44`,
-                color,
-                padding: "4px 16px",
-                borderRadius: 4,
-                fontSize: 10,
-                fontFamily: "monospace",
-                letterSpacing: "0.1em",
-                textTransform: "uppercase",
-              }}
-            >
-              {sec.name}
-            </div>
-            <div
-              style={{
-                fontSize: 17,
-                fontWeight: 400,
-                color: "#e2e8f0",
-              }}
-            >
-              {sec.content.title}
-            </div>
-          </div>
-          {sec.content.blocks.map((block, idx) =>
-            renderBlock(block, idx)
-          )}
-        </div>
-      </div>
-
-      {/* Bottom dots */}
-      <div
-        style={{
-          borderTop: "1px solid #0f1623",
-          padding: "10px 28px",
-          background: "#080b14",
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-        }}
-      >
-        <div
-          style={{
-            fontSize: 10,
-            color: "#1f2937",
-            fontFamily: "monospace",
-          }}
-        >
-          {sections.findIndex((s) => s.id === active) + 1}/
-          {sections.length} · {sec.name}
-        </div>
-        <div style={{ display: "flex", gap: 5 }}>
-          {sections.map((s) => (
-            <div
-              key={s.id}
-              onClick={() => setActive(s.id)}
-              style={{
-                width: active === s.id ? 20 : 6,
-                height: 6,
-                borderRadius: 3,
-                background: active === s.id ? s.color : "#1f2937",
-                cursor: "pointer",
-                transition: "all 0.2s",
-              }}
-            />
-          ))}
-        </div>
-      </div>
-    </div>
+    <MedPanelPage
+      sections={sections}
+      specialty="Ginecologia"
+      title="Ciclo Menstrual — Guia Completo"
+    />
   );
 }

@@ -1,5 +1,4 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import MedPanelPage from "./medpanel-layout";
 
 const sections = [
   { id: "fisiologia", name: "Fisiologia", color: "#6366F1" },
@@ -25,11 +24,35 @@ const content = {
         type: "grid",
         title: "Destinos da Glicose Intracelular",
         items: [
-          { label: "Glicólise / Oxidação mitocondrial", value: "Utilização imediata para produção de ATP.", highlight: false },
-          { label: "Glicogênese", value: "Síntese de glicogênio (glicogênio sintase). Fígado: ~100g. Músculo: ~400g.", highlight: false },
-          { label: "Glicogenólise", value: "Quebra do glicogênio (glicogênio fosforilase) → glicose livre. Fígado e músculo.", highlight: false },
-          { label: "Gliconeogênese", value: "Síntese de glicose a partir de lactato, glicerol, aminoácidos (alanina). EXCLUSIVA do fígado e córtex renal.", highlight: true },
-          { label: "Armazenamento como TG", value: "Excesso de glicose → acetil-CoA → lipogênese → triglicerídeos (adiposo).", highlight: false },
+          {
+            label: "Glicólise / Oxidação mitocondrial",
+            value: "Utilização imediata para produção de ATP.",
+            highlight: false,
+          },
+          {
+            label: "Glicogênese",
+            value:
+              "Síntese de glicogênio (glicogênio sintase). Fígado: ~100g. Músculo: ~400g.",
+            highlight: false,
+          },
+          {
+            label: "Glicogenólise",
+            value:
+              "Quebra do glicogênio (glicogênio fosforilase) → glicose livre. Fígado e músculo.",
+            highlight: false,
+          },
+          {
+            label: "Gliconeogênese",
+            value:
+              "Síntese de glicose a partir de lactato, glicerol, aminoácidos (alanina). EXCLUSIVA do fígado e córtex renal.",
+            highlight: true,
+          },
+          {
+            label: "Armazenamento como TG",
+            value:
+              "Excesso de glicose → acetil-CoA → lipogênese → triglicerídeos (adiposo).",
+            highlight: false,
+          },
         ],
       },
       {
@@ -98,22 +121,42 @@ const content = {
           {
             grade: "GJ",
             color: "#10B981",
-            items: ["Glicemia Jejum", "Normal: < 100", "Pré-DM: 100–125", "DM: ≥ 126 mg/dL"],
+            items: [
+              "Glicemia Jejum",
+              "Normal: < 100",
+              "Pré-DM: 100–125",
+              "DM: ≥ 126 mg/dL",
+            ],
           },
           {
             grade: "T1h",
             color: "#F59E0B",
-            items: ["TOTG 1h (NOVO SBD)", "Normal: < 155", "Pré-DM: 155–208", "DM: ≥ 209 mg/dL"],
+            items: [
+              "TOTG 1h (NOVO SBD)",
+              "Normal: < 155",
+              "Pré-DM: 155–208",
+              "DM: ≥ 209 mg/dL",
+            ],
           },
           {
             grade: "T2h",
             color: "#F97316",
-            items: ["TOTG 2h", "Normal: < 140", "Pré-DM: 140–199", "DM: ≥ 200 mg/dL"],
+            items: [
+              "TOTG 2h",
+              "Normal: < 140",
+              "Pré-DM: 140–199",
+              "DM: ≥ 200 mg/dL",
+            ],
           },
           {
             grade: "A1c",
             color: "#EF4444",
-            items: ["HbA1c", "Normal: < 5,7%", "Pré-DM: 5,7–6,4%", "DM: ≥ 6,5%"],
+            items: [
+              "HbA1c",
+              "Normal: < 5,7%",
+              "Pré-DM: 5,7–6,4%",
+              "DM: ≥ 6,5%",
+            ],
           },
         ],
       },
@@ -127,21 +170,58 @@ const content = {
         title: "Rastreamento — Quem Investigar?",
         steps: [
           { text: "Adultos ≥ 45 anos — rastreio universal", color: "#F59E0B" },
-          { text: "< 45 anos com: IMC ≥ 25 + 1 fator de risco (HF, HAS, DLP, DG prévia, SOP, pré-DM, SM)", color: "#F97316" },
-          { text: "Sobrepeso/obesidade em qualquer idade → rastreio conforme SBD", color: "#EF4444" },
-          { text: "FINDRISC ≥ 12 pontos → alto risco → rastreio obrigatório", color: "#6366F1" },
-          { text: "Pré-DM confirmado → repetir anualmente + avaliar progressão", color: "#10B981" },
+          {
+            text: "< 45 anos com: IMC ≥ 25 + 1 fator de risco (HF, HAS, DLP, DG prévia, SOP, pré-DM, SM)",
+            color: "#F97316",
+          },
+          {
+            text: "Sobrepeso/obesidade em qualquer idade → rastreio conforme SBD",
+            color: "#EF4444",
+          },
+          {
+            text: "FINDRISC ≥ 12 pontos → alto risco → rastreio obrigatório",
+            color: "#6366F1",
+          },
+          {
+            text: "Pré-DM confirmado → repetir anualmente + avaliar progressão",
+            color: "#10B981",
+          },
         ],
       },
       {
         type: "grid",
         title: "Outros Exames Diagnósticos",
         items: [
-          { label: "Frutosamina", value: "Reflete glicemia dos últimos 7–14 dias. Útil em hemoglobinopatias (falso HbA1c) ou na gestação.", highlight: false },
-          { label: "Glicosúria", value: "Glicemia > 180 mg/dL → ultrapassa limiar renal → glicose na urina. Pode ocorrer em TFG reduzida (falso positivo).", highlight: false },
-          { label: "Peptídeo C", value: "Marcador de secreção endógena de insulina. DM1/LADA: baixo. DM2: normal/alto. Útil na diferenciação.", highlight: true },
-          { label: "Anti-GAD65 / IA-2 / IAA / anti-Znt8", value: "Autoanticorpos DM1. Anti-GAD: mais comum no adulto. IAA: mais comum na infância. Presentes em ~90% no diagnóstico.", highlight: true },
-          { label: "HbA1c falsa", value: "Falso alto: hemoglobinopatias (HbS, HbC), anemia ferropriva, uremia. Falso baixo: hemólise, transfusão recente, gravidez.", highlight: false },
+          {
+            label: "Frutosamina",
+            value:
+              "Reflete glicemia dos últimos 7–14 dias. Útil em hemoglobinopatias (falso HbA1c) ou na gestação.",
+            highlight: false,
+          },
+          {
+            label: "Glicosúria",
+            value:
+              "Glicemia > 180 mg/dL → ultrapassa limiar renal → glicose na urina. Pode ocorrer em TFG reduzida (falso positivo).",
+            highlight: false,
+          },
+          {
+            label: "Peptídeo C",
+            value:
+              "Marcador de secreção endógena de insulina. DM1/LADA: baixo. DM2: normal/alto. Útil na diferenciação.",
+            highlight: true,
+          },
+          {
+            label: "Anti-GAD65 / IA-2 / IAA / anti-Znt8",
+            value:
+              "Autoanticorpos DM1. Anti-GAD: mais comum no adulto. IAA: mais comum na infância. Presentes em ~90% no diagnóstico.",
+            highlight: true,
+          },
+          {
+            label: "HbA1c falsa",
+            value:
+              "Falso alto: hemoglobinopatias (HbS, HbC), anemia ferropriva, uremia. Falso baixo: hemólise, transfusão recente, gravidez.",
+            highlight: false,
+          },
         ],
       },
       {
@@ -236,12 +316,40 @@ const content = {
         type: "grid",
         title: "Diferencial DM1 × DM2 × LADA × MODY",
         items: [
-          { label: "Autoanticorpos", value: "DM1: positivos (anti-GAD, IA-2, IAA). LADA: positivos (anti-GAD). DM2: negativos. MODY: negativos.", highlight: true },
-          { label: "Peptídeo C", value: "DM1/LADA: baixo/indetectável. DM2/MODY: normal ou elevado.", highlight: true },
-          { label: "Idade de início", value: "DM1: infância. LADA: 25–65 anos. DM2: > 35 anos. MODY: < 25 anos.", highlight: false },
-          { label: "Peso corporal", value: "DM2: obesidade (80%). MODY/DM1: peso normal.", highlight: false },
-          { label: "HF", value: "MODY: 2–3 gerações (AD). DM2: risco aumentado mas sem padrão AD.", highlight: false },
-          { label: "TTO de escolha", value: "DM1/LADA: insulina. DM2: antidiabéticos/insulina. MODY 1 e 3: sulfonilureia. Neonatal: sulfonilureia.", highlight: true },
+          {
+            label: "Autoanticorpos",
+            value:
+              "DM1: positivos (anti-GAD, IA-2, IAA). LADA: positivos (anti-GAD). DM2: negativos. MODY: negativos.",
+            highlight: true,
+          },
+          {
+            label: "Peptídeo C",
+            value: "DM1/LADA: baixo/indetectável. DM2/MODY: normal ou elevado.",
+            highlight: true,
+          },
+          {
+            label: "Idade de início",
+            value:
+              "DM1: infância. LADA: 25–65 anos. DM2: > 35 anos. MODY: < 25 anos.",
+            highlight: false,
+          },
+          {
+            label: "Peso corporal",
+            value: "DM2: obesidade (80%). MODY/DM1: peso normal.",
+            highlight: false,
+          },
+          {
+            label: "HF",
+            value:
+              "MODY: 2–3 gerações (AD). DM2: risco aumentado mas sem padrão AD.",
+            highlight: false,
+          },
+          {
+            label: "TTO de escolha",
+            value:
+              "DM1/LADA: insulina. DM2: antidiabéticos/insulina. MODY 1 e 3: sulfonilureia. Neonatal: sulfonilureia.",
+            highlight: true,
+          },
         ],
       },
       {
@@ -259,22 +367,62 @@ const content = {
         type: "grid",
         title: "Manifestações Clínicas por Tipo",
         items: [
-          { label: "DM1 — insulinopenia clássica", value: "Poliúria + polidipsia + polifagia + perda de peso. Início agudo, às vezes debuta como CAD.", highlight: true },
-          { label: "DM2 — assintomático", value: "80% assintomáticos. Diagnóstico incidental em exame de rotina. Pode ter tonturas, fadiga, visão turva, cãibras.", highlight: false },
-          { label: "Sintomas tardios DM2", value: "Vulvovaginite recorrente, disfunção erétil, neuropatia periférica, acantose nigricans (resistência insulínica).", highlight: false },
-          { label: "Infecções recorrentes", value: "Furunculose, candidíase recorrente, ITU. Glicemia elevada favorece crescimento bacteriano/fúngico.", highlight: true },
-          { label: "Perda de peso paradoxal", value: "No DM1 descompensado: catabolismo por ausência de insulina. No DM2 avançado: falência das células beta.", highlight: false },
+          {
+            label: "DM1 — insulinopenia clássica",
+            value:
+              "Poliúria + polidipsia + polifagia + perda de peso. Início agudo, às vezes debuta como CAD.",
+            highlight: true,
+          },
+          {
+            label: "DM2 — assintomático",
+            value:
+              "80% assintomáticos. Diagnóstico incidental em exame de rotina. Pode ter tonturas, fadiga, visão turva, cãibras.",
+            highlight: false,
+          },
+          {
+            label: "Sintomas tardios DM2",
+            value:
+              "Vulvovaginite recorrente, disfunção erétil, neuropatia periférica, acantose nigricans (resistência insulínica).",
+            highlight: false,
+          },
+          {
+            label: "Infecções recorrentes",
+            value:
+              "Furunculose, candidíase recorrente, ITU. Glicemia elevada favorece crescimento bacteriano/fúngico.",
+            highlight: true,
+          },
+          {
+            label: "Perda de peso paradoxal",
+            value:
+              "No DM1 descompensado: catabolismo por ausência de insulina. No DM2 avançado: falência das células beta.",
+            highlight: false,
+          },
         ],
       },
       {
         type: "flow",
         title: "Hipoglicemia — Classificação e Manejo (Regra dos 15)",
         steps: [
-          { text: "Nível 1: Glicemia < 70 mg/dL + assintomático ou sintomas leves → 15g de carboidrato rápido VO", color: "#F59E0B" },
-          { text: "Nível 2: Glicemia < 54 mg/dL → 15g de carboidrato rápido; se inconsciente → glucagon IM ou dextrose IV", color: "#F97316" },
-          { text: "Nível 3: Hipoglicemia grave com alteração de consciência → glucagon 1 mg IM + dextrose 50% EV + internação", color: "#EF4444" },
-          { text: "Reavaliação em 15 minutos após tratamento → se glicemia ainda < 70 → repetir ciclo", color: "#10B981" },
-          { text: "Meta de TIR (Time in Range): hipoglicemia < 4% do tempo (nível 1) e < 1% (nível 2)", color: "#6366F1" },
+          {
+            text: "Nível 1: Glicemia < 70 mg/dL + assintomático ou sintomas leves → 15g de carboidrato rápido VO",
+            color: "#F59E0B",
+          },
+          {
+            text: "Nível 2: Glicemia < 54 mg/dL → 15g de carboidrato rápido; se inconsciente → glucagon IM ou dextrose IV",
+            color: "#F97316",
+          },
+          {
+            text: "Nível 3: Hipoglicemia grave com alteração de consciência → glucagon 1 mg IM + dextrose 50% EV + internação",
+            color: "#EF4444",
+          },
+          {
+            text: "Reavaliação em 15 minutos após tratamento → se glicemia ainda < 70 → repetir ciclo",
+            color: "#10B981",
+          },
+          {
+            text: "Meta de TIR (Time in Range): hipoglicemia < 4% do tempo (nível 1) e < 1% (nível 2)",
+            color: "#6366F1",
+          },
         ],
       },
       {
@@ -287,11 +435,36 @@ const content = {
         type: "grid",
         title: "Complicações Crônicas — MICRO e MACRO",
         items: [
-          { label: "Retinopatia diabética", value: "Causa mais comum de cegueira em adultos em idade produtiva. Rastreio: fundoscopia anual a partir do diagnóstico (DM2) ou após 5 anos (DM1).", highlight: true },
-          { label: "Nefropatia diabética (DRD)", value: "Principal causa de DRC terminal no Brasil. Rastreio: microalbuminúria/creatinina anual. TTO: iSGLT2 obrigatório se TFG > 20.", highlight: true },
-          { label: "Neuropatia periférica", value: "Mais comum: polineuropatia sensitivo-motora distal simétrica ('meia e luva'). Neuropatia autonômica: gastroparesia, hipotensão ortostática, bexiga neurogênica.", highlight: false },
-          { label: "DAC / IAM", value: "Principal causa de morte em DM2. Risco 2–4× maior. iSGLT2 e GLP-1 com proteção cardiovascular documentada.", highlight: true },
-          { label: "Pé diabético", value: "Tríade: neuropatia + vasculopatia + infecção. Causa principal de amputação não traumática no Brasil.", highlight: false },
+          {
+            label: "Retinopatia diabética",
+            value:
+              "Causa mais comum de cegueira em adultos em idade produtiva. Rastreio: fundoscopia anual a partir do diagnóstico (DM2) ou após 5 anos (DM1).",
+            highlight: true,
+          },
+          {
+            label: "Nefropatia diabética (DRD)",
+            value:
+              "Principal causa de DRC terminal no Brasil. Rastreio: microalbuminúria/creatinina anual. TTO: iSGLT2 obrigatório se TFG > 20.",
+            highlight: true,
+          },
+          {
+            label: "Neuropatia periférica",
+            value:
+              "Mais comum: polineuropatia sensitivo-motora distal simétrica ('meia e luva'). Neuropatia autonômica: gastroparesia, hipotensão ortostática, bexiga neurogênica.",
+            highlight: false,
+          },
+          {
+            label: "DAC / IAM",
+            value:
+              "Principal causa de morte em DM2. Risco 2–4× maior. iSGLT2 e GLP-1 com proteção cardiovascular documentada.",
+            highlight: true,
+          },
+          {
+            label: "Pé diabético",
+            value:
+              "Tríade: neuropatia + vasculopatia + infecção. Causa principal de amputação não traumática no Brasil.",
+            highlight: false,
+          },
         ],
       },
     ],
@@ -363,12 +536,42 @@ const content = {
         type: "grid",
         title: "Prescrição da Insulinoterapia no DM1",
         items: [
-          { label: "Dose total inicial", value: "0,5–1,0 U/kg/dia (pode ser maior no início). Fase de lua de mel: 0,2–0,5 U/kg/dia.", highlight: false },
-          { label: "Divisão basal/bolus", value: "Basal: 30–50% da DDT. Bolus (prandial): 50–70% dividido em 3 refeições.", highlight: true },
-          { label: "Fator de sensibilidade (FS)", value: "FS = 1800 ÷ Dose Diária Total de insulina = quanto 1U de insulina reduz a glicemia (mg/dL).", highlight: true },
-          { label: "Relação insulina/carboidrato (I:C)", value: "I:C = 500 ÷ Dose Diária Total = gramas de carboidrato que 1U de insulina cobre.", highlight: true },
-          { label: "Locais de aplicação", value: "Abdome: absorção mais RÁPIDA. Coxa: mais LENTA (ideal para basais). Nádegas. Braço lateral.", highlight: false },
-          { label: "Bomba de insulina (SICI)", value: "Indicação: hipoglicemia assintomática, DM1 descontrolado, gestação. Infunde basal contínua + bolus sob demanda.", highlight: false },
+          {
+            label: "Dose total inicial",
+            value:
+              "0,5–1,0 U/kg/dia (pode ser maior no início). Fase de lua de mel: 0,2–0,5 U/kg/dia.",
+            highlight: false,
+          },
+          {
+            label: "Divisão basal/bolus",
+            value:
+              "Basal: 30–50% da DDT. Bolus (prandial): 50–70% dividido em 3 refeições.",
+            highlight: true,
+          },
+          {
+            label: "Fator de sensibilidade (FS)",
+            value:
+              "FS = 1800 ÷ Dose Diária Total de insulina = quanto 1U de insulina reduz a glicemia (mg/dL).",
+            highlight: true,
+          },
+          {
+            label: "Relação insulina/carboidrato (I:C)",
+            value:
+              "I:C = 500 ÷ Dose Diária Total = gramas de carboidrato que 1U de insulina cobre.",
+            highlight: true,
+          },
+          {
+            label: "Locais de aplicação",
+            value:
+              "Abdome: absorção mais RÁPIDA. Coxa: mais LENTA (ideal para basais). Nádegas. Braço lateral.",
+            highlight: false,
+          },
+          {
+            label: "Bomba de insulina (SICI)",
+            value:
+              "Indicação: hipoglicemia assintomática, DM1 descontrolado, gestação. Infunde basal contínua + bolus sob demanda.",
+            highlight: false,
+          },
         ],
       },
       {
@@ -380,10 +583,30 @@ const content = {
         type: "grid",
         title: "Ajustes Especiais",
         items: [
-          { label: "Fenômeno do alvorecer", value: "Hiperglicemia matinal por ↑ GH noturno → NPH ao deitar OU análogo GLP-1 corrigem.", highlight: true },
-          { label: "Efeito Somogyi", value: "Hipoglicemia noturna → rebote hiperglicêmico matinal (↑ glucagon + adrenalina). TTO: reduzir dose noturna.", highlight: true },
-          { label: "Atividade física no DM1", value: "Reduzir basal 20–30% ou suspender na SICI durante o exercício. Aumentar carboidrato antes. Risco de hipoglicemia até 24h após.", highlight: false },
-          { label: "Metas de HbA1c", value: "Adultos saudáveis: < 7%. Idosos frágeis: < 8–8,5%. Gestantes: < 6–6,5%. Crianças: < 7–7,5%.", highlight: true },
+          {
+            label: "Fenômeno do alvorecer",
+            value:
+              "Hiperglicemia matinal por ↑ GH noturno → NPH ao deitar OU análogo GLP-1 corrigem.",
+            highlight: true,
+          },
+          {
+            label: "Efeito Somogyi",
+            value:
+              "Hipoglicemia noturna → rebote hiperglicêmico matinal (↑ glucagon + adrenalina). TTO: reduzir dose noturna.",
+            highlight: true,
+          },
+          {
+            label: "Atividade física no DM1",
+            value:
+              "Reduzir basal 20–30% ou suspender na SICI durante o exercício. Aumentar carboidrato antes. Risco de hipoglicemia até 24h após.",
+            highlight: false,
+          },
+          {
+            label: "Metas de HbA1c",
+            value:
+              "Adultos saudáveis: < 7%. Idosos frágeis: < 8–8,5%. Gestantes: < 6–6,5%. Crianças: < 7–7,5%.",
+            highlight: true,
+          },
         ],
       },
     ],
@@ -467,11 +690,36 @@ const content = {
         type: "grid",
         title: "Sulfonilureias, DPP-4, Glitazonas e Outros",
         items: [
-          { label: "Sulfonilureias (SU)", value: "Mec: Agonista canal SUR1 → ↑ secreção insulina independente de glicose. HbA1c: -1–2%. EA: hipoglicemia (principal), ganho de peso. CI: IR grave, hepatopatia grave, gravidez. Gliclazida MR: menor risco de hipoglicemia (preferida no idoso). Glibenclamida: MAIOR risco de hipoglicemia grave.", highlight: false },
-          { label: "iDPP-4 (Gliptinas)", value: "Mec: Inibe DPP-4 → ↑ GLP-1 e GIP endógenos. HbA1c: -0,5–0,8%. Neutro em peso. Baixo risco de hipoglicemia. Excelente em idosos frágeis e DRC. Linagliptina: excreção BILIAR — sem ajuste em DRC. Saxagliptina: ↑ risco de IC (SAVOR-TIMI).", highlight: true },
-          { label: "Pioglitazona (Glitazona)", value: "Mec: Agonista PPAR-γ → ↑ sensibilidade insulínica. HbA1c: -0,5–1,4%. EA: ganho de peso, retenção hídrica, ↑ risco IC e fraturas. CI: IC, osteoporose, hepatopatia ativa. Única classe que melhora MASH histologicamente.", highlight: false },
-          { label: "Inibidores α-Glicosidase (Acarbose)", value: "Mec: ↓ absorção intestinal de carboidratos. HbA1c: -0,5–0,8%. EA: flatulência, diarreia (limitam adesão). Neutro em peso e hipoglicemia. Útil no controle pós-prandial.", highlight: false },
-          { label: "Glinidas (Repaglinida, Nateglinida)", value: "Mec: Semelhante às SU mas mais curta duração → ↓ hipoglicemia. Tomadas antes de cada refeição. Menor risco de hipoglicemia que SU.", highlight: false },
+          {
+            label: "Sulfonilureias (SU)",
+            value:
+              "Mec: Agonista canal SUR1 → ↑ secreção insulina independente de glicose. HbA1c: -1–2%. EA: hipoglicemia (principal), ganho de peso. CI: IR grave, hepatopatia grave, gravidez. Gliclazida MR: menor risco de hipoglicemia (preferida no idoso). Glibenclamida: MAIOR risco de hipoglicemia grave.",
+            highlight: false,
+          },
+          {
+            label: "iDPP-4 (Gliptinas)",
+            value:
+              "Mec: Inibe DPP-4 → ↑ GLP-1 e GIP endógenos. HbA1c: -0,5–0,8%. Neutro em peso. Baixo risco de hipoglicemia. Excelente em idosos frágeis e DRC. Linagliptina: excreção BILIAR — sem ajuste em DRC. Saxagliptina: ↑ risco de IC (SAVOR-TIMI).",
+            highlight: true,
+          },
+          {
+            label: "Pioglitazona (Glitazona)",
+            value:
+              "Mec: Agonista PPAR-γ → ↑ sensibilidade insulínica. HbA1c: -0,5–1,4%. EA: ganho de peso, retenção hídrica, ↑ risco IC e fraturas. CI: IC, osteoporose, hepatopatia ativa. Única classe que melhora MASH histologicamente.",
+            highlight: false,
+          },
+          {
+            label: "Inibidores α-Glicosidase (Acarbose)",
+            value:
+              "Mec: ↓ absorção intestinal de carboidratos. HbA1c: -0,5–0,8%. EA: flatulência, diarreia (limitam adesão). Neutro em peso e hipoglicemia. Útil no controle pós-prandial.",
+            highlight: false,
+          },
+          {
+            label: "Glinidas (Repaglinida, Nateglinida)",
+            value:
+              "Mec: Semelhante às SU mas mais curta duração → ↓ hipoglicemia. Tomadas antes de cada refeição. Menor risco de hipoglicemia que SU.",
+            highlight: false,
+          },
         ],
       },
     ],
@@ -483,20 +731,42 @@ const content = {
       {
         type: "alert",
         color: "#EC4899",
-        title: "Paradigma SBD 2025 — Tratamento Centrado em Desfechos, Não em Glicemia",
+        title:
+          "Paradigma SBD 2025 — Tratamento Centrado em Desfechos, Não em Glicemia",
         text: "O DM2 evoluiu para uma abordagem de PROTEÇÃO CARDIORRENAL. iSGLT2 e análogos GLP-1 são obrigatórios quando há alto risco CV, IC ou DRC — independente do nível de HbA1c. Inércia terapêutica é cada vez mais combatida. A metformina perdeu o posto de primeira linha universal.",
       },
       {
         type: "flow",
         title: "Fluxograma de Escolha Terapêutica — SBD 2025",
         steps: [
-          { text: "Passo 1: HbA1c ≥ 7,5%? → SIM → Iniciar terapia DUPLA (2 fármacos)", color: "#EC4899" },
-          { text: "Passo 2: Alto risco CV (DAC, AVC, DAP)? → SIM → iSGLT2 OU análogo GLP-1 como 1ª linha", color: "#EF4444" },
-          { text: "Passo 3: IC ou DRC (TFG > 20)? → SIM → iSGLT2 OBRIGATÓRIO", color: "#EF4444" },
-          { text: "Passo 4: Obesidade (IMC ≥ 25–30)? → SIM → Análogo GLP-1 ou duplo agonista (GIP+GLP-1)", color: "#F97316" },
-          { text: "Passo 5: Risco CV baixo/intermediário + HbA1c < 7,5% + sem obesidade/doença cardiorrenal → METFORMINA 1ª linha", color: "#6366F1" },
-          { text: "Passo 6: HbA1c > 7% após 3 meses de terapia quádrupla → adicionar NPH 10 UI bedtime", color: "#8B5CF6" },
-          { text: "Passo 7: HbA1c > 10% ou glicemia ≥ 300 ou sintomas intensos → insulinoterapia de início", color: "#EC4899" },
+          {
+            text: "Passo 1: HbA1c ≥ 7,5%? → SIM → Iniciar terapia DUPLA (2 fármacos)",
+            color: "#EC4899",
+          },
+          {
+            text: "Passo 2: Alto risco CV (DAC, AVC, DAP)? → SIM → iSGLT2 OU análogo GLP-1 como 1ª linha",
+            color: "#EF4444",
+          },
+          {
+            text: "Passo 3: IC ou DRC (TFG > 20)? → SIM → iSGLT2 OBRIGATÓRIO",
+            color: "#EF4444",
+          },
+          {
+            text: "Passo 4: Obesidade (IMC ≥ 25–30)? → SIM → Análogo GLP-1 ou duplo agonista (GIP+GLP-1)",
+            color: "#F97316",
+          },
+          {
+            text: "Passo 5: Risco CV baixo/intermediário + HbA1c < 7,5% + sem obesidade/doença cardiorrenal → METFORMINA 1ª linha",
+            color: "#6366F1",
+          },
+          {
+            text: "Passo 6: HbA1c > 7% após 3 meses de terapia quádrupla → adicionar NPH 10 UI bedtime",
+            color: "#8B5CF6",
+          },
+          {
+            text: "Passo 7: HbA1c > 10% ou glicemia ≥ 300 ou sintomas intensos → insulinoterapia de início",
+            color: "#EC4899",
+          },
         ],
       },
       {
@@ -566,12 +836,42 @@ const content = {
         type: "grid",
         title: "Resumo — Escolha por Desfecho",
         items: [
-          { label: "Redução máxima de HbA1c", value: "Insulina > SU/Metformina > GLP-1 > iSGLT2 > iDPP-4 > Acarbose", highlight: false },
-          { label: "Maior perda de peso", value: "Tirzepatida > Semaglutida > Liraglutida > iSGLT2 > Metformina > iDPP-4 (neutro) > SU (ganho)", highlight: true },
-          { label: "Proteção CV (MACE)", value: "GLP-1: liraglutida, semaglutida, dulaglutida. iSGLT2: empagliflozina, dapagliflozina.", highlight: true },
-          { label: "Proteção renal", value: "iSGLT2 (CREDENCE, DAPA-CKD): retardam DRC. Finerenona: reduz albuminúria.", highlight: true },
-          { label: "Menor risco de hipoglicemia", value: "iDPP-4 ≈ GLP-1 ≈ iSGLT2 ≈ metformina (todos baixo risco). SU e insulina = maior risco.", highlight: false },
-          { label: "Único antidiabético para pré-DM", value: "METFORMINA (única com evidência de redução de progressão para DM2).", highlight: true },
+          {
+            label: "Redução máxima de HbA1c",
+            value:
+              "Insulina > SU/Metformina > GLP-1 > iSGLT2 > iDPP-4 > Acarbose",
+            highlight: false,
+          },
+          {
+            label: "Maior perda de peso",
+            value:
+              "Tirzepatida > Semaglutida > Liraglutida > iSGLT2 > Metformina > iDPP-4 (neutro) > SU (ganho)",
+            highlight: true,
+          },
+          {
+            label: "Proteção CV (MACE)",
+            value:
+              "GLP-1: liraglutida, semaglutida, dulaglutida. iSGLT2: empagliflozina, dapagliflozina.",
+            highlight: true,
+          },
+          {
+            label: "Proteção renal",
+            value:
+              "iSGLT2 (CREDENCE, DAPA-CKD): retardam DRC. Finerenona: reduz albuminúria.",
+            highlight: true,
+          },
+          {
+            label: "Menor risco de hipoglicemia",
+            value:
+              "iDPP-4 ≈ GLP-1 ≈ iSGLT2 ≈ metformina (todos baixo risco). SU e insulina = maior risco.",
+            highlight: false,
+          },
+          {
+            label: "Único antidiabético para pré-DM",
+            value:
+              "METFORMINA (única com evidência de redução de progressão para DM2).",
+            highlight: true,
+          },
         ],
       },
       {
@@ -584,172 +884,12 @@ const content = {
 };
 
 export default function DiabetesMellitus() {
-  const [active, setActive] = useState(sections[0].id);
-  const navigate = useNavigate();
-  const sec = sections.find((s) => s.id === active);
-  const color = sec.color;
-  const curr = content[active];
-
-  const renderBlock = (block, idx) => {
-    if (block.type === "alert") {
-      return (
-        <div key={idx} style={{ background: `${block.color}10`, border: `1px solid ${block.color}40`, borderLeft: `3px solid ${block.color}`, borderRadius: 6, padding: "14px 18px", marginBottom: 16 }}>
-          <div style={{ fontSize: 10, fontFamily: "monospace", color: block.color, letterSpacing: "0.12em", textTransform: "uppercase", marginBottom: 6 }}>⬥ {block.title}</div>
-          <div style={{ fontSize: 13, color: "#d1d5db", lineHeight: 1.65 }}>{block.text}</div>
-        </div>
-      );
-    }
-    if (block.type === "obs") {
-      return (
-        <div key={idx} style={{ background: "#0d1117", border: "1px solid #1e2a3a", borderLeft: "3px solid #374151", borderRadius: 6, padding: "14px 18px", marginBottom: 16 }}>
-          <div style={{ fontSize: 10, fontFamily: "monospace", color: "#6b7280", letterSpacing: "0.12em", textTransform: "uppercase", marginBottom: 6 }}>📋 {block.title}</div>
-          <div style={{ fontSize: 13, color: "#9ca3af", lineHeight: 1.65 }}>{block.text}</div>
-        </div>
-      );
-    }
-    if (block.type === "grid") {
-      return (
-        <div key={idx} style={{ marginBottom: 20 }}>
-          <div style={{ fontSize: 11, fontFamily: "monospace", color, letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: 10 }}>{block.title}</div>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: 8 }}>
-            {block.items.map((item, i) => (
-              <div key={i} style={{ background: item.highlight ? `${color}0e` : "#0a0d14", border: `1px solid ${item.highlight ? color + "30" : "#111827"}`, borderRadius: 5, padding: "10px 14px" }}>
-                <div style={{ fontSize: 11, fontFamily: "monospace", color: item.highlight ? color : "#4b5563", marginBottom: 4, fontWeight: 600 }}>{item.label}</div>
-                <div style={{ fontSize: 12, color: item.highlight ? "#d1d5db" : "#6b7280", lineHeight: 1.55 }}>{item.value}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      );
-    }
-    if (block.type === "flow") {
-      return (
-        <div key={idx} style={{ marginBottom: 20 }}>
-          <div style={{ fontSize: 11, fontFamily: "monospace", color, letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: 10 }}>{block.title}</div>
-          <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-            {block.steps.map((step, i) => (
-              <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: 10 }}>
-                <div style={{ display: "flex", flexDirection: "column", alignItems: "center", flexShrink: 0 }}>
-                  <div style={{ width: 24, height: 24, borderRadius: "50%", background: `${step.color}22`, border: `1px solid ${step.color}60`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 10, color: step.color, fontFamily: "monospace", fontWeight: 700 }}>{i + 1}</div>
-                  {i < block.steps.length - 1 && <div style={{ width: 1, height: 12, background: "#1f2937" }} />}
-                </div>
-                <div style={{ background: `${step.color}08`, border: `1px solid ${step.color}25`, borderRadius: 5, padding: "8px 12px", flex: 1, fontSize: 12, color: "#c9cdd6", lineHeight: 1.5 }}>{step.text}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      );
-    }
-    if (block.type === "grades") {
-      return (
-        <div key={idx} style={{ marginBottom: 20 }}>
-          <div style={{ fontSize: 11, fontFamily: "monospace", color, letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: 10 }}>{block.title}</div>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(180px, 1fr))", gap: 8 }}>
-            {block.grades.map((g, i) => (
-              <div key={i} style={{ background: `${g.color}0a`, border: `1px solid ${g.color}30`, borderRadius: 6, overflow: "hidden" }}>
-                <div style={{ background: `${g.color}20`, padding: "8px 12px", borderBottom: `1px solid ${g.color}30`, display: "flex", alignItems: "center", gap: 8 }}>
-                  <div style={{ width: 30, height: 30, borderRadius: "50%", background: g.color, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 10, color: "#fff", fontWeight: 700, fontFamily: "monospace", flexShrink: 0 }}>{g.grade}</div>
-                  <span style={{ fontSize: 11, color: g.color, fontFamily: "monospace" }}>{g.items[0]}</span>
-                </div>
-                <div style={{ padding: "10px 12px" }}>
-                  {g.items.slice(1).map((item, j) => (
-                    <div key={j} style={{ fontSize: 12, color: "#9ca3af", lineHeight: 1.55, paddingBottom: 3, borderBottom: j < g.items.length - 2 ? "1px solid #111827" : "none", marginBottom: 3 }}>{item}</div>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      );
-    }
-    if (block.type === "phases") {
-      return (
-        <div key={idx} style={{ marginBottom: 20 }}>
-          <div style={{ fontSize: 11, fontFamily: "monospace", color, letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: 10 }}>{block.title}</div>
-          <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-            {block.phases.map((phase, i) => (
-              <div key={i} style={{ background: `${phase.color}08`, border: `1px solid ${phase.color}30`, borderRadius: 6, overflow: "hidden", display: "flex" }}>
-                <div style={{ width: 48, background: `${phase.color}18`, borderRight: `1px solid ${phase.color}30`, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "12px 0", flexShrink: 0, gap: 4 }}>
-                  <span style={{ fontSize: 15 }}>{phase.number}</span>
-                  <span style={{ fontSize: 8, color: phase.color, fontFamily: "monospace", writingMode: "vertical-rl", transform: "rotate(180deg)", letterSpacing: "0.06em", textTransform: "uppercase" }}>{phase.name.slice(0, 8)}</span>
-                </div>
-                <div style={{ padding: "12px 14px", flex: 1 }}>
-                  <div style={{ fontSize: 11, color: phase.color, fontFamily: "monospace", marginBottom: 8, fontWeight: 700 }}>{phase.name}</div>
-                  <div style={{ display: "flex", flexWrap: "wrap", gap: 4 }}>
-                    {phase.items.map((item, j) => (
-                      <div key={j} style={{ fontSize: 12, color: "#9ca3af", background: "#0a0d14", border: "1px solid #1f2937", borderRadius: 4, padding: "4px 8px", lineHeight: 1.4 }}>{item}</div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      );
-    }
-    if (block.type === "decision") {
-      return (
-        <div key={idx} style={{ marginBottom: 20 }}>
-          <div style={{ fontSize: 11, fontFamily: "monospace", color, letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: 10 }}>{block.title}</div>
-          <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-            {block.decisions.map((d, i) => (
-              <div key={i} style={{ background: `${d.color}08`, border: `1px solid ${d.color}30`, borderRadius: 6, overflow: "hidden" }}>
-                <div style={{ background: `${d.color}18`, padding: "8px 16px", borderBottom: `1px solid ${d.color}30` }}>
-                  <span style={{ fontSize: 12, color: d.color, fontFamily: "monospace", fontWeight: 700 }}>{d.condition}</span>
-                </div>
-                <div style={{ padding: "10px 16px", display: "flex", flexWrap: "wrap", gap: 4 }}>
-                  {d.actions.map((a, j) => (
-                    <div key={j} style={{ fontSize: 12, color: "#9ca3af", background: "#0a0d14", border: "1px solid #1f2937", borderRadius: 4, padding: "3px 8px" }}>{a}</div>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      );
-    }
-    return null;
-  };
-
+  const sectionsWithContent = sections.map(s => ({ ...s, content: content[s.id] }));
   return (
-    <div style={{ background: "#06080f", minHeight: "100vh", fontFamily: "'Palatino Linotype', 'Book Antiqua', Palatino, serif", color: "#dde3f0", display: "flex", flexDirection: "column" }}>
-      <button onClick={() => navigate("/")} style={{ background: "transparent", border: "1px solid #1e2a3a", color: "#64748b", padding: "6px 14px", borderRadius: 6, cursor: "pointer", fontFamily: "monospace", fontSize: 12, width: "fit-content", margin: "16px 0 0 28px", display: "inline-flex", alignItems: "center", gap: 5 }}>← MedPanel</button>
-
-      <div style={{ borderBottom: "1px solid #111827", padding: "16px 28px", background: "#080b14" }}>
-        <div style={{ fontSize: 10, letterSpacing: "0.35em", color: "#374151", fontFamily: "monospace", textTransform: "uppercase", marginBottom: 4 }}>Endocrinologia · Referência para Residência</div>
-        <h1 style={{ margin: 0, fontSize: 20, fontWeight: 400, color: "#f1f5f9", letterSpacing: "0.01em" }}>Diabetes Mellitus — Guia Completo</h1>
-        <div style={{ fontSize: 11, color: "#374151", marginTop: 4, fontFamily: "monospace" }}>Fisiologia · Diagnóstico · Classificação · Clínica · Insulinoterapia · Antidiabéticos · Algoritmo SBD 2025</div>
-      </div>
-
-      <div style={{ display: "flex", flex: 1, overflow: "hidden" }}>
-        <div style={{ width: 170, borderRight: "1px solid #0f1623", background: "#080b14", padding: "12px 0", flexShrink: 0, overflowY: "auto" }}>
-          {sections.map((s) => (
-            <button key={s.id} onClick={() => setActive(s.id)} style={{ width: "100%", background: active === s.id ? `${s.color}12` : "transparent", border: "none", borderLeft: `2px solid ${active === s.id ? s.color : "transparent"}`, color: active === s.id ? "#f1f5f9" : "#4b5563", padding: "10px 16px", cursor: "pointer", textAlign: "left", fontSize: 12, fontFamily: "monospace", transition: "all 0.15s" }}>
-              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                <div style={{ width: 5, height: 5, borderRadius: "50%", background: active === s.id ? s.color : "#1f2937", flexShrink: 0 }} />
-                {s.name}
-              </div>
-            </button>
-          ))}
-        </div>
-
-        <div style={{ flex: 1, overflowY: "auto", padding: "24px 28px" }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 24, paddingBottom: 14, borderBottom: `1px solid ${color}22` }}>
-            <div style={{ background: `${color}18`, border: `1px solid ${color}44`, color, padding: "4px 16px", borderRadius: 4, fontSize: 10, fontFamily: "monospace", letterSpacing: "0.1em", textTransform: "uppercase" }}>{sec.name}</div>
-            <div style={{ fontSize: 16, fontWeight: 400, color: "#e2e8f0" }}>{curr.title}</div>
-          </div>
-          {curr.blocks.map((block, idx) => renderBlock(block, idx))}
-        </div>
-      </div>
-
-      <div style={{ borderTop: "1px solid #0f1623", padding: "10px 28px", background: "#080b14", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-        <div style={{ fontSize: 10, color: "#1f2937", fontFamily: "monospace" }}>{sections.findIndex((s) => s.id === active) + 1}/{sections.length} · {sec.name}</div>
-        <div style={{ display: "flex", gap: 5 }}>
-          {sections.map((s) => (
-            <div key={s.id} onClick={() => setActive(s.id)} style={{ width: active === s.id ? 20 : 6, height: 6, borderRadius: 3, background: active === s.id ? s.color : "#1f2937", cursor: "pointer", transition: "all 0.2s" }} />
-          ))}
-        </div>
-      </div>
-    </div>
+    <MedPanelPage
+      sections={sectionsWithContent}
+      specialty="Clinica"
+      title="Diabetes Mellitus — Guia Completo"
+    />
   );
 }

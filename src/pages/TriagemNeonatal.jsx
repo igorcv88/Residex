@@ -1,5 +1,4 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import MedPanelPage from "./medpanel-layout";
 
 const sections = [
   {
@@ -19,10 +18,30 @@ const sections = [
           type: "grid",
           title: "Como e Quando Realizar",
           items: [
-            { label: "COMO",   value: "Oxímetro de pulso pré-ductal (MSD — membros superiores direito) + qualquer membro inferior (pós-ductal). Esperar sinal estável. RN deve estar acordado e tranquilo.", highlight: true },
-            { label: "QUANDO", value: "Entre 24 e 48 horas de vida em RN ≥ 35 semanas. Não realizar antes de 24h — maior taxa de falsos positivos (canal ainda aberto).", highlight: true },
-            { label: "Local",  value: "Preferencialmente na maternidade, antes da alta hospitalar.", highlight: false },
-            { label: "Base legal", value: "Portaria GM/MS nº 20/2014 — obrigatório em todo RN ≥ 34 semanas no Brasil.", highlight: false },
+            {
+              label: "COMO",
+              value:
+                "Oxímetro de pulso pré-ductal (MSD — membros superiores direito) + qualquer membro inferior (pós-ductal). Esperar sinal estável. RN deve estar acordado e tranquilo.",
+              highlight: true,
+            },
+            {
+              label: "QUANDO",
+              value:
+                "Entre 24 e 48 horas de vida em RN ≥ 35 semanas. Não realizar antes de 24h — maior taxa de falsos positivos (canal ainda aberto).",
+              highlight: true,
+            },
+            {
+              label: "Local",
+              value:
+                "Preferencialmente na maternidade, antes da alta hospitalar.",
+              highlight: false,
+            },
+            {
+              label: "Base legal",
+              value:
+                "Portaria GM/MS nº 20/2014 — obrigatório em todo RN ≥ 34 semanas no Brasil.",
+              highlight: false,
+            },
           ],
         },
         {
@@ -161,7 +180,8 @@ const sections = [
               ],
             },
             {
-              condition: "FATORES DE RISCO — PEATE (Potencial Evocado de Tronco)",
+              condition:
+                "FATORES DE RISCO — PEATE (Potencial Evocado de Tronco)",
               color: "#F59E0B",
               actions: [
                 "Avalia a via auditiva neural central (tronco encefálico)",
@@ -176,24 +196,73 @@ const sections = [
           type: "grid",
           title: "Fatores de Risco — Indicam PEATE Obrigatório",
           items: [
-            { label: "UTI Neonatal ≥ 5 dias",      value: "Qualquer RN internado em UTI Neonatal por 5 dias ou mais tem risco aumentado de neuropatia auditiva por hipóxia, ototóxicos ou hiperbilirrubinemia.", highlight: true },
-            { label: "Asfixia / EHI",              value: "Encefalopatia hipóxico-isquêmica acomete o nervo auditivo — EOA pode ser normal mesmo com lesão neural.", highlight: true },
-            { label: "STORCH",                     value: "Sífilis congênita, Toxoplasmose, Outros (CMV, varicela), Rubéola, Citomegalovírus, Herpes. CMV é a causa infecciosa mais comum de surdez congênita.", highlight: false },
-            { label: "Malformações craniofaciais", value: "Síndromes com acometimento do ouvido externo/médio/interno — ex: Pierre Robin, Treacher Collins.", highlight: false },
-            { label: "Meningite / Encefalite",     value: "Inflamação pode lesar o nervo auditivo. Rastrear SEMPRE após meningite bacteriana.", highlight: false },
-            { label: "Trauma de base de crânio",   value: "Pode lesar o osso temporal e as estruturas auditivas.", highlight: false },
-            { label: "História familiar de surdez", value: "Surdez hereditária não sindrômica (GJB2/Conexina 26) — mais comum. Pesquisar pais e familiares.", highlight: false },
+            {
+              label: "UTI Neonatal ≥ 5 dias",
+              value:
+                "Qualquer RN internado em UTI Neonatal por 5 dias ou mais tem risco aumentado de neuropatia auditiva por hipóxia, ototóxicos ou hiperbilirrubinemia.",
+              highlight: true,
+            },
+            {
+              label: "Asfixia / EHI",
+              value:
+                "Encefalopatia hipóxico-isquêmica acomete o nervo auditivo — EOA pode ser normal mesmo com lesão neural.",
+              highlight: true,
+            },
+            {
+              label: "STORCH",
+              value:
+                "Sífilis congênita, Toxoplasmose, Outros (CMV, varicela), Rubéola, Citomegalovírus, Herpes. CMV é a causa infecciosa mais comum de surdez congênita.",
+              highlight: false,
+            },
+            {
+              label: "Malformações craniofaciais",
+              value:
+                "Síndromes com acometimento do ouvido externo/médio/interno — ex: Pierre Robin, Treacher Collins.",
+              highlight: false,
+            },
+            {
+              label: "Meningite / Encefalite",
+              value:
+                "Inflamação pode lesar o nervo auditivo. Rastrear SEMPRE após meningite bacteriana.",
+              highlight: false,
+            },
+            {
+              label: "Trauma de base de crânio",
+              value: "Pode lesar o osso temporal e as estruturas auditivas.",
+              highlight: false,
+            },
+            {
+              label: "História familiar de surdez",
+              value:
+                "Surdez hereditária não sindrômica (GJB2/Conexina 26) — mais comum. Pesquisar pais e familiares.",
+              highlight: false,
+            },
           ],
         },
         {
           type: "flow",
           title: "Fluxo da Triagem — Do Teste ao Diagnóstico",
           steps: [
-            { text: "Realização das EOA (todo RN) ou PEATE (fatores de risco) — idealmente antes da alta", color: "#0EA5E9" },
-            { text: "PASSA em ambas as orelhas → alta com orientação — CONCLUÍDO", color: "#10B981" },
-            { text: "FALHA em uma ou ambas → repetir na mesma internação (2ª EOA)", color: "#F59E0B" },
-            { text: "FALHA na 2ª EOA → encaminhar para avaliação audiológica completa até 3 meses", color: "#F97316" },
-            { text: "Diagnóstico audiológico confirmado → intervenção (AASI ou implante coclear) até 6 meses", color: "#EF4444" },
+            {
+              text: "Realização das EOA (todo RN) ou PEATE (fatores de risco) — idealmente antes da alta",
+              color: "#0EA5E9",
+            },
+            {
+              text: "PASSA em ambas as orelhas → alta com orientação — CONCLUÍDO",
+              color: "#10B981",
+            },
+            {
+              text: "FALHA em uma ou ambas → repetir na mesma internação (2ª EOA)",
+              color: "#F59E0B",
+            },
+            {
+              text: "FALHA na 2ª EOA → encaminhar para avaliação audiológica completa até 3 meses",
+              color: "#F97316",
+            },
+            {
+              text: "Diagnóstico audiológico confirmado → intervenção (AASI ou implante coclear) até 6 meses",
+              color: "#EF4444",
+            },
           ],
         },
         {
@@ -222,10 +291,30 @@ const sections = [
           type: "grid",
           title: "Como Realizar e Quando",
           items: [
-            { label: "Instrumento", value: "Oftalmoscópio direto — luz branca — afastamento de ~50 cm do rosto do RN em sala com luz reduzida.", highlight: false },
-            { label: "Idealmente", value: "Até 7 dias de vida (maternidade). Realizar antes da alta hospitalar sempre que possível.", highlight: true },
-            { label: "Limite máximo", value: "6 meses de vida (algumas fontes: 1 ano) — porém NÃO substitui avaliação oftalmológica especializada.", highlight: true },
-            { label: "Repetir até", value: "3 anos de idade (consultas de puericultura) — a cada visita médica.", highlight: false },
+            {
+              label: "Instrumento",
+              value:
+                "Oftalmoscópio direto — luz branca — afastamento de ~50 cm do rosto do RN em sala com luz reduzida.",
+              highlight: false,
+            },
+            {
+              label: "Idealmente",
+              value:
+                "Até 7 dias de vida (maternidade). Realizar antes da alta hospitalar sempre que possível.",
+              highlight: true,
+            },
+            {
+              label: "Limite máximo",
+              value:
+                "6 meses de vida (algumas fontes: 1 ano) — porém NÃO substitui avaliação oftalmológica especializada.",
+              highlight: true,
+            },
+            {
+              label: "Repetir até",
+              value:
+                "3 anos de idade (consultas de puericultura) — a cada visita médica.",
+              highlight: false,
+            },
           ],
         },
         {
@@ -315,11 +404,35 @@ const sections = [
           type: "grid",
           title: "Como Coletar — Técnica do Papel Filtro",
           items: [
-            { label: "Local de punção", value: "Calcâneo do RN — face lateral ou medial. NUNCA a face posterior (risco de lesão do tendão de Aquiles).", highlight: true },
-            { label: "Instrumento",    value: "Lanceta de segurança para neonatos (2mm profundidade).", highlight: false },
-            { label: "Técnica",        value: "Puncionar → aguardar formação de gota espontânea → encostar o papel filtro (não esfregar) → preencher 4 círculos homogeneamente (1 gota em cada quadrante).", highlight: true },
-            { label: "Secagem",        value: "Horizontal, temperatura ambiente, protegido da luz e umidade. NUNCA secar ao sol, ventilador ou forno.", highlight: false },
-            { label: "Envio",          value: "Dentro de 2–5 dias após coleta. Acondicionado em envelope de papel (não plástico).", highlight: false },
+            {
+              label: "Local de punção",
+              value:
+                "Calcâneo do RN — face lateral ou medial. NUNCA a face posterior (risco de lesão do tendão de Aquiles).",
+              highlight: true,
+            },
+            {
+              label: "Instrumento",
+              value: "Lanceta de segurança para neonatos (2mm profundidade).",
+              highlight: false,
+            },
+            {
+              label: "Técnica",
+              value:
+                "Puncionar → aguardar formação de gota espontânea → encostar o papel filtro (não esfregar) → preencher 4 círculos homogeneamente (1 gota em cada quadrante).",
+              highlight: true,
+            },
+            {
+              label: "Secagem",
+              value:
+                "Horizontal, temperatura ambiente, protegido da luz e umidade. NUNCA secar ao sol, ventilador ou forno.",
+              highlight: false,
+            },
+            {
+              label: "Envio",
+              value:
+                "Dentro de 2–5 dias após coleta. Acondicionado em envelope de papel (não plástico).",
+              highlight: false,
+            },
           ],
         },
         {
@@ -452,12 +565,30 @@ const sections = [
           type: "flow",
           title: "Protocolo para PREMATUROS — Coletas Múltiplas",
           steps: [
-            { text: "1ª Coleta: ADMISSÃO NA UTI — antes de qualquer medicação (base individual)", color: "#F59E0B" },
-            { text: "2ª Coleta: 56–70h de vida — também por punção periférica (não calcâneo se muito prematuro)", color: "#F59E0B" },
-            { text: "3ª Coleta: 28 dias de vida OU NA ALTA (o que ocorrer primeiro)", color: "#F97316" },
-            { text: "4ª Coleta: 16 dias após a 3ª coleta (se ainda internado)", color: "#F97316" },
-            { text: "5ª Coleta: 120 dias após a 3ª coleta (acompanhamento ambulatorial)", color: "#EF4444" },
-            { text: "HEMOTRANSFUNDIDOS: fazer 2 amostras — 1 antes da transfusão + 1 após 90-120 dias", color: "#8B5CF6" },
+            {
+              text: "1ª Coleta: ADMISSÃO NA UTI — antes de qualquer medicação (base individual)",
+              color: "#F59E0B",
+            },
+            {
+              text: "2ª Coleta: 56–70h de vida — também por punção periférica (não calcâneo se muito prematuro)",
+              color: "#F59E0B",
+            },
+            {
+              text: "3ª Coleta: 28 dias de vida OU NA ALTA (o que ocorrer primeiro)",
+              color: "#F97316",
+            },
+            {
+              text: "4ª Coleta: 16 dias após a 3ª coleta (se ainda internado)",
+              color: "#F97316",
+            },
+            {
+              text: "5ª Coleta: 120 dias após a 3ª coleta (acompanhamento ambulatorial)",
+              color: "#EF4444",
+            },
+            {
+              text: "HEMOTRANSFUNDIDOS: fazer 2 amostras — 1 antes da transfusão + 1 após 90-120 dias",
+              color: "#8B5CF6",
+            },
           ],
         },
         {
@@ -486,23 +617,68 @@ const sections = [
           type: "grid",
           title: "Instrumento — BTAT (Protocolo Bristol)",
           items: [
-            { label: "Exame físico (obrigatório)", value: "Protocolo Bristol — 4 domínios avaliados por profissional de saúde capacitado (médico, fonoaudiólogo, enfermeiro ou dentista).", highlight: true },
-            { label: "Aparência da ponta da língua", value: "0 = bífida/em coração | 1 = pequena entalhe | 2 = aspecto normal", highlight: false },
-            { label: "Fixação do freio na gengiva", value: "0 = na ponta da crista alveolar | 1 = entre ponta e meio | 2 = no meio | 3 = por trás", highlight: false },
-            { label: "Elevação da língua — boca aberta", value: "0 = nenhum movimento | 1 = < 25% de elevação | 2 = 25-50% | 3 = 50-75% | 4 = > 75%", highlight: false },
-            { label: "Extensão da língua — boca aberta", value: "0 = não passa da gengiva inferior | 1 = passa levemente | 2 = até o lábio inferior | 3 = além do lábio", highlight: false },
-            { label: "Interpretação", value: "Score ≥ 8: improvável restrição significativa | Score 6-7: possível restrição | Score ≤ 5: restrição significativa provável", highlight: true },
+            {
+              label: "Exame físico (obrigatório)",
+              value:
+                "Protocolo Bristol — 4 domínios avaliados por profissional de saúde capacitado (médico, fonoaudiólogo, enfermeiro ou dentista).",
+              highlight: true,
+            },
+            {
+              label: "Aparência da ponta da língua",
+              value:
+                "0 = bífida/em coração | 1 = pequena entalhe | 2 = aspecto normal",
+              highlight: false,
+            },
+            {
+              label: "Fixação do freio na gengiva",
+              value:
+                "0 = na ponta da crista alveolar | 1 = entre ponta e meio | 2 = no meio | 3 = por trás",
+              highlight: false,
+            },
+            {
+              label: "Elevação da língua — boca aberta",
+              value:
+                "0 = nenhum movimento | 1 = < 25% de elevação | 2 = 25-50% | 3 = 50-75% | 4 = > 75%",
+              highlight: false,
+            },
+            {
+              label: "Extensão da língua — boca aberta",
+              value:
+                "0 = não passa da gengiva inferior | 1 = passa levemente | 2 = até o lábio inferior | 3 = além do lábio",
+              highlight: false,
+            },
+            {
+              label: "Interpretação",
+              value:
+                "Score ≥ 8: improvável restrição significativa | Score 6-7: possível restrição | Score ≤ 5: restrição significativa provável",
+              highlight: true,
+            },
           ],
         },
         {
           type: "flow",
           title: "Fluxograma de Conduta",
           steps: [
-            { text: "Exame físico com BTAT — todo RN (obrigatório pelo Decreto 9.579/2018)", color: "#8B5CF6" },
-            { text: "Score ≤ 5 (restrição significativa) → avaliar impacto funcional na amamentação", color: "#8B5CF6" },
-            { text: "Dificuldade na amamentação confirmada → considerar frenectomia/frenotomia", color: "#EC4899" },
-            { text: "SEM dificuldade na amamentação → conduta expectante + suporte de lactação", color: "#10B981" },
-            { text: "INDICAÇÃO DE CIRURGIA: score ≤ 5 COM interferência comprovada na amamentação → 0 a 3 pontos no domínio de diagnóstico funcional", color: "#EF4444" },
+            {
+              text: "Exame físico com BTAT — todo RN (obrigatório pelo Decreto 9.579/2018)",
+              color: "#8B5CF6",
+            },
+            {
+              text: "Score ≤ 5 (restrição significativa) → avaliar impacto funcional na amamentação",
+              color: "#8B5CF6",
+            },
+            {
+              text: "Dificuldade na amamentação confirmada → considerar frenectomia/frenotomia",
+              color: "#EC4899",
+            },
+            {
+              text: "SEM dificuldade na amamentação → conduta expectante + suporte de lactação",
+              color: "#10B981",
+            },
+            {
+              text: "INDICAÇÃO DE CIRURGIA: score ≤ 5 COM interferência comprovada na amamentação → 0 a 3 pontos no domínio de diagnóstico funcional",
+              color: "#EF4444",
+            },
           ],
         },
         {
@@ -543,168 +719,11 @@ const sections = [
 
 // ─── render ────────────────────────────────────────────────────────
 export default function TriagemNeonatal() {
-  const [active, setActive] = useState(sections[0].id);
-  const navigate = useNavigate();
-  const sec   = sections.find(s => s.id === active);
-  const color = sec.color;
-
-  const renderBlock = (block, idx) => {
-    if (block.type === "alert") return (
-      <div key={idx} style={{ background:`${block.color}10`, border:`1px solid ${block.color}33`, borderLeft:`3px solid ${block.color}`, borderRadius:6, padding:"14px 18px", marginBottom:16 }}>
-        <div style={{ fontSize:10, fontFamily:"monospace", color:block.color, letterSpacing:"0.1em", textTransform:"uppercase", marginBottom:6 }}>⚡ {block.title}</div>
-        <div style={{ fontSize:13, color:"#e2e8f0", lineHeight:1.75 }}>{block.text}</div>
-      </div>
-    );
-
-    if (block.type === "obs") return (
-      <div key={idx} style={{ background:"#0a0f1a", border:"1px solid #1e2a3a", borderLeft:`3px solid ${color}`, borderRadius:6, padding:"14px 18px", marginBottom:16 }}>
-        <div style={{ fontSize:10, fontFamily:"monospace", color, letterSpacing:"0.1em", textTransform:"uppercase", marginBottom:6 }}>🔬 {block.title}</div>
-        <div style={{ fontSize:13, color:"#94a3b8", lineHeight:1.75 }}>{block.text}</div>
-      </div>
-    );
-
-    if (block.type === "grid") return (
-      <div key={idx} style={{ marginBottom:20 }}>
-        <div style={{ fontSize:10, fontFamily:"monospace", color:"#4b5563", letterSpacing:"0.15em", textTransform:"uppercase", marginBottom:10 }}>{block.title}</div>
-        <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:8 }}>
-          {block.items.map((item,i) => (
-            <div key={i} style={{ background:item.highlight?`${color}0a`:"#080d18", border:`1px solid ${item.highlight?color+"33":"#111827"}`, borderRadius:5, padding:"10px 14px" }}>
-              <div style={{ fontSize:10, fontFamily:"monospace", color:item.highlight?color:"#374151", letterSpacing:"0.05em", marginBottom:4 }}>{item.label}</div>
-              <div style={{ fontSize:12, color:"#cbd5e1", lineHeight:1.65 }}>{item.value}</div>
-            </div>
-          ))}
-        </div>
-      </div>
-    );
-
-    if (block.type === "flow") return (
-      <div key={idx} style={{ marginBottom:20 }}>
-        <div style={{ fontSize:10, fontFamily:"monospace", color:"#4b5563", letterSpacing:"0.15em", textTransform:"uppercase", marginBottom:10 }}>{block.title}</div>
-        <div style={{ borderLeft:"1px solid #1f2937", marginLeft:9 }}>
-          {block.steps.map((step,i) => (
-            <div key={i} style={{ display:"flex", alignItems:"flex-start", gap:12, marginBottom:6, marginLeft:-9 }}>
-              <div style={{ width:18, height:18, borderRadius:"50%", background:`${step.color}22`, border:`1px solid ${step.color}66`, flexShrink:0, display:"flex", alignItems:"center", justifyContent:"center", marginTop:1 }}>
-                <div style={{ width:6, height:6, borderRadius:"50%", background:step.color }}/>
-              </div>
-              <div style={{ fontSize:12, color:"#cbd5e1", lineHeight:1.65, paddingTop:1 }}>{step.text}</div>
-            </div>
-          ))}
-        </div>
-      </div>
-    );
-
-    if (block.type === "grades") return (
-      <div key={idx} style={{ marginBottom:20 }}>
-        <div style={{ fontSize:10, fontFamily:"monospace", color:"#4b5563", letterSpacing:"0.15em", textTransform:"uppercase", marginBottom:10 }}>{block.title}</div>
-        <div style={{ display:"flex", flexDirection:"column", gap:6 }}>
-          {block.grades.map((g,i) => (
-            <div key={i} style={{ display:"flex", alignItems:"flex-start", gap:12, background:`${g.color}08`, border:`1px solid ${g.color}22`, borderLeft:`3px solid ${g.color}`, borderRadius:5, padding:"10px 14px" }}>
-              <div style={{ fontSize:11, fontWeight:700, color:g.color, fontFamily:"monospace", minWidth:90, marginTop:1, flexShrink:0 }}>{g.grade}</div>
-              <div style={{ flex:1 }}>
-                {g.items.map((item,j) => (
-                  <div key={j} style={{ fontSize:12, color:"#cbd5e1", lineHeight:1.65 }}>{item}</div>
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    );
-
-    if (block.type === "phases") return (
-      <div key={idx} style={{ marginBottom:20 }}>
-        <div style={{ fontSize:10, fontFamily:"monospace", color:"#4b5563", letterSpacing:"0.15em", textTransform:"uppercase", marginBottom:10 }}>{block.title}</div>
-        <div style={{ display:"grid", gridTemplateColumns:`repeat(${Math.min(block.phases.length,3)}, 1fr)`, gap:10 }}>
-          {block.phases.map((phase,i) => (
-            <div key={i} style={{ background:`${phase.color}08`, border:`1px solid ${phase.color}33`, borderRadius:6, padding:"14px" }}>
-              <div style={{ display:"flex", alignItems:"center", gap:8, marginBottom:10 }}>
-                <div style={{ padding:"2px 8px", borderRadius:4, background:`${phase.color}22`, border:`1px solid ${phase.color}66`, fontSize:11, fontWeight:700, color:phase.color, fontFamily:"monospace", flexShrink:0 }}>{phase.number}</div>
-                <div style={{ fontSize:11, color:phase.color, fontFamily:"monospace", lineHeight:1.3 }}>{phase.name}</div>
-              </div>
-              <ul style={{ margin:0, paddingLeft:16 }}>
-                {phase.items.map((item,j) => (
-                  <li key={j} style={{ fontSize:12, color:"#cbd5e1", lineHeight:1.7, marginBottom:2 }}>{item}</li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </div>
-      </div>
-    );
-
-    if (block.type === "decision") return (
-      <div key={idx} style={{ marginBottom:20 }}>
-        <div style={{ fontSize:10, fontFamily:"monospace", color:"#4b5563", letterSpacing:"0.15em", textTransform:"uppercase", marginBottom:10 }}>{block.title}</div>
-        <div style={{ display:"grid", gridTemplateColumns:`repeat(${Math.min(block.decisions.length,2)}, 1fr)`, gap:10 }}>
-          {block.decisions.map((d,i) => (
-            <div key={i} style={{ background:`${d.color}08`, border:`1px solid ${d.color}33`, borderTop:`2px solid ${d.color}`, borderRadius:6, padding:"12px 14px" }}>
-              <div style={{ fontSize:10, fontFamily:"monospace", color:d.color, letterSpacing:"0.08em", marginBottom:10, textTransform:"uppercase" }}>{d.condition}</div>
-              <ul style={{ margin:0, paddingLeft:16 }}>
-                {d.actions.map((action,j) => (
-                  <li key={j} style={{ fontSize:12, color:"#cbd5e1", lineHeight:1.7, marginBottom:2 }}>{action}</li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </div>
-      </div>
-    );
-
-    return null;
-  };
-
   return (
-    <div style={{ background:"#06080f", minHeight:"100vh", fontFamily:"'Palatino Linotype','Book Antiqua',Palatino,serif", color:"#dde3f0", display:"flex", flexDirection:"column" }}>
-
-      <button onClick={() => navigate("/")} style={{ background:"transparent", border:"1px solid #1e2a3a", color:"#64748b", padding:"6px 14px", borderRadius:6, cursor:"pointer", fontFamily:"monospace", fontSize:12, width:"fit-content", margin:"16px 0 0 28px", display:"inline-flex", alignItems:"center", gap:5 }}>
-        ← MedPanel
-      </button>
-
-      <div style={{ borderBottom:"1px solid #111827", padding:"16px 28px", background:"#080b14" }}>
-        <div style={{ fontSize:10, letterSpacing:"0.35em", color:"#374151", fontFamily:"monospace", textTransform:"uppercase", marginBottom:4 }}>
-          Pediatria · Neonatologia · Referência para Residência
-        </div>
-        <h1 style={{ margin:0, fontSize:20, fontWeight:400, color:"#f1f5f9", letterSpacing:"0.01em" }}>
-          Triagem Neonatal — Os 5 Testes
-        </h1>
-        <div style={{ fontSize:11, color:"#374151", marginTop:4, fontFamily:"monospace" }}>
-          Coraçãozinho · Orelhinha · Olhinho · Pézinho · Linguinha
-        </div>
-      </div>
-
-      <div style={{ display:"flex", flex:1, overflow:"hidden" }}>
-        <div style={{ width:170, borderRight:"1px solid #0f1623", background:"#080b14", padding:"12px 0", flexShrink:0, overflowY:"auto" }}>
-          {sections.map(s => (
-            <button key={s.id} onClick={() => setActive(s.id)} style={{ width:"100%", background:active===s.id?`${s.color}12`:"transparent", border:"none", borderLeft:`2px solid ${active===s.id?s.color:"transparent"}`, color:active===s.id?"#f1f5f9":"#4b5563", padding:"10px 16px", cursor:"pointer", textAlign:"left", fontSize:12, fontFamily:"monospace", transition:"all 0.15s" }}>
-              <div style={{ display:"flex", alignItems:"center", gap:8 }}>
-                <div style={{ width:5, height:5, borderRadius:"50%", background:active===s.id?s.color:"#1f2937", flexShrink:0 }}/>
-                {s.name}
-              </div>
-            </button>
-          ))}
-        </div>
-
-        <div style={{ flex:1, overflowY:"auto", padding:"24px 28px" }}>
-          <div style={{ display:"flex", alignItems:"center", gap:12, marginBottom:24, paddingBottom:14, borderBottom:`1px solid ${color}22` }}>
-            <div style={{ background:`${color}18`, border:`1px solid ${color}44`, color, padding:"4px 16px", borderRadius:4, fontSize:10, fontFamily:"monospace", letterSpacing:"0.1em", textTransform:"uppercase" }}>
-              {sec.name}
-            </div>
-            <div style={{ fontSize:17, fontWeight:400, color:"#e2e8f0" }}>{sec.content.title}</div>
-          </div>
-          {sec.content.blocks.map((block, idx) => renderBlock(block, idx))}
-        </div>
-      </div>
-
-      <div style={{ borderTop:"1px solid #0f1623", padding:"10px 28px", background:"#080b14", display:"flex", justifyContent:"space-between", alignItems:"center" }}>
-        <div style={{ fontSize:10, color:"#1f2937", fontFamily:"monospace" }}>
-          {sections.findIndex(s => s.id === active)+1}/{sections.length} · {sec.name}
-        </div>
-        <div style={{ display:"flex", gap:5 }}>
-          {sections.map(s => (
-            <div key={s.id} onClick={() => setActive(s.id)} style={{ width:active===s.id?20:6, height:6, borderRadius:3, background:active===s.id?s.color:"#1f2937", cursor:"pointer", transition:"all 0.2s" }}/>
-          ))}
-        </div>
-      </div>
-    </div>
+    <MedPanelPage
+      sections={sections}
+      specialty="Pediatria"
+      title="Triagem Neonatal — Guia Completo"
+    />
   );
 }
