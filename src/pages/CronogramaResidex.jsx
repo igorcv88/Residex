@@ -3,14 +3,14 @@ import { useNavigate } from "react-router-dom";
 
 // ─── tokens ──────────────────────────────────────────────────────────────────
 const BG = "#ffffff";
-const BG2 = "#f2e8f0";
-const BG3 = "#f3f8ff";
-const BORDER = "#111827";
-const BORDER2 = "#1e2a3a";
+const BG2 = "#ffffff";
+const BG3 = "#f8fafc";
+const BORDER = "#e2e8f0";
+const BORDER2 = "#e2e8f0";
 const T_PRI = "#000000";
 const T_SEC = "#000000";
-const T_MUT = "#0d1220";
-const T_DIM = "#000000";
+const T_MUT = "#445162";
+const T_DIM = "#64748b";
 const FONT = "'Palatino Linotype','Book Antiqua',Palatino,serif";
 const MONO = "monospace";
 
@@ -540,45 +540,45 @@ const TIER_CONFIG = {
   critical: {
     label: "Crítico — IPR 80–100 · Estude em profundidade",
     dot: "#EF4444",
-    bg: "#EF444414",
-    border: "#EF444435",
-    text: "#fca5a5",
+    bg: "#fef2f2",
+    border: "#fecaca",
+    text: "#b91c1c",
     shortLabel: "CRÍTICO",
   },
   high: {
     label: "Alta prioridade — IPR 60–79 · Solidez obrigatória",
     dot: "#F59E0B",
-    bg: "#F59E0B14",
-    border: "#F59E0B35",
-    text: "#fcd34d",
+    bg: "#fffbeb",
+    border: "#fde68a",
+    text: "#b45309",
     shortLabel: "ALTA",
   },
   mid: {
     label: "Média prioridade — IPR 40–59 · Pontos-chave",
     dot: "#10B981",
-    bg: "#10B98114",
-    border: "#10B98135",
-    text: "#6ee7b7",
+    bg: "#ecfdf5",
+    border: "#a7f3d0",
+    text: "#047857",
     shortLabel: "MÉDIA",
   },
   low: {
     label: "Baixa prioridade — IPR <40 · Só se sobrar tempo",
     dot: "#0EA5E9",
-    bg: "#0EA5E914",
-    border: "#0EA5E935",
-    text: "#7dd3fc",
+    bg: "#f0f9ff",
+    border: "#bae6fd",
+    text: "#0369a1",
     shortLabel: "BAIXA",
   },
 };
 
 // ─── spec config (dark) ───────────────────────────────────────────────────────
 const SPEC_CONFIG = {
-  CM: { bg: "#0EA5E914", text: "#7dd3fc", border: "#0EA5E935" },
-  CG: { bg: "#F59E0B14", text: "#fcd34d", border: "#F59E0B35" },
-  OBS: { bg: "#EC489914", text: "#f9a8d4", border: "#EC489935" },
-  PED: { bg: "#10B98114", text: "#6ee7b7", border: "#10B98135" },
-  PREV: { bg: "#8B5CF614", text: "#c4b5fd", border: "#8B5CF635" },
-  GIN: { bg: "#F9731614", text: "#fdba74", border: "#F9731635" },
+  CM: { bg: "#f0f9ff", text: "#0369a1", border: "#bae6fd" },
+  CG: { bg: "#fffbeb", text: "#b45309", border: "#fde68a" },
+  OBS: { bg: "#fdf2f8", text: "#be185d", border: "#fbcfe8" },
+  PED: { bg: "#ecfdf5", text: "#047857", border: "#a7f3d0" },
+  PREV: { bg: "#f5f3ff", text: "#6d28d9", border: "#ddd6fe" },
+  GIN: { bg: "#fff7ed", text: "#c2410c", border: "#fed7aa" },
 };
 
 const SPECS = ["CM", "CG", "OBS", "PED", "PREV", "GIN"];
