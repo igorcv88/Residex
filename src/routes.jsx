@@ -32,7 +32,9 @@ export const routes = [
       "Calculadora de hidratação venosa pediatrica de ataque e manutenção",
   },
   {
+    path: "/CronogramaResidex",
     element: <CronogramaResidex />,
+    oculto: true, // Adicionado para facilitar o filtro na renderização do menu, se necessário
   },
   {
     path: "/PedCalc",
