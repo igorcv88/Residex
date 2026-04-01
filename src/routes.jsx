@@ -19,6 +19,7 @@ import CicloMenstrual from './pages/CicloMenstrual';
 import TriagemNeonatal from './pages/TriagemNeonatal';
 import Anamneses from './pages/Anamneses';
 import ComplicacoesInsuficienciaHepatica from './pages/ComplicacoesInsuficienciaHepatica';
+import CronogramaResidex from './pages/CronogramaResidex';
 
 export const routes = [
   {
