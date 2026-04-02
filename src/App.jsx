@@ -789,7 +789,7 @@ export default function RESIDEX_CONTROLLER() {
   const [status, setStatus] = useState("loading"); // loading, unauthorized, authorized
   const [userData, setUserData] = useState(null);
 
-  const ADMIN_EMAIL = "seu-email-adm@gmail.com"; // COLOQUE SEU EMAIL AQUI
+  const ADMIN_EMAIL = "igorv88@gmail.com"; // COLOQUE SEU EMAIL AQUI
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
