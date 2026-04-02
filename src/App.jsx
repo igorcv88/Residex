@@ -664,7 +664,7 @@ function PlanoSection({color}){
           {w.topics.map((t,i)=>{
             const key=`${w.n}-${i}`;
             const isDone=done.has(key);
-            const ms=mS(t.mode);
+            const ms=modeStyle(t.mode);
             const ti=t.wipr>0?tier(t.wipr):{c:"#6366F1",l:"REV"};
 
             // Badge: preenchido + branco quando done, outline quando pendente
