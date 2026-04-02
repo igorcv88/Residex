@@ -1,5 +1,3 @@
-Ta certo?
-
 import { useState, useEffect } from "react";
 import { initializeApp } from "firebase/app";
 import { getFirestore, doc, onSnapshot, setDoc, getDoc } from "firebase/firestore";
