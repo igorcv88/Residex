@@ -647,7 +647,7 @@ function PlanoSection({color}){
       const doneCount=weekKeys.filter(k=>done.has(k)).length;
       const allDone=doneCount===w.topics.length;
 
-      return(<div key={w.n} style={S.decWrap(allDone?"#10B981":w.col)}>
+      return(<div key={w.n} style={S.decisionWrap(allDone?"#10B981":w.col)}>
         <div onClick={()=>tog(w.n)} style={{display:"flex",alignItems:"center",gap:10,padding:"10px 14px",background: allDone?"#F0FDF4":"#fafaf8",cursor:"pointer",transition:"background 0.2s"}}>
           <span style={{fontSize:10,fontFamily:"monospace",color:allDone?"#14532D":w.col,minWidth:60,fontWeight:600,letterSpacing:"0.06em"}}>SEMANA {w.n}</span>
           <span style={{flex:1,fontSize:12.5,color:allDone?T.textMuted:T.textPrimary,textDecoration:allDone?"line-through":"none",transition:"all 0.2s"}}>{w.focus}</span>
