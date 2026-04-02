@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 // ── Design Tokens (medpanel-tokens) ─────────────────────────────────
 const T = {
@@ -625,9 +625,26 @@ function RankingsSection({ color }) {
 }
 
 // ── Section: Plano Semanal ──────────────────────────────────────────
+// ── Section: Plano Semanal ──────────────────────────────────────────
 function PlanoSection({color}){
   const [exp,setExp]=useState(new Set([1,2,3]));
-  const [done,setDone]=useState(new Set());
+  
+  // 1. Inicia o state lendo a memória do navegador
+  const [done,setDone]=useState(() => {
+    try {
+      const saved = localStorage.getItem("residex_done_topics");
+      if (saved) return new Set(JSON.parse(saved));
+    } catch (e) {
+      console.error("Erro ao carregar progresso", e);
+    }
+    return new Set();
+  });
+
+  // 2. Sempre que 'done' mudar, salva automaticamente no navegador
+  // Como o Set não vira JSON direto, transformamos em array com [...done]
+  useEffect(() => {
+    localStorage.setItem("residex_done_topics", JSON.stringify([...done]));
+  }, [done]);
 
   const tog=(n)=>setExp(p=>{const nx=new Set(p);nx.has(n)?nx.delete(n):nx.add(n);return nx});
   const togDone=(key)=>setDone(p=>{const nx=new Set(p);nx.has(key)?nx.delete(key):nx.add(key);return nx});
