@@ -686,7 +686,7 @@ function PlanoSection({color}){
 
             return(<div
               key={key}
-              onClick={()=>togDone(key)}
+              onClick={(e)=>{e.stopPropagation();togDone(key);}}
               style={{display:"flex",alignItems:"flex-start",gap:8,padding:"8px 0",
                       borderBottom:i<w.topics.length-1?`1px solid ${T.borderCard}`:"none",
                       cursor:"pointer",borderRadius:4,
