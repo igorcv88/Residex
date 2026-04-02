@@ -1,4 +1,25 @@
 import { useState, useEffect } from "react";
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyDf-h0vqTuAJu_4hyB0mygXcCVtSvnaGBk",
+  authDomain: "residex-9fa67.firebaseapp.com",
+  projectId: "residex-9fa67",
+  storageBucket: "residex-9fa67.firebasestorage.app",
+  messagingSenderId: "641940405806",
+  appId: "1:641940405806:web:23f99f7355ba0b4d3ce9bf",
+  measurementId: "G-BY6328631R"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
 
 // ── Design Tokens (medpanel-tokens) ─────────────────────────────────
 const T = {
@@ -625,31 +646,51 @@ function RankingsSection({ color }) {
 }
 
 // ── Section: Plano Semanal ──────────────────────────────────────────
-// ── Section: Plano Semanal ──────────────────────────────────────────
-function PlanoSection({color}){
-  const [exp,setExp]=useState(new Set([1,2,3]));
-  
-  // 1. Inicia o state lendo a memória do navegador
-  const [done,setDone]=useState(() => {
-    try {
-      const saved = localStorage.getItem("residex_done_topics");
-      if (saved) return new Set(JSON.parse(saved));
-    } catch (e) {
-      console.error("Erro ao carregar progresso", e);
-    }
-    return new Set();
-  });
+function PlanoSection({ color }) {
+  const [exp, setExp] = useState(new Set([1, 2, 3]));
+  const [done, setDone] = useState(new Set());
+  const [loading, setLoading] = useState(true);
 
-  // 2. Sempre que 'done' mudar, salva automaticamente no navegador
-  // Como o Set não vira JSON direto, transformamos em array com [...done]
+  // Referência única para o seu documento de progresso
+  const docRef = doc(db, "progresso", "meu_estudo");
+
+  // ESCUTAR O BANCO DE DADOS (Real-time)
   useEffect(() => {
-    localStorage.setItem("residex_done_topics", JSON.stringify([...done]));
-  }, [done]);
+    const unsubscribe = onSnapshot(docRef, (docSnap) => {
+      if (docSnap.exists()) {
+        const data = docSnap.data();
+        setDone(new Set(data.temasFeitos || []));
+      }
+      setLoading(false);
+    });
 
-  const tog=(n)=>setExp(p=>{const nx=new Set(p);nx.has(n)?nx.delete(n):nx.add(n);return nx});
-  const togDone=(key)=>setDone(p=>{const nx=new Set(p);nx.has(key)?nx.delete(key):nx.add(key);return nx});
+    return () => unsubscribe();
+  }, []);
 
-  const maxH=Math.max(...WEEKS.map(w=>w.h));
+  // O tog antigo que lida com a expansão/retração das semanas
+  const tog = (n) => setExp(p => { const nx = new Set(p); nx.has(n) ? nx.delete(n) : nx.add(n); return nx; });
+
+  // SALVAR NO BANCO DE DADOS (Este é o único togDone correto agora)
+  const togDone = async (key) => {
+    const nx = new Set(done);
+    nx.has(key) ? nx.delete(key) : nx.add(key);
+    
+    // Atualiza o estado local para resposta rápida na UI
+    setDone(nx);
+
+    // Salva a lista completa no Firestore
+    try {
+      await setDoc(docRef, { temasFeitos: Array.from(nx) }, { merge: true });
+    } catch (e) {
+      console.error("Erro ao sincronizar:", e);
+    }
+  };
+
+  if (loading) {
+    return <div style={{ fontFamily: "monospace", color: T.textSubtle, padding: 20 }}>Sincronizando com a nuvem...</div>;
+  }
+
+  const maxH = Math.max(...WEEKS.map(w => w.h));
 
   return(<div>
     <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:8,marginBottom:18}}>
@@ -684,7 +725,6 @@ function PlanoSection({color}){
             const ms=modeStyle(t.mode);
             const ti=t.wipr>0?tier(t.wipr):{c:"#6366F1",l:"REV"};
 
-            // Badge: preenchido + branco quando done, outline quando pendente
             const badgeStyle=isDone
               ? {flexShrink:0,width:32,height:20,borderRadius:4,
                  background:ti.c,
