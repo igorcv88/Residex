@@ -50,10 +50,10 @@ const T = {
 };
 
 const S = {
-  page: {
+page: {
     background: T.bgPage,
     minHeight: "100vh",
-    fontFamily: "'Palatino Linotype','Book Antiqua',Palatino,serif",
+    fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
     color: T.textBody,
     display: "flex",
     flexDirection: "column",
@@ -281,8 +281,21 @@ const S = {
 };
 
 // ── Responsive CSS ───────────────────────────────────────────────────
+// ── Responsive CSS & Fontes ──────────────────────────────────────────
 const mobileCSS = `
+/* 1. Importando as fontes super profissionais do Google */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+
 *, *::before, *::after { box-sizing: border-box; }
+
+/* 2. Matando a fonte feia globalmente! 
+   Isso pega qualquer lugar do código que tentou usar "monospace" 
+   e substitui pela JetBrains Mono elegante e encorpada */
+[style*="monospace"] {
+  font-family: 'JetBrains Mono', monospace !important;
+  font-weight: 500; /* Deixa a fonte um pouco mais gordinha e legível */
+}
+
 @media (max-width: 768px) {
   .mp-nav-sidebar { display: none !important; }
   .mp-nav-mobile {
@@ -839,11 +852,11 @@ export default function RESIDEX_CONTROLLER() {
       <div style={{ display: "flex", flexDirection: "column", height: "100vh", alignItems: "center", justifyContent: "center", background: "#0F172A", padding: 20 }}>
         <div style={{ textAlign: "center", marginBottom: 30 }}>
           <h1 style={{ color: "#fff", fontSize: 28, marginBottom: 10 }}>RESIDEX</h1>
-          <p style={{ color: "#94A3B8", fontFamily: "monospace" }}>Estratégia Pura para Residência Médica</p>
+          <p style={{ color: "#94A3B8", fontFamily: "monospace" }}>Seu cronograma personalizado para </p>
         </div>
         <button 
           onClick={handleLogin}
-          style={{ padding: "14px 24px", background: "#fff", border: "none", borderRadius: 8, fontSize: 16, fontWeight: "bold", cursor: "pointer", display: "flex", alignItems: "center", gap: 10 }}
+          style={{ padding: "14px 24px", color: "#0F172A", background: "#fff", border: "none", borderRadius: 8, fontSize: 16, fontWeight: "bold", cursor: "pointer", display: "flex", alignItems: "center", gap: 10 }}
         >
           <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" width="20" />
           Entrar com Google
