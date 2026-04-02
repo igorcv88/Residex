@@ -646,12 +646,12 @@ function RankingsSection({ color }) {
 }
 
 // ── Section: Plano Semanal ──────────────────────────────────────────
-function PlanoSection({ color }) {
+function PlanoSection({ color, user }) {
   const [exp, setExp] = useState(new Set([1, 2, 3]));
   const [done, setDone] = useState(new Set());
   const [loading, setLoading] = useState(true);
 
-  // Referência única para o seu documento de progresso
+  // Agora a mágica acontece: Cada pessoa tem sua própria pasta baseada no ID único dela (user.uid)
   const docRef = doc(db, "progresso", user.uid);
 
   // ESCUTAR O BANCO DE DADOS (Real-time)
@@ -665,20 +665,17 @@ function PlanoSection({ color }) {
     });
 
     return () => unsubscribe();
-  }, []);
+  }, [user.uid]); // O useEffect agora reage ao ID do usuário
 
-  // O tog antigo que lida com a expansão/retração das semanas
   const tog = (n) => setExp(p => { const nx = new Set(p); nx.has(n) ? nx.delete(n) : nx.add(n); return nx; });
 
-  // SALVAR NO BANCO DE DADOS (Este é o único togDone correto agora)
+  // SALVAR NO BANCO DE DADOS
   const togDone = async (key) => {
     const nx = new Set(done);
     nx.has(key) ? nx.delete(key) : nx.add(key);
     
-    // Atualiza o estado local para resposta rápida na UI
     setDone(nx);
 
-    // Salva a lista completa no Firestore
     try {
       await setDoc(docRef, { temasFeitos: Array.from(nx) }, { merge: true });
     } catch (e) {
@@ -709,7 +706,6 @@ function PlanoSection({ color }) {
         <div onClick={()=>tog(w.n)} style={{display:"flex",alignItems:"center",gap:10,padding:"10px 14px",background: allDone?"#F0FDF4":"#fafaf8",cursor:"pointer",transition:"background 0.2s"}}>
           <span style={{fontSize:10,fontFamily:"monospace",color:allDone?"#14532D":w.col,minWidth:60,fontWeight:600,letterSpacing:"0.06em"}}>SEMANA {w.n}</span>
           <span style={{flex:1,fontSize:12.5,color:allDone?T.textMuted:T.textPrimary,textDecoration:allDone?"line-through":"none",transition:"all 0.2s"}}>{w.focus}</span>
-          {/* progress counter */}
           <span style={{fontSize:10,fontFamily:"monospace",color:allDone?"#14532D":T.textDisabled,flexShrink:0}}>{doneCount}/{w.topics.length}</span>
           <div style={{width:56,height:4,background:T.borderCard,borderRadius:2,overflow:"hidden",flexShrink:0}}>
             <div style={{width:`${Math.round(w.h/maxH*100)}%`,height:"100%",background:allDone?"#10B981":w.col,borderRadius:2,transition:"background 0.3s"}}/>
