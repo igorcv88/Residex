@@ -625,7 +625,7 @@ function RankingsSection({ color }) {
 }
 
 // ── Section: Plano Semanal ──────────────────────────────────────────
-function Plano({color}){
+function PlanoSection({color}){
   const [exp,setExp]=useState(new Set([1,2,3]));
   const [done,setDone]=useState(new Set());
 
