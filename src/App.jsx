@@ -625,105 +625,99 @@ function RankingsSection({ color }) {
 }
 
 // ── Section: Plano Semanal ──────────────────────────────────────────
-function PlanoSection({ color }) {
-  const [expanded, setExpanded] = useState(new Set([1, 2, 3]));
+function Plano({color}){
+  const [exp,setExp]=useState(new Set([1,2,3]));
+  const [done,setDone]=useState(new Set());
 
-  const toggle = (n) => {
-    setExpanded(prev => {
-      const next = new Set(prev);
-      next.has(n) ? next.delete(n) : next.add(n);
-      return next;
-    });
-  };
+  const tog=(n)=>setExp(p=>{const nx=new Set(p);nx.has(n)?nx.delete(n):nx.add(n);return nx});
+  const togDone=(key)=>setDone(p=>{const nx=new Set(p);nx.has(key)?nx.delete(key):nx.add(key);return nx});
 
-  const toggleAll = (open) => {
-    setExpanded(open ? new Set(WEEKS.map(w => w.n)) : new Set());
-  };
+  const maxH=Math.max(...WEEKS.map(w=>w.h));
 
-  const totalH = WEEKS.reduce((s, w) => s + w.h, 0);
-  const maxH = Math.max(...WEEKS.map(w => w.h));
-
-  return (
-    <div>
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 8, marginBottom: 20 }}>
-        {[
-          { label: "Semanas", val: "16", c: color },
-          { label: "Total horas", val: `~${totalH}h`, c: color },
-          { label: "Média/semana", val: "~15h", c: color },
-          { label: "Temas cobertos", val: "48", c: color },
-        ].map(s => (
-          <div key={s.label} style={S.gridCard(s.c)}>
-            <div style={S.gridLabel(s.c)}>{s.label}</div>
-            <div style={{ fontSize: 22, fontWeight: 300, color: s.c, fontFamily: "monospace" }}>{s.val}</div>
-          </div>
-        ))}
-      </div>
-
-      <div style={{ display: "flex", gap: 6, marginBottom: 16 }}>
-        {[["Expandir tudo", true], ["Recolher tudo", false]].map(([label, open]) => (
-          <button key={label} onClick={() => toggleAll(open)} style={{
-            background: "transparent", border: `1px solid ${T.borderCard}`,
-            color: T.textMuted, padding: "5px 12px", borderRadius: 4,
-            fontSize: 11, fontFamily: "monospace", cursor: "pointer",
-          }}>{label}</button>
-        ))}
-      </div>
-
-      {WEEKS.map(w => {
-        const isOpen = expanded.has(w.n);
-        const pct = Math.round((w.h / maxH) * 100);
-        return (
-          <div key={w.n} style={{ ...S.decisionWrap(w.col), cursor: "pointer", padding: 0, overflow: "hidden" }}>
-            <div
-              onClick={() => toggle(w.n)}
-              style={{ display: "flex", alignItems: "center", gap: 10, padding: "10px 14px", background: "#fafaf8" }}
-            >
-              <span style={{ ...S.decisionCondition(w.col), margin: 0, fontSize: 10, minWidth: 62 }}>
-                SEMANA {w.n}
-              </span>
-              <span style={{ flex: 1, fontSize: 12.5, fontWeight: 400, color: T.textPrimary }}>{w.focus}</span>
-              <div style={{ width: 60, height: 4, background: T.borderCard, borderRadius: 2, overflow: "hidden", flexShrink: 0 }}>
-                <div style={{ width: `${pct}%`, height: "100%", background: w.col, borderRadius: 2 }} />
-              </div>
-              <span style={{ fontSize: 11, fontFamily: "monospace", color: w.col, minWidth: 28, textAlign: "right" }}>{w.h}h</span>
-              <span style={{ fontSize: 12, color: T.textDisabled, transition: "transform 0.2s", transform: isOpen ? "rotate(90deg)" : "none" }}>›</span>
-            </div>
-
-            {isOpen && (
-              <div style={{ padding: "0 14px 10px" }}>
-                {w.topics.map((t, i) => {
-                  const ms = modeStyle(t.mode);
-                  const ti = t.wipr > 0 ? tier(t.wipr) : { color: "#6366F1", label: "REV" };
-                  return (
-                    <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: 8, padding: "7px 0", borderBottom: i < w.topics.length - 1 ? `1px solid ${T.borderCard}` : "none" }}>
-                      <div style={{
-                        flexShrink: 0, width: 34, height: 20, borderRadius: 4,
-                        background: `${ti.color}15`, border: `1px solid ${ti.color}44`,
-                        color: ti.color, fontSize: 10, fontFamily: "monospace",
-                        display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 600,
-                      }}>
-                        {t.wipr > 0 ? t.wipr : "rev"}
-                      </div>
-                      <div style={{ flex: 1, minWidth: 0 }}>
-                        <div style={{ fontSize: 12.5, color: T.textPrimary, lineHeight: 1.35 }}>{t.name}</div>
-                        <div style={{ fontSize: 10, color: T.textMuted, marginTop: 1, fontFamily: "monospace" }}>{t.inst}</div>
-                      </div>
-                      <span style={{
-                        fontSize: 9, padding: "2px 6px", borderRadius: 3,
-                        background: ms.bg, border: `1px solid ${ms.br}`, color: ms.tx,
-                        fontFamily: "monospace", fontWeight: 600, flexShrink: 0,
-                      }}>{t.mode}</span>
-                      <span style={{ fontSize: 11, fontFamily: "monospace", color: T.textMuted, flexShrink: 0, minWidth: 24, textAlign: "right" }}>{t.h}h</span>
-                    </div>
-                  );
-                })}
-              </div>
-            )}
-          </div>
-        );
-      })}
+  return(<div>
+    <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:8,marginBottom:18}}>
+      {[{l:"Semanas",v:"16",c:color},{l:"Total horas",v:`~${WEEKS.reduce((s,w)=>s+w.h,0)}h`,c:color},{l:"Média/sem",v:"~15h",c:color},{l:"Temas",v:"48",c:color}].map(s=><div key={s.l} style={S.gridCard(s.c)}><div style={S.gridLabel(s.c)}>{s.l}</div><div style={{fontSize:22,fontWeight:300,color:s.c,fontFamily:"monospace"}}>{s.v}</div></div>)}
     </div>
-  );
+    <div style={{display:"flex",gap:6,marginBottom:14}}>
+      {[["Expandir tudo",true],["Recolher tudo",false]].map(([l,o])=><button key={l} onClick={()=>setExp(o?new Set(WEEKS.map(w=>w.n)):new Set())} style={{background:"transparent",border:`1px solid ${T.borderCard}`,color:T.textMuted,padding:"5px 11px",borderRadius:4,fontSize:11,fontFamily:"monospace",cursor:"pointer"}}>{l}</button>)}
+    </div>
+    {WEEKS.map(w=>{
+      const isO=exp.has(w.n);
+      const weekKeys=w.topics.map((_,i)=>`${w.n}-${i}`);
+      const doneCount=weekKeys.filter(k=>done.has(k)).length;
+      const allDone=doneCount===w.topics.length;
+
+      return(<div key={w.n} style={S.decWrap(allDone?"#10B981":w.col)}>
+        <div onClick={()=>tog(w.n)} style={{display:"flex",alignItems:"center",gap:10,padding:"10px 14px",background: allDone?"#F0FDF4":"#fafaf8",cursor:"pointer",transition:"background 0.2s"}}>
+          <span style={{fontSize:10,fontFamily:"monospace",color:allDone?"#14532D":w.col,minWidth:60,fontWeight:600,letterSpacing:"0.06em"}}>SEMANA {w.n}</span>
+          <span style={{flex:1,fontSize:12.5,color:allDone?T.textMuted:T.textPrimary,textDecoration:allDone?"line-through":"none",transition:"all 0.2s"}}>{w.focus}</span>
+          {/* progress counter */}
+          <span style={{fontSize:10,fontFamily:"monospace",color:allDone?"#14532D":T.textDisabled,flexShrink:0}}>{doneCount}/{w.topics.length}</span>
+          <div style={{width:56,height:4,background:T.borderCard,borderRadius:2,overflow:"hidden",flexShrink:0}}>
+            <div style={{width:`${Math.round(w.h/maxH*100)}%`,height:"100%",background:allDone?"#10B981":w.col,borderRadius:2,transition:"background 0.3s"}}/>
+          </div>
+          <span style={{fontSize:11,fontFamily:"monospace",color:allDone?"#14532D":w.col,minWidth:26,textAlign:"right"}}>{w.h}h</span>
+          <span style={{fontSize:12,color:T.textDisabled,transition:"transform 0.2s",transform:isO?"rotate(90deg)":"none",flexShrink:0}}>›</span>
+        </div>
+
+        {isO&&<div style={{padding:"0 14px 10px"}}>
+          {w.topics.map((t,i)=>{
+            const key=`${w.n}-${i}`;
+            const isDone=done.has(key);
+            const ms=mS(t.mode);
+            const ti=t.wipr>0?tier(t.wipr):{c:"#6366F1",l:"REV"};
+
+            // Badge: preenchido + branco quando done, outline quando pendente
+            const badgeStyle=isDone
+              ? {flexShrink:0,width:32,height:20,borderRadius:4,
+                 background:ti.c,
+                 border:`1px solid ${ti.c}`,
+                 color:"#ffffff",
+                 fontSize:10,fontFamily:"monospace",
+                 display:"flex",alignItems:"center",justifyContent:"center",fontWeight:700,
+                 transition:"all 0.2s"}
+              : {flexShrink:0,width:32,height:20,borderRadius:4,
+                 background:`${ti.c}15`,
+                 border:`1px solid ${ti.c}44`,
+                 color:ti.c,
+                 fontSize:10,fontFamily:"monospace",
+                 display:"flex",alignItems:"center",justifyContent:"center",fontWeight:600,
+                 transition:"all 0.2s"};
+
+            return(<div
+              key={key}
+              onClick={()=>togDone(key)}
+              style={{display:"flex",alignItems:"flex-start",gap:8,padding:"8px 0",
+                      borderBottom:i<w.topics.length-1?`1px solid ${T.borderCard}`:"none",
+                      cursor:"pointer",borderRadius:4,
+                      background:isDone?"#fafffe":"transparent",
+                      transition:"background 0.2s",
+                      margin:"0 -4px",paddingLeft:4,paddingRight:4}}
+            >
+              <div style={badgeStyle}>{t.wipr>0?t.wipr:"rev"}</div>
+              <div style={{flex:1,minWidth:0}}>
+                <div style={{fontSize:12.5,
+                             color:isDone?T.textDisabled:T.textPrimary,
+                             lineHeight:1.35,
+                             textDecoration:isDone?"line-through":"none",
+                             transition:"all 0.2s"}}>{t.name}</div>
+                <div style={{fontSize:10,color:isDone?T.textDisabled:T.textMuted,marginTop:1,fontFamily:"monospace",transition:"color 0.2s"}}>{t.inst}</div>
+              </div>
+              <span style={{fontSize:9,padding:"2px 5px",borderRadius:3,
+                            background:isDone?"#F0FDF4":ms.bg,
+                            border:`1px solid ${isDone?"#BBF7D0":ms.br}`,
+                            color:isDone?"#14532D":ms.tx,
+                            fontFamily:"monospace",fontWeight:600,flexShrink:0,
+                            transition:"all 0.2s"}}>
+                {isDone?"✓ feito":t.mode}
+              </span>
+              <span style={{fontSize:11,fontFamily:"monospace",color:isDone?T.textDisabled:T.textMuted,flexShrink:0,minWidth:22,textAlign:"right"}}>{t.h}h</span>
+            </div>);
+          })}
+        </div>}
+      </div>);
+    })}
+  </div>);
 }
 
 // ── Main Component ───────────────────────────────────────────────────
