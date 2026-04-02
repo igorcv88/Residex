@@ -1,9 +1,9 @@
+Ta certo?
+
 import { useState, useEffect } from "react";
-// Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
+import { getFirestore, doc, onSnapshot, setDoc, getDoc } from "firebase/firestore";
+import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "firebase/auth";
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
@@ -19,7 +19,9 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
+const db = getFirestore(app);
+const auth = getAuth(app);
+const provider = new GoogleAuthProvider();
 
 // ── Design Tokens (medpanel-tokens) ─────────────────────────────────
 const T = {
@@ -652,7 +654,7 @@ function PlanoSection({ color }) {
   const [loading, setLoading] = useState(true);
 
   // Referência única para o seu documento de progresso
-  const docRef = doc(db, "progresso", "meu_estudo");
+  const docRef = doc(db, "progresso", user.uid);
 
   // ESCUTAR O BANCO DE DADOS (Real-time)
   useEffect(() => {
@@ -784,7 +786,115 @@ const SECTIONS = [
   { id: "plano",    name: "Plano Semanal", color: "#10B981" },
 ];
 
-export default function RESIDEX() {
+export default function RESIDEX_CONTROLLER() {
+  const [user, setUser] = useState(null);
+  const [status, setStatus] = useState("loading"); // loading, unauthorized, authorized
+  const [userData, setUserData] = useState(null);
+
+  const ADMIN_EMAIL = "seu-email-adm@gmail.com"; // COLOQUE SEU EMAIL AQUI
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
+      if (currentUser) {
+        setUser(currentUser);
+        
+        // Verifica no banco de dados o status do usuário
+        const userRef = doc(db, "usuarios", currentUser.uid);
+        const userSnap = await getDoc(userRef);
+
+        if (currentUser.email === ADMIN_EMAIL) {
+          setStatus("authorized"); // Admin sempre entra
+        } else if (userSnap.exists()) {
+          const data = userSnap.data();
+          const hoje = new Date();
+          const validade = data.validUntil?.toDate(); // Converte timestamp do Firebase para Data JS
+
+          if (validade && hoje < validade) {
+            setStatus("authorized");
+            setUserData(data);
+          } else {
+            setStatus("unauthorized");
+          }
+        } else {
+          // Usuário logou mas não tem registro de compra no banco
+          setStatus("unauthorized");
+        }
+      } else {
+        setUser(null);
+        setStatus("loggedOut");
+      }
+    });
+    return () => unsubscribe();
+  }, []);
+
+  const handleLogin = () => signInWithPopup(auth, provider);
+  const handleLogout = () => signOut(auth);
+
+  // 1. TELA DE CARREGAMENTO
+  if (status === "loading") {
+    return (
+      <div style={{ display: "flex", height: "100vh", alignItems: "center", justifyContent: "center", background: "#0F172A", color: "#fff", fontFamily: "monospace" }}>
+        Sincronizando credenciais...
+      </div>
+    );
+  }
+
+  // 2. TELA DE LOGIN (DESLOGADO)
+  if (status === "loggedOut") {
+    return (
+      <div style={{ display: "flex", flexDirection: "column", height: "100vh", alignItems: "center", justifyContent: "center", background: "#0F172A", padding: 20 }}>
+        <div style={{ textAlign: "center", marginBottom: 30 }}>
+          <h1 style={{ color: "#fff", fontSize: 28, marginBottom: 10 }}>RESIDEX</h1>
+          <p style={{ color: "#94A3B8", fontFamily: "monospace" }}>Estratégia Pura para Residência Médica</p>
+        </div>
+        <button 
+          onClick={handleLogin}
+          style={{ padding: "14px 24px", background: "#fff", border: "none", borderRadius: 8, fontSize: 16, fontWeight: "bold", cursor: "pointer", display: "flex", alignItems: "center", gap: 10 }}
+        >
+          <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" width="20" />
+          Entrar com Google
+        </button>
+      </div>
+    );
+  }
+
+  // 3. TELA DE BLOQUEIO (LOGADO MAS SEM ASSINATURA ATIVA)
+  if (status === "unauthorized") {
+    return (
+      <div style={{ display: "flex", flexDirection: "column", height: "100vh", alignItems: "center", justifyContent: "center", background: "#0F172A", padding: 20, textAlign: "center" }}>
+        <div style={{ background: "#1E293B", padding: 40, borderRadius: 16, border: "1px solid #334155", maxWidth: 400 }}>
+          <div style={{ fontSize: 40, marginBottom: 20 }}>🔒</div>
+          <h2 style={{ color: "#fff", marginBottom: 15 }}>Acesso Restrito</h2>
+          <p style={{ color: "#94A3B8", lineHeight: 1.6, marginBottom: 30 }}>
+            Olá, <b>{user.displayName}</b>. <br/> 
+            Não identificamos uma assinatura ativa para este e-mail ({user.email}).
+          </p>
+          <button style={{ width: "100%", padding: 14, background: "#10B981", color: "#fff", border: "none", borderRadius: 8, fontWeight: "bold", marginBottom: 15, cursor: "pointer" }}>
+            Assinar Plano Anual
+          </button>
+          <button onClick={handleLogout} style={{ background: "none", border: "none", color: "#94A3B8", cursor: "pointer", textDecoration: "underline" }}>
+            Sair da conta
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  // 4. ACESSO LIBERADO (MOSTRA O RESIDEX ORIGINAL)
+  return (
+    <>
+      {/* Aqui você pode colocar um pequeno banner de "Admin" se quiser */}
+      {user.email === ADMIN_EMAIL && (
+        <div style={{ background: "#6366F1", color: "#fff", fontSize: 10, textAlign: "center", padding: "2px 0", fontFamily: "monospace" }}>
+          MODO ADMINISTRADOR ATIVO
+        </div>
+      )}
+      <RESIDEX_APP user={user} onLogout={handleLogout} />
+    </>
+  );
+}
+
+function RESIDEX_APP({ user, onLogout }) {
   const [active, setActive] = useState("formula");
   const sec = SECTIONS.find(s => s.id === active);
   const color = sec.color;
@@ -792,7 +902,7 @@ export default function RESIDEX() {
   function renderContent() {
     if (active === "formula")  return <FormulaSection color={color} />;
     if (active === "rankings") return <RankingsSection color={color} />;
-    if (active === "plano")    return <PlanoSection color={color} />;
+    if (active === "plano")    return <PlanoSection color={color} user={user} />; // Passamos o user aqui!
   }
 
   const sectionTitles = {
@@ -806,16 +916,19 @@ export default function RESIDEX() {
       <style>{mobileCSS}</style>
 
       {/* Header */}
-      <div style={S.header} className="mp-header">
-        <div style={S.headerEyebrow} className="mp-header-eyebrow">
-          RESIDEX · Análise Estratégica de Provas
+      <div style={{...S.header, display: "flex", justifyContent: "space-between", alignItems: "center"}} className="mp-header">
+        <div>
+          <div style={S.headerEyebrow} className="mp-header-eyebrow">
+            RESIDEX · Análise Estratégica
+          </div>
+          <h1 style={S.headerTitle} className="mp-header-title">
+            W-IPR — Índice de Prioridade
+          </h1>
         </div>
-        <h1 style={S.headerTitle} className="mp-header-title">
-          W-IPR — Índice de Prioridade Ponderado
-        </h1>
-        <div style={S.headerSections} className="mp-header-sections">
-          ENARE ×5 · USP ×4 · UNIFESP ×2 · 48 temas · 18 provas analisadas
-        </div>
+        {/* Botão de Logout Discreto */}
+        <button onClick={onLogout} style={{ background: "transparent", border: `1px solid ${T.borderSection}`, padding: "6px 12px", borderRadius: 6, cursor: "pointer", fontSize: 11, fontFamily: "monospace", color: T.textMuted }}>
+          Sair
+        </button>
       </div>
 
       {/* Nav mobile */}
@@ -875,16 +988,7 @@ export default function RESIDEX() {
       {/* Footer */}
       <div style={S.footer} className="mp-footer">
         <div style={S.footerLabel}>
-          {SECTIONS.findIndex(s => s.id === active) + 1}/{SECTIONS.length} · {sec.name} · RESIDEX v2
-        </div>
-        <div style={{ display: "flex", gap: 5 }}>
-          {SECTIONS.map(s => (
-            <div
-              key={s.id}
-              onClick={() => setActive(s.id)}
-              style={S.footerDot(active === s.id, s.color)}
-            />
-          ))}
+          {user.email} · RESIDEX v2
         </div>
       </div>
     </div>
