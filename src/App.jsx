@@ -699,8 +699,36 @@ function PlanoSection({ color, user }) {
 
   return(<div>
     <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(130px,1fr))",gap:8,marginBottom:18}}>
-      {[{l:"Semanas",v:"16",c:color},{l:"Total horas",v:`~${WEEKS.reduce((s,w)=>s+w.h,0)}h`,c:color},{l:"Média/sem",v:"~15h",c:color},{l:"Temas",v:"48",c:color}].map(s=><div key={s.l} style={S.gridCard(s.c)}><div style={S.gridLabel(s.c)}>{s.l}</div><div style={{fontSize:22,fontWeight:300,color:s.c,fontFamily:"monospace"}}>{s.v}</div></div>)}
+      {[{l:"Semanas",v:"16",c:color},{l:"Total horas",v:`~${WEEKS.reduce((s,w)=>s+w.h,0)}h`,c:color},{l:"Média/sem",v:"~15h",c:color},{l:"Temas",v:"${TOPICS.length}",c:color}].map(s=><div key={s.l} style={S.gridCard(s.c)}><div style={S.gridLabel(s.c)}>{s.l}</div><div style={{fontSize:22,fontWeight:300,color:s.c,fontFamily:"monospace"}}>{s.v}</div></div>)}
     </div>
+    <div style={{ marginBottom: 18, padding: "14px 16px", background: "#fafaf8", border: `1px solid ${T.borderCard}`, borderRadius: 6 }}>
+  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
+    <span style={{ fontSize: 11, fontFamily: "monospace", color: T.textMuted, letterSpacing: "0.06em" }}>PROGRESSO GERAL</span>
+    <span style={{ fontSize: 11, fontFamily: "monospace", color: color }}>{doneTopics}/{totalTopics} tópicos · {doneHours}h/{totalHours}h</span>
+  </div>
+
+  {/* Barra de tópicos */}
+  <div style={{ marginBottom: 8 }}>
+    <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 4 }}>
+      <span style={{ fontSize: 10, fontFamily: "monospace", color: T.textDisabled }}>Tópicos concluídos</span>
+      <span style={{ fontSize: 10, fontFamily: "monospace", color: color, fontWeight: 600 }}>{pctTopics}%</span>
+    </div>
+    <div style={{ height: 6, background: T.borderCard, borderRadius: 3, overflow: "hidden" }}>
+      <div style={{ width: `${pctTopics}%`, height: "100%", background: color, borderRadius: 3, transition: "width 0.4s ease" }} />
+    </div>
+  </div>
+
+  {/* Barra de horas */}
+  <div>
+    <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 4 }}>
+      <span style={{ fontSize: 10, fontFamily: "monospace", color: T.textDisabled }}>Horas concluídas</span>
+      <span style={{ fontSize: 10, fontFamily: "monospace", color: color, fontWeight: 600 }}>{pctHours}%</span>
+    </div>
+    <div style={{ height: 6, background: T.borderCard, borderRadius: 3, overflow: "hidden" }}>
+      <div style={{ width: `${pctHours}%`, height: "100%", background: color, borderRadius: 3, transition: "width 0.4s ease" }} />
+    </div>
+  </div>
+</div>
     <div style={{display:"flex",gap:6,marginBottom:14}}>
       {[["Expandir tudo",true],["Recolher tudo",false]].map(([l,o])=><button key={l} onClick={()=>setExp(o?new Set(WEEKS.map(w=>w.n)):new Set())} style={{background:"transparent",border:`1px solid ${T.borderCard}`,color:T.textMuted,padding:"5px 11px",borderRadius:4,fontSize:11,fontFamily:"monospace",cursor:"pointer"}}>{l}</button>)}
     </div>
@@ -709,6 +737,17 @@ function PlanoSection({ color, user }) {
       const weekKeys=w.topics.map((_,i)=>`${w.n}-${i}`);
       const doneCount=weekKeys.filter(k=>done.has(k)).length;
       const allDone=doneCount===w.topics.length;
+    // Calcular progresso real
+      const totalTopics = WEEKS.reduce((s, w) => s + w.topics.length, 0);
+      const totalHours = WEEKS.reduce((s, w) => s + w.h, 0);
+      const doneTopics = WEEKS.reduce((s, w) =>
+        s + w.topics.map((_, i) => `${w.n}-${i}`).filter(k => done.has(k)).length, 0
+      );
+      const doneHours = WEEKS.reduce((s, w) =>
+        s + w.topics.reduce((ws, t, i) => ws + (done.has(`${w.n}-${i}`) ? t.h : 0), 0), 0
+      );
+      const pctTopics = totalTopics > 0 ? (doneTopics / totalTopics * 100).toFixed(1) : 0;
+      const pctHours = totalHours > 0 ? (doneHours / totalHours * 100).toFixed(1) : 0;
 
       return(<div key={w.n} style={S.decisionWrap(allDone?"#10B981":w.col)}>
         <div onClick={()=>tog(w.n)} style={{display:"flex",alignItems:"center",gap:10,padding:"10px 14px",background: allDone?"#F0FDF4":"#fafaf8",cursor:"pointer",transition:"background 0.2s"}}>
@@ -913,7 +952,7 @@ function RESIDEX_APP({ user, onLogout }) {
 
   const sectionTitles = {
     formula:  "Sistema de Pontuação W-IPR",
-    rankings: "48 Temas — Ranking Recalculado",
+    rankings: `${TOPICS.length} Temas — Ranking Recalculado`,
     plano:    "Cronograma 16 Semanas",
   };
 
