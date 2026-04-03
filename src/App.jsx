@@ -723,7 +723,7 @@ function PlanoSection({ color, user }) {
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
           <span style={{ fontSize: 11, fontFamily: "monospace", color: T.textMuted, letterSpacing: "0.06em" }}>PROGRESSO GERAL</span>
           <span style={{ fontSize: 11, fontFamily: "monospace", color: color }}>
-            {doneTopics}/{totalTopics} tópicos · {doneHours}h/{totalHours}h
+            {doneTopics}/{totalTopics} tarefas · {doneHours}h/{totalHours}h
           </span>
         </div>
 
