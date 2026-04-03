@@ -53,7 +53,7 @@ const S = {
 page: {
     background: T.bgPage,
     minHeight: "100vh",
-    fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
+    fontFamily: "'Source Serif 4', -apple-system, BlinkMacSystemFont, sans-serif",
     color: T.textBody,
     display: "flex",
     flexDirection: "column",
@@ -292,8 +292,8 @@ const mobileCSS = `
    Isso pega qualquer lugar do código que tentou usar "monospace" 
    e substitui pela JetBrains Mono elegante e encorpada */
 [style*="monospace"] {
-  font-family: 'JetBrains Mono', monospace !important;
-  font-weight: 500; /* Deixa a fonte um pouco mais gordinha e legível */
+  font-family: 'Neuton', monospace !important;
+  font-weight: 400; /* Deixa a fonte um pouco mais gordinha e legível */
 }
 
 @media (max-width: 768px) {
