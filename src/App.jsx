@@ -464,7 +464,31 @@ function PlanoSection({ color, user, dynamicTopics, profile }) {
                     : { flexShrink: 0, width: 32, height: 20, borderRadius: 4, background: `${ti.color}26`, border: `1px solid ${ti.color}`, color: ti.color, fontSize: 10, fontFamily: "monospace", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 600, transition: "all 0.2s" };
 
                   return (
-                    <div key={key} onClick={(e) => { e.stopPropagation(); togDone(key); }} style={{ display: "flex", alignItems: "flex-start", gap: 8, padding: "8px 6px", cursor: "pointer", borderBottom: `1px solid ${T.borderCard}`, borderRadius: 4, background: is
+                    <div key={key} onClick={(e) => { e.stopPropagation(); togDone(key); }} style={{ display: "flex", alignItems: "flex-start", gap: 8, padding: "8px 6px", cursor: "pointer", borderBottom: `1px solid ${T.borderCard}`, borderRadius: 4, background: isDone ? "#f8fafc" : "transparent", transition: "background 0.2s" }}>
+                      
+                      {/* O Badge preenche de cor quando concluído */}
+                      <div style={badgeStyle}>{t.wipr}</div>
+                      
+                      <div style={{ flex: 1, fontSize: 12.5, color: isDone ? T.textDisabled : T.textPrimary, textDecoration: isDone ? "line-through" : "none", transition: "all 0.2s" }}>
+                        {t.nome || t.id}
+                      </div>
+
+                      {/* O Print 'FEITO' dinâmico */}
+                      <span style={{ fontSize: 9, padding: "2px 6px", borderRadius: 3, background: isDone ? "#F0FDF4" : "#FEF2F2", border: `1px solid ${isDone ? "#BBF7D0" : "#FECACA"}`, color: isDone ? "#14532D" : "#991B1B", fontFamily: "monospace", fontWeight: 600, flexShrink: 0, transition: "all 0.2s" }}>
+                        {isDone ? "✓ feito" : "estudar"}
+                      </span>
+
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+        );
+      })}
+    </div>
+  );
+}
 
 
 // ── App Core ────────────────────────────────────────────────
