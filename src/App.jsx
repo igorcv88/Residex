@@ -442,6 +442,7 @@ function PlanoSection({ color, user, dynamicTopics, profile }) {
         const weekKeys = w.topics.map(t => `${w.n}-${t.id}`);
         const doneCount = weekKeys.filter(k => done.has(k)).length;
         const allDone = doneCount > 0 && doneCount === w.topics.length;
+        
         return (
           <div key={w.n} style={S.decisionWrap(allDone ? "#10B981" : w.col)}>
             <div onClick={() => tog(w.n)} style={{ display: "flex", alignItems: "center", gap: 10, padding: "10px 14px", background: allDone ? "#F0FDF4" : "#fafaf8", cursor: "pointer" }}>
@@ -449,27 +450,22 @@ function PlanoSection({ color, user, dynamicTopics, profile }) {
               <span style={{ flex: 1, fontSize: 12.5, color: allDone ? T.textMuted : T.textPrimary, textDecoration: allDone ? "line-through" : "none" }}>Foco Direcionado</span>
               <span style={{ fontSize: 10, fontFamily: "monospace", color: T.textDisabled }}>{doneCount}/{w.topics.length}</span>
             </div>
+            
             {isO && (
               <div style={{ padding: "0 14px 10px" }}>
                 {w.topics.map((t) => {
                   const key = `${w.n}-${t.id}`;
                   const isDone = done.has(key);
                   const ti = t.wipr > 0 ? tier(t.wipr) : { color: "#6366F1" };
+
+                  // ESTILOS VISUAIS RESTAURADOS
+                  const badgeStyle = isDone
+                    ? { flexShrink: 0, width: 32, height: 20, borderRadius: 4, background: ti.color, border: `1px solid ${ti.color}`, color: "#ffffff", fontSize: 10, fontFamily: "monospace", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 700, transition: "all 0.2s" }
+                    : { flexShrink: 0, width: 32, height: 20, borderRadius: 4, background: `${ti.color}26`, border: `1px solid ${ti.color}`, color: ti.color, fontSize: 10, fontFamily: "monospace", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 600, transition: "all 0.2s" };
+
                   return (
-                    <div key={key} onClick={(e) => { e.stopPropagation(); togDone(key); }} style={{ display: "flex", alignItems: "flex-start", gap: 8, padding: "8px 0", cursor: "pointer", borderBottom: `1px solid ${T.borderCard}` }}>
-                      <div style={{ flexShrink: 0, width: 32, height: 20, borderRadius: 4, background: `${ti.color}26`, color: ti.color, fontSize: 10, fontFamily: "monospace", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 600 }}>{t.wipr}</div>
-                      <div style={{ flex: 1, fontSize: 12.5, color: isDone ? T.textDisabled : T.textPrimary, textDecoration: isDone ? "line-through" : "none" }}>{t.nome || t.id}</div>
-                    </div>
-                  );
-                })}
-              </div>
-            )}
-          </div>
-        );
-      })}
-    </div>
-  );
-}
+                    <div key={key} onClick={(e) => { e.stopPropagation(); togDone(key); }} style={{ display: "flex", alignItems: "flex-start", gap: 8, padding: "8px 6px", cursor: "pointer", borderBottom: `1px solid ${T.borderCard}`, borderRadius: 4, background: is
+
 
 // ── App Core ────────────────────────────────────────────────
 const SECTIONS = [
