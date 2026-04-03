@@ -709,7 +709,7 @@ function PlanoSection({ color, user }) {
           { l: "Semanas",     v: "16",                                        c: color },
           { l: "Total horas", v: `~${totalHours}h`,                           c: color },
           { l: "Média/sem",   v: "~15h",                                      c: color },
-          { l: "Temas",       v: `${totalTopics}`,                            c: color },
+          { l: "Temas",       v: `${TOPICS.length}`,                            c: color },
         ].map(s => (
           <div key={s.l} style={S.gridCard(s.c)}>
             <div style={S.gridLabel(s.c)}>{s.l}</div>
