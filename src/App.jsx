@@ -3,7 +3,7 @@ import { initializeApp } from "firebase/app";
 import { getFirestore, doc, onSnapshot, setDoc, getDoc, collection, getDocs } from "firebase/firestore";
 import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "firebase/auth";
 
-// Your web app's Firebase configuration
+// ── Firebase Configuration ──────────────────────────────────────────
 const firebaseConfig = {
   apiKey: "AIzaSyDf-h0vqTuAJu_4hyB0mygXcCVtSvnaGBk",
   authDomain: "residex-9fa67.firebaseapp.com",
@@ -14,13 +14,12 @@ const firebaseConfig = {
   measurementId: "G-BY6328631R"
 };
 
-// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
 
-// ── Design Tokens (medpanel-tokens) ─────────────────────────────────
+// ── Design Tokens & CSS ──────────────────────────────────────────────
 const T = {
   bgPage: "#f8fafc", bgSurface: "#f1f5f9", bgCard: "#ffffff",
   bgObs: "#eef2ff", bgCardHl: "#eff6ff", borderCard: "#e2e8f0",
@@ -44,11 +43,8 @@ const S = {
   sectionHeader: (color) => ({ display: "flex", alignItems: "center", gap: 12, marginBottom: 24, paddingBottom: 14, borderBottom: `1px solid ${color}33` }),
   sectionBadge: (color) => ({ background: `${color}15`, border: `1px solid ${color}44`, color, padding: "4px 16px", borderRadius: 4, fontSize: 10, fontFamily: "monospace", letterSpacing: "0.1em", textTransform: "uppercase" }),
   sectionTitle: { fontSize: 17, fontWeight: 400, color: T.textPrimary },
-  footer: { borderTop: `1px solid ${T.borderNav}`, padding: "10px 28px", background: T.bgSurface, display: "flex", justifyContent: "space-between", alignItems: "center" },
-  footerLabel: { fontSize: 10, color: T.textDisabled, fontFamily: "monospace" },
   alert: (color) => ({ background: `${color}0e`, border: `1px solid ${color}40`, borderLeft: `3px solid ${color}`, borderRadius: 8, padding: "14px 18px", marginBottom: 16 }),
   alertTitle: (color) => ({ fontSize: 11, fontFamily: "monospace", color, textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 6 }),
-  obs: { background: T.bgObs, border: `1px solid ${T.borderObs}33`, borderLeft: `3px solid ${T.borderObs}`, borderRadius: 8, padding: "14px 18px", marginBottom: 16 },
   gridTitle: { fontSize: 10, fontFamily: "monospace", color: T.labelSection, textTransform: "uppercase", letterSpacing: "0.12em", marginBottom: 10 },
   gridWrap: { display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))", gap: 8, marginBottom: 20 },
   gridCard: (color) => ({ background: T.bgCardHl, border: `1px solid ${color}44`, borderLeft: `3px solid ${color}`, borderRadius: 6, padding: "10px 14px" }),
@@ -57,6 +53,7 @@ const S = {
   gradeWrap: (color) => ({ background: T.bgCard, border: `1px solid ${T.borderCard}`, borderLeft: `3px solid ${color}`, borderRadius: 8, padding: "10px 14px", display: "flex", gap: 12, alignItems: "flex-start", marginBottom: 6 }),
   gradeBadge: (color) => ({ background: `${color}15`, border: `1px solid ${color}44`, color, fontSize: 11, fontFamily: "monospace", padding: "4px 8px", borderRadius: 4, flexShrink: 0, whiteSpace: "nowrap", minWidth: 38, textAlign: "center" }),
   decisionWrap: (color) => ({ background: T.bgCard, border: `1px solid ${T.borderCard}`, borderLeft: `3px solid ${color}`, borderRadius: 8, padding: "12px 16px", marginBottom: 8 }),
+  input: { width: "100%", padding: "10px 12px", borderRadius: 6, border: `1px solid ${T.borderCard}`, fontSize: 14, fontFamily: "'DM Sans', sans-serif" }
 };
 
 const mobileCSS = `
@@ -64,92 +61,15 @@ const mobileCSS = `
 [style*="monospace"] { font-family: 'JetBrains Mono', monospace !important; font-weight: 500; }
 @media (max-width: 768px) {
   .mp-nav-sidebar { display: none !important; }
-  .mp-nav-mobile { display: flex !important; overflow-x: auto; -webkit-overflow-scrolling: touch; gap: 8px; padding: 10px 12px; background: #0F172A; border-bottom: 1px solid rgba(255,255,255,0.06); flex-shrink: 0; position: sticky; top: 0; z-index: 10; }
-  .mp-nav-mobile::-webkit-scrollbar { height: 3px; }
-  .mp-nav-mobile::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 3px; }
-  .mp-nav-mobile-btn { flex-shrink: 0; white-space: nowrap; padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 600; border: none; cursor: pointer; transition: all 0.2s; }
+  .mp-nav-mobile { display: flex !important; overflow-x: auto; gap: 8px; padding: 10px 12px; background: #0F172A; border-bottom: 1px solid rgba(255,255,255,0.06); position: sticky; top: 0; z-index: 10; }
+  .mp-nav-mobile-btn { flex-shrink: 0; white-space: nowrap; padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 600; border: none; cursor: pointer; }
   .mp-body { flex-direction: column !important; overflow-y: auto !important; }
-  .mp-content { width: 100% !important; min-width: 0 !important; padding: 16px 12px !important; }
-  .mp-header { padding: 16px 12px 12px !important; }
-  .mp-header-title { font-size: 18px !important; line-height: 1.2 !important; }
-  .mp-footer { padding: 8px 12px !important; flex-wrap: wrap; gap: 6px; }
+  .mp-content { width: 100% !important; padding: 16px 12px !important; }
 }
 @media (min-width: 769px) { .mp-nav-mobile { display: none !important; } }
 `;
 
-// ── Dicionário Base de Metadados (Topics) ───────────────────────────
-const TOPICS_METADATA = [
-  { spec: "PREV", code: "PREV1", name: "Medidas de Saúde Coletiva", trend: "d", simp: .70, old: 22 },
-  { spec: "PREV", code: "PREV2", name: "Estudos Epidemiológicos", trend: "e", simp: .90, old: 89 },
-  { spec: "PREV", code: "PREV3", name: "Testes Epidemiológicos", trend: "e", simp: .90, old: 73 },
-  { spec: "PREV", code: "PREV4", name: "Vigilância Epidemiológica", trend: "e", simp: .85, old: 65 },
-  { spec: "PREV", code: "PREV5", name: "Saúde do Trabalhador", trend: "d", simp: .70, old: 40 },
-  { spec: "CM", code: "CM1a", name: "Cardio — Arritmias Cardíacas e PCR", trend: "e", simp: .80, old: 75 },
-  { spec: "CM", code: "CM1b", name: "Cardio — IC, Cardiomiopatias e Pericardiopatias", trend: "c", simp: .60, old: 90 },
-  { spec: "CM", code: "CM1c", name: "Cardio — Hipertensão Arterial Sistêmica", trend: "e", simp: .80, old: 91 },
-  { spec: "CM", code: "CM1d", name: "Cardio — Valvopatias e Semiologia Cardíaca", trend: "e", simp: .75, old: 72 },
-  { spec: "CM", code: "CM1e", name: "Cardio — Doença Arterial Coronariana", trend: "c", simp: .60, old: 81 },
-  { spec: "CM", code: "CM1f", name: "Cardio — Síndrome Metabólica e Dislipidemia", trend: "c", simp: .80, old: 55 },
-  { spec: "CM", code: "CM2a", name: "Endocrino — Doenças da Tireoide", trend: "e", simp: .70, old: 60 },
-  { spec: "CM", code: "CM2b", name: "Endocrino — Doenças da Paratireoide", trend: "e", simp: .70, old: 60 },
-  { spec: "CM", code: "CM2c", name: "Endocrino — Suprarrenal, Hipófise e Hipotálamo", trend: "e", simp: .60, old: 58 },
-  { spec: "CM", code: "CM2d", name: "Endocrino — Diabetes Mellitus", trend: "e", simp: .70, old: 65 },
-  { spec: "CM", code: "CM2e", name: "Endocrino — Obesidade", trend: "e", simp: .75, old: 50 },
-  { spec: "CM", code: "CM3a", name: "Gastro — Pancreatite Aguda, Crônica e Neoplasias", trend: "c", simp: .70, old: 79 },
-  { spec: "CM", code: "CM3b", name: "Gastro — Diarreias, Parasitoses Intestinais", trend: "e", simp: .70, old: 50 },
-  { spec: "CM", code: "CM3c", name: "Gastro — DIIs, SII e Constipação", trend: "e", simp: .80, old: 56 },
-  { spec: "CM", code: "CM4a", name: "Hepato — Anatomia, Fisiologia e Hepatites", trend: "e", simp: .70, old: 60 },
-  { spec: "CM", code: "CM4b", name: "Hepato — Insuficiência Hepática e suas Causas", trend: "e", simp: .70, old: 60 },
-  { spec: "CM", code: "CM4c", name: "Hepato — Insuficiência Hepática e Complicações", trend: "e", simp: .70, old: 60 },
-  { spec: "CM", code: "CM4d", name: "Hepato — Tumores Hepáticos", trend: "e", simp: .65, old: 55 },
-  { spec: "CM", code: "CM6a", name: "Infecto — Grandes Síndromes Bacterianas, ITU e ATB", trend: "c", simp: .70, old: 84 },
-  { spec: "CM", code: "CM6b", name: "Infecto — Síndromes Febris", trend: "e", simp: .75, old: 64 },
-  { spec: "CM", code: "CM6c", name: "Infecto — Toxicologia Clínica", trend: "e", simp: .75, old: 42 },
-  { spec: "CM", code: "CM6d", name: "Infecto — HIV/AIDS", trend: "c", simp: .70, old: 45 },
-  { spec: "CG", code: "CG1a", name: "Trauma — Atendimento Inicial ao Politraumatizado", trend: "d", simp: .80, old: 40 },
-  { spec: "CG", code: "CG1b", name: "Trauma — Trauma Torácico", trend: "d", simp: .80, old: 40 },
-  { spec: "CG", code: "CG1c", name: "Trauma — Trauma Abdominal, Pélvico e Urológico", trend: "d", simp: .80, old: 40 },
-  { spec: "CG", code: "CG1d", name: "Trauma — Neurotrauma e Trauma Crânio-Cervical", trend: "d", simp: .80, old: 40 },
-  { spec: "CG", code: "CG1e", name: "Trauma — Queimaduras e Trauma de Extremidades", trend: "d", simp: .80, old: 36 },
-  { spec: "CG", code: "CG2a", name: "Gastrocirúrgica — Doenças do Esôfago", trend: "e", simp: .80, old: 61 },
-  { spec: "CG", code: "CG2b", name: "Gastrocirúrgica — Doenças do Estômago", trend: "e", simp: .75, old: 69 },
-  { spec: "CG", code: "CG2c", name: "Gastrocirúrgica — Doenças das Vias Biliares", trend: "c", simp: .70, old: 77 },
-  { spec: "CG", code: "CG2d", name: "Gastrocirúrgica — Doenças Malignas das Vias Biliares", trend: "e", simp: .70, old: 50 },
-  { spec: "CG", code: "CG2e", name: "Gastrocirúrgica — Cirurgia de Obesidade", trend: "e", simp: .70, old: 50 },
-  { spec: "CG", code: "CG2f", name: "Gastrocirúrgica — Hemorragia Digestiva", trend: "e", simp: .60, old: 38 },
-  { spec: "CG", code: "CG3",  name: "Hérnias", trend: "e", simp: .90, old: 50 },
-  { spec: "CG", code: "CG4a", name: "Abdome Agudo — Inflamatório", trend: "e", simp: .70, old: 52 },
-  { spec: "CG", code: "CG4b", name: "Abdome Agudo — Obstrutivo, Vascular e Perfurativo", trend: "e", simp: .60, old: 67 },
-  { spec: "CG", code: "CG5a", name: "Perioperatório — Técnica Cirúrgica e Pós", trend: "e", simp: .80, old: 32 },
-  { spec: "CG", code: "CG5b", name: "Perioperatório — Pré-Operatório e Nutrição", trend: "d", simp: .80, old: 28 },
-  { spec: "CG", code: "CG9a", name: "Ortopedia — Geral e Fraturas", trend: "d", simp: .70, old: 35 },
-  { spec: "CG", code: "CG9b", name: "Ortopedia — Pediátrica e Tumores Ósseos", trend: "d", simp: .70, old: 30 },
-  { spec: "CG", code: "CG11", name: "Anestesiologia", trend: "e", simp: .75, old: 44 },
-  { spec: "CG", code: "CG13", name: "Oftalmologia", trend: "d", simp: .70, old: 33 },
-  { spec: "PED", code: "PED1a", name: "Neonato — Reanimação e Testes de Triagem", trend: "e", simp: .75, old: 65 },
-  { spec: "PED", code: "PED1b", name: "Neonato — Distúrbios I (Sepse, Icterícia, Resp.)", trend: "e", simp: .75, old: 65 },
-  { spec: "PED", code: "PED1c", name: "Neonato — Distúrbios II (Infecções Cong. e Metab.)", trend: "e", simp: .75, old: 65 },
-  { spec: "PED", code: "PED1d", name: "Neonato — Distúrbios III (Miscelânea)", trend: "e", simp: .80, old: 38 },
-  { spec: "PED", code: "PED2",  name: "Alimentação Infantil", trend: "e", simp: .90, old: 30 },
-  { spec: "PED", code: "PED3a", name: "Síndromes Pondero-Estaturais", trend: "d", simp: .80, old: 25 },
-  { spec: "PED", code: "PED3b", name: "Síndromes Puberais", trend: "e", simp: .85, old: 43 },
-  { spec: "PED", code: "PED4",  name: "Distúrbios Nutricionais", trend: "e", simp: .80, old: 45 },
-  { spec: "PED", code: "PED6",  name: "Uropediatria", trend: "e", simp: .65, old: 65 },
-  { spec: "PED", code: "PED8",  name: "Doenças Exantemáticas", trend: "e", simp: .80, old: 66 },
-  { spec: "GIN", code: "GIN1",  name: "Gin — Ciclo Menstrual", trend: "e", simp: .80, old: 50 },
-  { spec: "GIN", code: "GIN2",  name: "Gin — Planejamento Familiar", trend: "e", simp: .80, old: 50 },
-  { spec: "GIN", code: "GIN3",  name: "Gin — Amenorreia", trend: "c", simp: .85, old: 62 },
-  { spec: "GIN", code: "GIN4",  name: "Gin — Síndrome dos Ovários Policísticos", trend: "c", simp: .85, old: 62 },
-  { spec: "GIN", code: "GIN5",  name: "Gin — SUA e Dismenorreia", trend: "e", simp: .90, old: 35 },
-  { spec: "GIN", code: "GIN6a", name: "Gin — IST I: Vulvovaginites, Cervicites e DIP", trend: "e", simp: .90, old: 50 },
-  { spec: "GIN", code: "GIN6b", name: "Gin — IST II: Úlceras Genitais e Violência Sexual", trend: "c", simp: .90, old: 40 },
-  { spec: "OBS", code: "OBS1",  name: "Obs — Avaliação Inicial da Gestação", trend: "e", simp: .80, old: 71 },
-  { spec: "OBS", code: "OBS2",  name: "Obs — Assistência ao Pré-Natal", trend: "e", simp: .80, old: 71 },
-  { spec: "OBS", code: "OBS3",  name: "Obs — Sangramentos Gestacionais", trend: "e", simp: .75, old: 76 },
-  { spec: "OBS", code: "OBS4a", name: "Obs — Doenças na Gestação: DHG e DMG", trend: "c", simp: .70, old: 88 },
-  { spec: "OBS", code: "OBS4b", name: "Obs — Doenças na Gestação: STORCHs, Gemelaridade", trend: "e", simp: .65, old: 49 },
-];
-
+// ── Helpers & Constants ─────────────────────────────────────────────
 const trendV = { c: 1.0, e: 0.75, d: 0.40 };
 const SPEC_COLORS = { CM: "#0EA5E9", CG: "#F59E0B", OBS: "#EC4899", PED: "#10B981", PREV: "#6366F1", GIN: "#F97316" };
 
@@ -160,30 +80,135 @@ function tier(v) {
   return { color: "#0EA5E9", label: "BAIXA PRIOR." };
 }
 
-// ── Components ───────────────────────────────────────────────────────
-function FormulaSection({ color }) {
-  const weights = [
-    { inst: "ENARE", w: 5, color: "#EF4444", desc: "Prova com maior peso — foco principal do estudo" },
-    { inst: "USP",            w: 4, color: "#F97316", desc: "Alta relevância, forte em Cirurgia e Gastro" },
-    { inst: "UNIFESP",        w: 2, color: "#0EA5E9", desc: "Peso menor — complementar ao ENARE/USP" },
-  ];
+// ── Core Engine: Calcula WIPR com base no Perfil do Utilizador ──────
+function calculateDynamicWIPR(rawTopics, profile) {
+  if (!rawTopics.length || !profile.institutions.length) return [];
+
+  // Calcular o Peso Total (W_T) das bancas escolhidas pelo utilizador
+  const W_T = profile.institutions.reduce((sum, inst) => sum + inst.weight, 0);
+
+  // 1. Processar os temas e encontrar o máximo histórico (maxWfRaw)
+  let maxWfRaw = 0;
+  const mappedData = rawTopics.map(t => {
+    let n_total = 0;
+    let c_total = 0;
+
+    profile.institutions.forEach(inst => {
+      const freq = t.frequencias[inst.name] || { n: 0, c: 0 };
+      n_total += freq.n * inst.weight;
+      c_total += freq.c * inst.weight;
+    });
+
+    const rawWf = n_total / W_T;
+    if (rawWf > maxWfRaw) maxWfRaw = rawWf;
+
+    return { ...t, n_total, c_total, rawWf };
+  });
+
+  const maxWf = maxWfRaw === 0 ? 1 : maxWfRaw;
+
+  // 2. Aplicar a fórmula final W-IPR
+  return mappedData.map(t => {
+    const Wcov = t.c_total / W_T;
+    const tendencia = trendV[t.tendencia] || 0.75; 
+    const simplicidade = t.simplicidade || 0.70;
+    
+    const wiprRaw = (t.rawWf / maxWf * 0.40 + Wcov * 0.30 + tendencia * 0.20 + simplicidade * 0.10) * 100;
+    return { ...t, wipr: Math.round(wiprRaw) };
+  }).sort((a, b) => b.wipr - a.wipr);
+}
+
+// ── Sections ────────────────────────────────────────────────────────
+
+function PerfilSection({ color, profile, setProfile, user }) {
+  const [examDate, setExamDate] = useState(profile.examDate || "");
+  const [instName, setInstName] = useState("");
+  const [instWeight, setInstWeight] = useState(1);
+  const [institutions, setInstitutions] = useState(profile.institutions || []);
+  const [saving, setSaving] = useState(false);
+
+  const handleAddInst = () => {
+    if (!instName) return;
+    setInstitutions([...institutions, { name: instName.toUpperCase(), weight: Number(instWeight) }]);
+    setInstName("");
+    setInstWeight(1);
+  };
+
+  const handleRemoveInst = (idx) => {
+    setInstitutions(institutions.filter((_, i) => i !== idx));
+  };
+
+  const saveProfile = async () => {
+    setSaving(true);
+    const newProfile = { examDate, institutions };
+    await setDoc(doc(db, "usuarios", user.uid), { perfil: newProfile }, { merge: true });
+    setProfile(newProfile);
+    setSaving(false);
+    alert("Perfil guardado com sucesso! A fórmula foi recalculada.");
+  };
+
   return (
     <div>
-      <div style={S.gridTitle}>Pesos por instituição</div>
+      <div style={S.alert(color)}>
+        <div style={S.alertTitle(color)}>Data da Prova</div>
+        <input 
+          type="date" 
+          value={examDate} 
+          onChange={e => setExamDate(e.target.value)} 
+          style={{...S.input, maxWidth: 200, marginBottom: 10}} 
+        />
+        <div style={{ fontSize: 11, color: T.textMuted }}>O plano semanal será distribuído até esta data.</div>
+      </div>
+
+      <div style={S.alert("#F97316")}>
+        <div style={S.alertTitle("#F97316")}>Instituições Alvo & Pesos</div>
+        <div style={{ display: "flex", gap: 8, marginBottom: 16, flexWrap: "wrap" }}>
+          <input placeholder="Ex: ENARE_AOCP_FGV, USP" value={instName} onChange={e => setInstName(e.target.value)} style={{...S.input, flex: 1, minWidth: 150}} />
+          <select value={instWeight} onChange={e => setInstWeight(e.target.value)} style={{...S.input, width: 90}}>
+            {[1,2,3,4,5].map(w => <option key={w} value={w}>Peso {w}</option>)}
+          </select>
+          <button onClick={handleAddInst} style={{ padding: "0 20px", background: "#F97316", color: "#fff", border: "none", borderRadius: 6, fontWeight: "bold", cursor: "pointer" }}>Adicionar</button>
+        </div>
+
+        <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+          {institutions.map((inst, idx) => (
+            <div key={idx} style={{ display: "flex", justifyContent: "space-between", background: "#fff", padding: "10px 14px", borderRadius: 6, border: "1px solid #e2e8f0" }}>
+              <span style={{ fontFamily: "monospace", fontWeight: 600 }}>{inst.name}</span>
+              <div style={{ display: "flex", gap: 16, alignItems: "center" }}>
+                <span style={{ fontSize: 12, color: T.textMuted }}>Peso {inst.weight}</span>
+                <button onClick={() => handleRemoveInst(idx)} style={{ background: "none", border: "none", color: "#EF4444", cursor: "pointer", fontSize: 12 }}>Remover</button>
+              </div>
+            </div>
+          ))}
+          {institutions.length === 0 && <div style={{ fontSize: 12, color: T.textMuted, fontStyle: "italic" }}>Nenhuma instituição adicionada.</div>}
+        </div>
+      </div>
+
+      <button onClick={saveProfile} disabled={saving} style={{ padding: "12px 24px", background: color, color: "#fff", border: "none", borderRadius: 8, fontSize: 14, fontWeight: "bold", cursor: "pointer", width: "100%" }}>
+        {saving ? "A guardar..." : "Guardar Perfil & Recalcular Fórmula"}
+      </button>
+    </div>
+  );
+}
+
+function FormulaSection({ color, profile }) {
+  if (!profile.institutions.length) return <div style={{ color: T.textMuted }}>Configure o seu perfil primeiro.</div>;
+
+  return (
+    <div>
+      <div style={S.gridTitle}>Pesos por instituição (Dinâmico)</div>
       <div style={{ ...S.gridWrap, gridTemplateColumns: "repeat(auto-fill,minmax(180px,1fr))", marginBottom: 24 }}>
-        {weights.map(w => (
-          <div key={w.inst} style={S.gridCard(w.color)}>
-            <div style={S.gridLabel(w.color)}>{w.inst}</div>
-            <div style={{ fontSize: 30, fontWeight: 300, color: w.color, fontFamily: "'DM Serif Display', serif", lineHeight: 1.1, marginBottom: 6 }}>{w.w}</div>
-            <div style={{ ...S.gridValue, fontSize: 12, color: T.textMuted }}>{w.desc}</div>
+        {profile.institutions.map((w, idx) => (
+          <div key={idx} style={S.gridCard(color)}>
+            <div style={S.gridLabel(color)}>{w.name}</div>
+            <div style={{ fontSize: 30, fontWeight: 300, color: color, fontFamily: "'DM Serif Display', serif", lineHeight: 1.1, marginBottom: 6 }}>{w.weight}</div>
           </div>
         ))}
       </div>
       <div style={{ ...S.alert("#000"), background: "#fafaf8", border: "1px solid #e2e8f0", borderLeft: "3px solid #000" }}>
-        <div style={{ ...S.alertTitle("#000")}}>Fórmula W-IPR — completa e Dinâmica</div>
+        <div style={{ ...S.alertTitle("#000")}}>Fórmula W-IPR Aplicada</div>
         <div style={{ ...S.gridValue, fontSize: 11, color: T.textMuted }}>
-          W-IPR = round( (Wf_norm × 0.40 + Wcov × 0.30 + Wtrend × 0.20 + Wsimp × 0.10) × 100 )<br/>
-          * Os dados estão agora ligados diretamente ao Firebase e ajustam-se automaticamente.
+          Os 69 temas já foram processados. O algoritmo somou as frequências exclusivas das bancas que escolheu e ponderou pela complexidade e tendência de cada matéria. Vá à aba "Rankings" para ver o resultado exato.
         </div>
       </div>
     </div>
@@ -194,35 +219,17 @@ function RankingsSection({ color, dynamicTopics }) {
   const [filter, setFilter] = useState("all");
 
   const filtered = dynamicTopics.filter(t => {
-    if (filter === "c")  return t.wipr >= 80;
-    if (filter === "h")  return t.wipr >= 60 && t.wipr < 80;
-    if (filter === "m")  return t.wipr >= 40 && t.wipr < 60;
-    if (filter === "l")  return t.wipr < 40;
-    if (filter === "up") return t.wipr > t.old + 2;
-    if (filter === "dn") return t.wipr < t.old - 2;
+    if (filter === "c") return t.wipr >= 80;
+    if (filter === "h") return t.wipr >= 60 && t.wipr < 80;
+    if (filter === "m") return t.wipr >= 40 && t.wipr < 60;
+    if (filter === "l") return t.wipr < 40;
     return true;
   });
 
-  const stats = [
-    { label: "Temas analisados", val: dynamicTopics.length, c: T.textPrimary },
-    { label: "Crítico", val: dynamicTopics.filter(t => t.wipr >= 80).length, c: "#EF4444" },
-    { label: "Subiram ↑", val: dynamicTopics.filter(t => t.wipr > t.old + 2).length, c: "#10B981" },
-    { label: "Caíram ↓",  val: dynamicTopics.filter(t => t.wipr < t.old - 2).length, c: "#EF4444" },
-  ];
-
   return (
     <div>
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(130px, 1fr))", gap: 8, marginBottom: 20 }}>
-        {stats.map(s => (
-          <div key={s.label} style={S.gridCard(s.c)}>
-            <div style={S.gridLabel(s.c)}>{s.label}</div>
-            <div style={{ fontSize: 28, fontWeight: 300, color: s.c, fontFamily: "monospace", lineHeight: 1 }}>{s.val}</div>
-          </div>
-        ))}
-      </div>
-
       <div style={{ display: "flex", gap: 6, flexWrap: "wrap", marginBottom: 16 }}>
-        {[{ id: "all", label: "Todos" }, { id: "c", label: "Crítico 80+" }, { id: "h", label: "Alta 60–79" }, { id: "m", label: "Média 40–59" }, { id: "l", label: "Baixa <40" }, { id: "up", label: "↑ Subiram" }, { id: "dn", label: "↓ Caíram" }].map(f => (
+        {[{ id: "all", label: "Todos" }, { id: "c", label: "Crítico 80+" }, { id: "h", label: "Alta 60–79" }, { id: "m", label: "Média 40–59" }, { id: "l", label: "Baixa <40" }].map(f => (
           <button
             key={f.id}
             onClick={() => setFilter(f.id)}
@@ -239,29 +246,26 @@ function RankingsSection({ color, dynamicTopics }) {
       </div>
 
       <div style={{ fontSize: 10, fontFamily: "monospace", color: T.textDisabled, marginBottom: 12 }}>
-        {filtered.length} TEMAS EXIBIDOS · Sincronizado com Firebase
+        {filtered.length} TEMAS EXIBIDOS
       </div>
 
       {filtered.map((t, i) => {
         const ti = t.wipr > 0 ? tier(t.wipr) : { color: "#6366F1", label: "REV" };
-        const sc = SPEC_COLORS[t.spec] || color;
-        const d  = t.wipr - t.old;
+        const sc = SPEC_COLORS[t.especialidade] || color;
         const globalRank = dynamicTopics.indexOf(t) + 1;
+        
         return (
-          <div key={t.code + i} style={S.gradeWrap(ti.color)}>
+          <div key={t.id + i} style={S.gradeWrap(ti.color)}>
             <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 4, flexShrink: 0 }}>
               <div style={{ ...S.gradeBadge(ti.color), fontSize: 13, padding: "6px 10px" }}>{t.wipr}</div>
               <div style={{ fontSize: 9, fontFamily: "monospace", color: T.textDisabled }}>#{globalRank}</div>
             </div>
             <div style={{ flex: 1, minWidth: 0 }}>
-              <div style={{ fontSize: 13, color: T.textPrimary, lineHeight: 1.4, marginBottom: 3 }}>{t.name}</div>
+              <div style={{ fontSize: 13, color: T.textPrimary, lineHeight: 1.4, marginBottom: 3 }}>{t.nome || t.id}</div>
               <div style={{ display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>
-                <span style={{ fontSize: 9, fontFamily: "monospace", padding: "2px 7px", borderRadius: 3, background: `${sc}15`, border: `1px solid ${sc}44`, color: sc }}>{t.spec}</span>
-                <span style={{ fontSize: 10, fontFamily: "monospace", color: T.textDisabled }}>{t.code}</span>
+                <span style={{ fontSize: 9, fontFamily: "monospace", padding: "2px 7px", borderRadius: 3, background: `${sc}15`, border: `1px solid ${sc}44`, color: sc }}>{t.especialidade || 'GERAL'}</span>
+                <span style={{ fontSize: 10, fontFamily: "monospace", color: T.textDisabled }}>{t.id}</span>
               </div>
-            </div>
-            <div style={{ fontSize: 12, fontFamily: "monospace", fontWeight: 600, flexShrink: 0, minWidth: 32, textAlign: "right", color: d > 2 ? "#10B981" : d < -2 ? "#EF4444" : T.textDisabled }}>
-              {d > 2 ? `↑${d}` : d < -2 ? `↓${Math.abs(d)}` : "→"}
             </div>
           </div>
         );
@@ -270,32 +274,31 @@ function RankingsSection({ color, dynamicTopics }) {
   );
 }
 
-function PlanoSection({ color, user, dynamicTopics }) {
-  const [exp, setExp] = useState(new Set([1, 2, 3]));
+function PlanoSection({ color, user, dynamicTopics, profile }) {
+  const [exp, setExp] = useState(new Set([1]));
   const [done, setDone] = useState(new Set());
   const [loading, setLoading] = useState(true);
 
-  // Aqui mantemos o seu modelo WEEKS, mas com um helper para buscar o WIPR dinâmico
-  const getDynamicWIPR = (nameOrCode) => {
-    const topic = dynamicTopics.find(t => t.name === nameOrCode || t.code === nameOrCode);
-    return topic ? topic.wipr : 0;
-  };
+  // 1. Calcular Semanas Restantes
+  const hoje = new Date();
+  const prova = profile.examDate ? new Date(profile.examDate) : new Date(hoje.getTime() + 180 * 24 * 60 * 60 * 1000); // Default 6 meses
+  const diffTime = Math.abs(prova - hoje);
+  const diffWeeks = Math.ceil(diffTime / (1000 * 60 * 60 * 24 * 7));
+  const totalWeeks = Math.max(1, Math.min(diffWeeks, 52)); // Min 1 semana, Max 52 semanas
 
-  const WEEKS = [
-    { n:1, focus:"Epidemiologia + DHG/DMG", col:"#EF4444", h:22, topics:[{name:"Estudos Epidemiológicos", h:11, mode:"Estudo completo"},{name:"Obs — Doenças na Gestação: DHG e DMG", h:11, mode:"Estudo completo"}]},
-    { n:2, focus:"HAS + Bacterianas/ITU", col:"#EF4444", h:21, topics:[{name:"Cardio — Hipertensão Arterial Sistêmica", h:10, mode:"Estudo completo"},{name:"Infecto — Grandes Síndromes Bacterianas, ITU e ATB", h:11, mode:"Estudo completo"}]},
-    { n:3, focus:"IC + Pancreatite", col:"#EF4444", h:20, topics:[{name:"Cardio — IC, Cardiomiopatias e Pericardiopatias", h:11, mode:"Estudo completo"},{name:"Gastro — Pancreatite Aguda, Crônica e Neoplasias", h:9, mode:"Estudo completo"}]},
-    { n:4, focus:"Vias biliares + Arritmias + Pré-natal", col:"#EF4444", h:20, topics:[{name:"Gastrocirúrgica — Doenças das Vias Biliares", h:8, mode:"Estudo completo"},{name:"Cardio — Arritmias Cardíacas e PCR", h:7, mode:"Estudo completo"},{name:"Obs — Assistência ao Pré-Natal", h:5, mode:"Estudo completo"}]},
-    // Pode expandir o array de semanas seguindo a nova nomenclatura do Dicionário Base...
-  ];
+  // 2. Distribuir os 69 temas dinamicamente pelas semanas
+  const temasPorSemana = Math.ceil(dynamicTopics.length / totalWeeks);
+  const WEEKS = Array.from({ length: totalWeeks }, (_, i) => ({
+    n: i + 1,
+    col: i < totalWeeks * 0.3 ? "#EF4444" : i < totalWeeks * 0.7 ? "#F97316" : "#10B981",
+    topics: dynamicTopics.slice(i * temasPorSemana, (i + 1) * temasPorSemana)
+  })).filter(w => w.topics.length > 0);
 
   const docRef = doc(db, "progresso", user.uid);
 
   useEffect(() => {
     const unsubscribe = onSnapshot(docRef, (docSnap) => {
-      if (docSnap.exists()) {
-        setDone(new Set(docSnap.data().temasFeitos || []));
-      }
+      if (docSnap.exists()) setDone(new Set(docSnap.data().temasFeitos || []));
       setLoading(false);
     });
     return () => unsubscribe();
@@ -309,23 +312,20 @@ function PlanoSection({ color, user, dynamicTopics }) {
     await setDoc(docRef, { temasFeitos: Array.from(nx) }, { merge: true });
   };
 
-  if (loading) return <div style={{ fontFamily: "monospace", color: T.textSubtle, padding: 20 }}>Sincronizando...</div>;
+  if (loading) return <div style={{ padding: 20 }}>A carregar...</div>;
 
   return (
     <div>
-      {/* Botões expandir/recolher */}
-      <div style={{ display: "flex", gap: 6, marginBottom: 14 }}>
-        {[["Expandir tudo", true], ["Recolher tudo", false]].map(([l, o]) => (
-          <button key={l} onClick={() => setExp(o ? new Set(WEEKS.map(w => w.n)) : new Set())}
-            style={{ background: "transparent", border: `1px solid ${T.borderCard}`, color: T.textMuted, padding: "5px 11px", borderRadius: 4, fontSize: 11, fontFamily: "monospace", cursor: "pointer" }}>
-            {l}
-          </button>
-        ))}
+      <div style={S.alert(color)}>
+        <div style={S.alertTitle(color)}>Cronograma Gerado Automático</div>
+        <div style={{ ...S.alertText, fontSize: 12 }}>
+          Faltam <b>{totalWeeks} semanas</b> para a prova. Os {dynamicTopics.length} temas foram divididos à razão de ~{temasPorSemana} por semana, começando pelos mais Críticos.
+        </div>
       </div>
 
       {WEEKS.map(w => {
         const isO = exp.has(w.n);
-        const weekKeys = w.topics.map((_, i) => `${w.n}-${i}`);
+        const weekKeys = w.topics.map(t => `${w.n}-${t.id}`);
         const doneCount = weekKeys.filter(k => done.has(k)).length;
         const allDone = doneCount > 0 && doneCount === w.topics.length;
 
@@ -333,24 +333,24 @@ function PlanoSection({ color, user, dynamicTopics }) {
           <div key={w.n} style={S.decisionWrap(allDone ? "#10B981" : w.col)}>
             <div onClick={() => tog(w.n)} style={{ display: "flex", alignItems: "center", gap: 10, padding: "10px 14px", background: allDone ? "#F0FDF4" : "#fafaf8", cursor: "pointer" }}>
               <span style={{ fontSize: 10, fontFamily: "monospace", color: allDone ? "#14532D" : w.col, minWidth: 60, fontWeight: 600 }}>SEMANA {w.n}</span>
-              <span style={{ flex: 1, fontSize: 12.5, color: allDone ? T.textMuted : T.textPrimary, textDecoration: allDone ? "line-through" : "none" }}>{w.focus}</span>
+              <span style={{ flex: 1, fontSize: 12.5, color: allDone ? T.textMuted : T.textPrimary, textDecoration: allDone ? "line-through" : "none" }}>Estudo Guiado</span>
+              <span style={{ fontSize: 10, fontFamily: "monospace", color: T.textDisabled }}>{doneCount}/{w.topics.length}</span>
             </div>
 
             {isO && (
               <div style={{ padding: "0 14px 10px" }}>
-                {w.topics.map((t, i) => {
-                  const key = `${w.n}-${i}`;
+                {w.topics.map((t) => {
+                  const key = `${w.n}-${t.id}`;
                   const isDone = done.has(key);
-                  const wiprLive = getDynamicWIPR(t.name);
-                  const ti = wiprLive > 0 ? tier(wiprLive) : { color: "#6366F1" };
+                  const ti = t.wipr > 0 ? tier(t.wipr) : { color: "#6366F1" };
 
                   return (
-                    <div key={key} onClick={(e) => { e.stopPropagation(); togDone(key); }} style={{ display: "flex", alignItems: "flex-start", gap: 8, padding: "8px 0", cursor: "pointer" }}>
+                    <div key={key} onClick={(e) => { e.stopPropagation(); togDone(key); }} style={{ display: "flex", alignItems: "flex-start", gap: 8, padding: "8px 0", cursor: "pointer", borderBottom: `1px solid ${T.borderCard}` }}>
                       <div style={{ flexShrink: 0, width: 32, height: 20, borderRadius: 4, background: `${ti.color}26`, color: ti.color, fontSize: 10, fontFamily: "monospace", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 600 }}>
-                        {wiprLive > 0 ? wiprLive : "rev"}
+                        {t.wipr}
                       </div>
                       <div style={{ flex: 1, fontSize: 12.5, color: isDone ? T.textDisabled : T.textPrimary, textDecoration: isDone ? "line-through" : "none" }}>
-                        {t.name}
+                        {t.nome || t.id}
                       </div>
                     </div>
                   );
@@ -366,6 +366,7 @@ function PlanoSection({ color, user, dynamicTopics }) {
 
 // ── Application Core ────────────────────────────────────────────────
 const SECTIONS = [
+  { id: "perfil",   name: "Meu Perfil",    color: "#F97316" },
   { id: "formula",  name: "Fórmula",       color: "#6366F1" },
   { id: "rankings", name: "Rankings",      color: "#0EA5E9" },
   { id: "plano",    name: "Plano Semanal", color: "#10B981" },
@@ -379,7 +380,7 @@ export default function RESIDEX_CONTROLLER() {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       if (currentUser) {
         setUser(currentUser);
-        setStatus("authorized"); // Pulei as regras de lock apenas para demo
+        setStatus("authorized"); 
       } else {
         setUser(null);
         setStatus("loggedOut");
@@ -403,87 +404,73 @@ export default function RESIDEX_CONTROLLER() {
 }
 
 function RESIDEX_APP({ user, onLogout }) {
-  const [active, setActive] = useState("formula");
+  const [active, setActive] = useState("perfil");
+  const [rawTopics, setRawTopics] = useState([]);
   const [dynamicTopics, setDynamicTopics] = useState([]);
-  const [isLoadingData, setIsLoadingData] = useState(true);
-  const [firebaseError, setFirebaseError] = useState(null); // 1. NOVO ESTADO DE ERRO
+  const [profile, setProfile] = useState({ examDate: "", institutions: [] });
+  const [isLoading, setIsLoading] = useState(true);
+  const [firebaseError, setFirebaseError] = useState(null);
 
   const sec = SECTIONS.find(s => s.id === active);
 
+  // 1. Puxar Dados Brutos (Firebase) + Perfil do Utilizador
   useEffect(() => {
-    async function fetchStats() {
+    async function fetchData() {
       try {
-        const querySnapshot = await getDocs(collection(db, "estatisticas_temas"));
-        const fbData = {};
+        // Puxar Perfil
+        const userDoc = await getDoc(doc(db, "usuarios", user.uid));
+        let userProfile = { examDate: "", institutions: [] };
         
-        querySnapshot.forEach((doc) => {
-          fbData[doc.id] = doc.data().frequencias || {};
-        });
+        if (userDoc.exists() && userDoc.data().perfil) {
+          userProfile = userDoc.data().perfil;
+        } else {
+          // Perfil Default se for o primeiro acesso
+          userProfile = { examDate: "2026-11-15", institutions: [{name: "ENARE_AOCP_FGV", weight: 5}, {name: "USP", weight: 4}, {name: "UNIFESP", weight: 2}] };
+        }
+        setProfile(userProfile);
 
-        const W_E = 5, W_U = 4, W_F = 2, W_T = 11;
+        // Puxar os 69 Temas e os metadados
+        const querySnapshot = await getDocs(collection(db, "estatisticas_temas"));
+        const rawData = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        setRawTopics(rawData);
 
-        let maxWfRaw = 0;
-        const mappedData = TOPICS_METADATA.map(t => {
-          const freqs = fbData[t.code] || {};
-          
-          const enare = freqs["ENARE_AOCP_FGV"] || { n: 0, c: 0 };
-          const usp   = freqs["USP"] || { n: 0, c: 0 };
-          const unif  = freqs["UNIFESP"] || { n: 0, c: 0 };
-
-          const rawWf = (enare.n * W_E + usp.n * W_U + unif.n * W_F) / W_T;
-          if (rawWf > maxWfRaw) maxWfRaw = rawWf;
-
-          return {
-            ...t,
-            nE: enare.n, cE: enare.c,
-            nU: usp.n, cU: usp.c,
-            nF: unif.n, cF: unif.c,
-            rawWf
-          };
-        });
-
-        const maxWf = maxWfRaw === 0 ? 1 : maxWfRaw;
-
-        const finalTopics = mappedData.map(t => {
-          const Wcov = (t.cE * W_E + t.cU * W_U + t.cF * W_F) / W_T;
-          const wiprRaw = (t.rawWf / maxWf * 0.40 + Wcov * 0.30 + trendV[t.trend] * 0.20 + t.simp * 0.10) * 100;
-          return { ...t, wipr: Math.round(wiprRaw) };
-        }).sort((a, b) => b.wipr - a.wipr);
-
-        setDynamicTopics(finalTopics);
       } catch (error) {
-        console.error("Erro ao buscar estatísticas do Firestore:", error);
-        setFirebaseError(error.message); // 2. CAPTURA DO ERRO
+        setFirebaseError(error.message);
       } finally {
-        setIsLoadingData(false);
+        setIsLoading(false);
       }
     }
-    fetchStats();
-  }, []);
+    fetchData();
+  }, [user.uid]);
+
+  // 2. Recalcular WIPR sempre que o perfil (bancas/pesos) mudar
+  useEffect(() => {
+    if (rawTopics.length > 0) {
+      const calculated = calculateDynamicWIPR(rawTopics, profile);
+      setDynamicTopics(calculated);
+    }
+  }, [rawTopics, profile]);
 
   function renderContent() {
-    if (isLoadingData) return <div style={{fontFamily: "monospace", color: T.textSubtle}}>Baixando dados do Firebase...</div>;
+    if (isLoading) return <div style={{fontFamily: "monospace", color: T.textSubtle}}>Baixando dados do Firebase...</div>;
     
-    // 3. EXIBIÇÃO DO ERRO NA TELA
     if (firebaseError) return (
       <div style={S.alert("#EF4444")}>
-        <div style={S.alertTitle("#EF4444")}>Falha de Conexão com Firebase</div>
-        <div style={{ ...S.alertText, fontFamily: "monospace", fontSize: 12 }}>
-          {firebaseError}
-        </div>
+        <div style={S.alertTitle("#EF4444")}>Falha de Conexão</div>
+        <div style={{ ...S.alertText, fontFamily: "monospace", fontSize: 12 }}>{firebaseError}</div>
       </div>
     );
     
-    if (active === "formula")  return <FormulaSection color={sec.color} />;
+    if (active === "perfil")   return <PerfilSection color={sec.color} profile={profile} setProfile={setProfile} user={user} />;
+    if (active === "formula")  return <FormulaSection color={sec.color} profile={profile} />;
     if (active === "rankings") return <RankingsSection color={sec.color} dynamicTopics={dynamicTopics} />;
-    if (active === "plano")    return <PlanoSection color={sec.color} user={user} dynamicTopics={dynamicTopics} />;
+    if (active === "plano")    return <PlanoSection color={sec.color} user={user} dynamicTopics={dynamicTopics} profile={profile} />;
   }
 
   return (
     <div style={S.page}>
       <style>{mobileCSS}</style>
       
-      {/* HEADER */}
       <div style={S.header}>
         <div style={{display: "flex", justifyContent: "space-between", alignItems: "center"}}>
           <div>
@@ -496,25 +483,14 @@ function RESIDEX_APP({ user, onLogout }) {
         </div>
       </div>
 
-      {/* NAV MOBILE (O BLOCO QUE FALTAVA) */}
       <div className="mp-nav-mobile">
         {SECTIONS.map(s => (
-          <button
-            key={s.id}
-            onClick={() => setActive(s.id)}
-            className="mp-nav-mobile-btn"
-            style={{
-              background: active === s.id ? s.color : "rgba(255,255,255,0.06)",
-              color: active === s.id ? "#fff" : "rgba(255,255,255,0.6)",
-              boxShadow: active === s.id ? `0 0 12px ${s.color}44` : "none",
-            }}
-          >
+          <button key={s.id} onClick={() => setActive(s.id)} className="mp-nav-mobile-btn" style={{ background: active === s.id ? s.color : "rgba(255,255,255,0.06)", color: active === s.id ? "#fff" : "rgba(255,255,255,0.6)", boxShadow: active === s.id ? `0 0 12px ${s.color}44` : "none" }}>
             {s.name}
           </button>
         ))}
       </div>
 
-      {/* BODY (Desktop Sidebar + Content) */}
       <div style={{ display: "flex", flex: 1, overflow: "hidden" }} className="mp-body">
         <div style={S.nav} className="mp-nav-sidebar">
           {SECTIONS.map(s => (
