@@ -53,7 +53,7 @@ const S = {
 page: {
     background: T.bgPage,
     minHeight: "100vh",
-    fontFamily: "'Source Serif 4'",
+    fontFamily: "Source Serif 4",
     color: T.textBody,
     display: "flex",
     flexDirection: "column",
@@ -203,7 +203,6 @@ page: {
     fontSize: 13,
     color: T.textBody,
     lineHeight: 1.75,
-    fontFamily: "Neuton"
   },
   gridTitle: {
     fontSize: 10,
