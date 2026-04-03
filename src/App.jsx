@@ -91,35 +91,71 @@ const formatInstUI = (rawName) => {
 // ============================================================================
 // 🔒 MOTOR W-IPR OBFUSCADO
 // ============================================================================
+// ============================================================================
+// 🔒 MOTOR W-IPR OBFUSCADO (AGORA COM COBERTURA QUÂNTICA/FRACIONAL)
+// ============================================================================
 async function engineObterRanking(p, d) {
   if (!p || !p.institutions || p.institutions.length===0) return [];
   const q = await getDocs(collection(d, "estatisticas_temas"));
   const r = q.docs.map(x => ({ id: x.id, ...x.data() }));
+  
   const W = p.institutions.reduce((s, i) => s + i.weight, 0);
   const V = { c: 1.0, e: 0.75, d: 0.40 };
+  
+  // 1. Descobrir o "Teto de Anos/Provas" de cada Instituição
+  const maxCPerInst = {};
+  p.institutions.forEach(inst => {
+    const k = inst.raw || inst.name;
+    let maxC = 1; // Evita divisão por zero
+    r.forEach(t => {
+      const f = t.frequencias ? (t.frequencias[k] || { c: 0 }) : { c: 0 };
+      if (f.c > maxC) maxC = f.c;
+    });
+    maxCPerInst[k] = maxC; // Ex: USP = 10 provas, ENARE = 4 provas
+  });
+
   let M = 0;
+  
+  // 2. Calcular Volumes (n) e Fracionamento Quântico (c / maxC)
   const mx = r.map(t => {
-    let nT=0, cT=0;
+    let nT = 0;
+    let cov_sum = 0;
+    
     p.institutions.forEach(i => {
       const k = i.raw || i.name;
       const f = t.frequencias ? (t.frequencias[k] || { n:0, c:0 }) : { n:0, c:0 };
+      
+      // Volume bruto ponderado
       nT += f.n * i.weight;
-      cT += (f.n > 0 ? 1 : 0) * i.weight; // FIX: Presença estritamente binária (0 ou 1)
+      
+      // A SUA IDEIA: Variável contínua entre 0 e 1 (Frequência / Teto)
+      const fraction = f.c / maxCPerInst[k];
+      cov_sum += fraction * i.weight;
     });
+    
     const rw = nT / W;
-    if(rw > M) M = rw;
-    return { ...t, nT, cT, rw };
+    if (rw > M) M = rw;
+    
+    const Wc = cov_sum / W; // Cobertura final ponderada (Garantido entre 0 e 1)
+    
+    return { ...t, nT, Wc, rw };
   });
+
   const mxF = M === 0 ? 1 : M;
+  
+  // 3. Gerar Índice Final
   return mx.map(t => {
-    const Wc = t.cT / W; 
     const vd = V[t.tendencia] || 0.75; 
     const sm = t.simplicidade || 0.70;
     const wf = t.rw / mxF;
-    const z = (wf * 0.40 + Wc * 0.30 + vd * 0.20 + sm * 0.10) * 100;
+    
+    // Fórmula: 40% Volume (wf) + 30% Consistência Quântica (Wc) + 20% Tendência + 10% Simplicidade
+    const z = (wf * 0.40 + t.Wc * 0.30 + vd * 0.20 + sm * 0.10) * 100;
+    
     return { id: t.id, nome: t.nome, especialidade: t.especialidade, wipr: Math.round(z) };
   }).sort((a,b) => b.wipr - a.wipr);
 }
+
 
 // ── Seletor Dinâmico (Auto-Complete) ────────────────────────────────
 function InstitutionSelector({ institutions, setInstitutions }) {
