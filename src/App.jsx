@@ -53,7 +53,7 @@ const S = {
 page: {
     background: T.bgPage,
     minHeight: "100vh",
-    fontFamily: "Source Serif 4",
+    fontFamily: "Roboto",
     color: T.textBody,
     display: "flex",
     flexDirection: "column",
