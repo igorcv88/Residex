@@ -499,7 +499,7 @@ function FormulaSection({ color }) {
           <div key={w.inst} style={S.gridCard(w.color)}>
             <div style={S.gridLabel(w.color)}>{w.inst}</div>
             <div style={{ fontSize: 30, fontWeight: 300, color: w.color, fontFamily: "'DM Serif Display', serif", lineHeight: 1.1, marginBottom: 6 }}>{w.w}</div>
-            <div style={{ ...S.gridValue, fontSize: 12, color: T.textMuted }}>{c.desc}</div>
+            <div style={{ ...S.gridValue, fontSize: 12, color: T.textMuted }}>{w.desc}</div>
           </div>
         ))}
       </div>
