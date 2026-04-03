@@ -514,15 +514,15 @@ function FormulaSection({ color }) {
 
       <div style={S.alert("#10B981")}>
         <div style={S.alertTitle("#10B981")}>Cobertura institucional — componente 30%</div>
-        <div style={{ ...S.alertText, fontFamily: "'DM Serif Display', serif", fontSize: 12.5, lineHeight: 2 }}>
+        <div style={{ ...S.alertText, fontFamily: "'JetBrains Mono', monospace", fontSize: 12.5, lineHeight: 2 }}>
           Wcov = (pE × 5 + pU × 4 + pF × 2) ÷ 11<br />
           p = 1 se presente, 0 se ausente na instituição
         </div>
       </div>
 
       <div style={{ ...S.alert("#000"), background: "#fafaf8", border: "1px solid #e2e8f0", borderLeft: "3px solid #000" }}>
-        <div style={{ ...S.alertTitle("#000"), fontSize: 10 }}>Fórmula W-IPR — completa</div>
-        <div style={{ ...S.alertText, fontFamily: "'DM Serif Display', serif", fontSize: 13, fontWeight: 500, lineHeight: 2 }}>
+        <div style={{ ...S.alertTitle("#000")}}>Fórmula W-IPR — completa</div>
+        <div style={{ ...S.alertText, fontFamily: "'JetBrains Mono', monospace", fontSize: 13, fontWeight: 500, lineHeight: 2 }}>
           W-IPR = round( (Wf_norm × 0.40 + Wcov × 0.30 + Wtrend × 0.20 + Wsimp × 0.10) × 100 )
         </div>
       </div>
