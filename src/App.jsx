@@ -89,70 +89,63 @@ const formatInstUI = (rawName) => {
 };
 
 // ============================================================================
-// 🔒 MOTOR W-IPR OBFUSCADO
-// ============================================================================
-// ============================================================================
-// 🔒 MOTOR W-IPR OBFUSCADO (AGORA COM COBERTURA QUÂNTICA/FRACIONAL)
+// 🔒 MOTOR W-IPR OBFUSCADO (COM NORMALIZAÇÃO RELATIVA MÁXIMA)
 // ============================================================================
 async function engineObterRanking(p, d) {
   if (!p || !p.institutions || p.institutions.length===0) return [];
   const q = await getDocs(collection(d, "estatisticas_temas"));
   const r = q.docs.map(x => ({ id: x.id, ...x.data() }));
-  
-  const W = p.institutions.reduce((s, i) => s + i.weight, 0);
-  const V = { c: 1.0, e: 0.75, d: 0.40 };
-  
-  // 1. Descobrir o "Teto de Anos/Provas" de cada Instituição
-  const maxCPerInst = {};
-  p.institutions.forEach(inst => {
-    const k = inst.raw || inst.name;
-    let maxC = 1; // Evita divisão por zero
-    r.forEach(t => {
-      const f = t.frequencias ? (t.frequencias[k] || { c: 0 }) : { c: 0 };
-      if (f.c > maxC) maxC = f.c;
-    });
-    maxCPerInst[k] = maxC; // Ex: USP = 10 provas, ENARE = 4 provas
-  });
 
-  let M = 0;
-  
-  // 2. Calcular Volumes (n) e Fracionamento Quântico (c / maxC)
-  const mx = r.map(t => {
-    let nT = 0;
-    let cov_sum = 0;
-    
+  const V = { c: 1.0, e: 0.75, d: 0.40 }; // Tabela secreta de tendências
+
+  let maxN = 0.0001; // Impede divisão por zero
+  let maxC = 0.0001;
+
+  // PASSO 1: Somar os volumes e descobrir o "Teto" do cenário atual
+  const preProcessado = r.map(t => {
+    let n_total = 0;
+    let c_total = 0;
+
     p.institutions.forEach(i => {
       const k = i.raw || i.name;
       const f = t.frequencias ? (t.frequencias[k] || { n:0, c:0 }) : { n:0, c:0 };
-      
-      // Volume bruto ponderado
-      nT += f.n * i.weight;
-      
-      // A SUA IDEIA: Variável contínua entre 0 e 1 (Frequência / Teto)
-      const fraction = f.c / maxCPerInst[k];
-      cov_sum += fraction * i.weight;
+
+      n_total += f.n * i.weight;
+      c_total += f.c * i.weight; // Frequência histórica real, sem binarismo
     });
-    
-    const rw = nT / W;
-    if (rw > M) M = rw;
-    
-    const Wc = cov_sum / W; // Cobertura final ponderada (Garantido entre 0 e 1)
-    
-    return { ...t, nT, Wc, rw };
+
+    if (n_total > maxN) maxN = n_total;
+    if (c_total > maxC) maxC = c_total;
+
+    return { ...t, n_total, c_total };
   });
 
-  const mxF = M === 0 ? 1 : M;
-  
-  // 3. Gerar Índice Final
-  return mx.map(t => {
-    const vd = V[t.tendencia] || 0.75; 
+  // PASSO 2: Calcular o Score Proporcional (sempre de 0 a 1)
+  let maxScoreBruto = 0.0001;
+  const comScores = preProcessado.map(t => {
+    const wf = t.n_total / maxN; // Proporção do volume face ao tema que mais caiu
+    const wc = t.c_total / maxC; // Proporção de constância face ao mais constante
+    const vd = V[t.tendencia] || 0.75;
     const sm = t.simplicidade || 0.70;
-    const wf = t.rw / mxF;
-    
-    // Fórmula: 40% Volume (wf) + 30% Consistência Quântica (Wc) + 20% Tendência + 10% Simplicidade
-    const z = (wf * 0.40 + t.Wc * 0.30 + vd * 0.20 + sm * 0.10) * 100;
-    
-    return { id: t.id, nome: t.nome, especialidade: t.especialidade, wipr: Math.round(z) };
+
+    // A fórmula ponderada secreta
+    const score = (wf * 0.45) + (wc * 0.25) + (vd * 0.20) + (sm * 0.10);
+    if (score > maxScoreBruto) maxScoreBruto = score;
+
+    return { ...t, score };
+  });
+
+  // PASSO 3: Normalização Final "Curva de Gauss" para o Índice
+  return comScores.map(t => {
+    // O melhor tema da lista terá nota 100. Os outros descem em proporção exata.
+    const wiprFinal = (t.score / maxScoreBruto) * 100;
+
+    return {
+      id: t.id,
+      nome: t.nome,
+      especialidade: t.especialidade,
+      wipr: Math.round(wiprFinal)
+    };
   }).sort((a,b) => b.wipr - a.wipr);
 }
 
