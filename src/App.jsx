@@ -538,7 +538,7 @@ function FormulaSection({ color }) {
       </div>
 
       <div style={S.obs}>
-        <div style={S.gridLabel}>Efeito principal dos pesos</div>
+        <div style={S.gridLabel(color)}>Efeito principal dos pesos</div>
         <div style={{ ...S.gridValue, fontSize: 12, color: T.textMuted }}>
           ENARE domina com peso 5. Temas fortes no ENARE sobem mesmo que UNIFESP não os priorize.
           Temas dominantes apenas na UNIFESP (peso 2) sofrem deflação significativa. USP (peso 4)
