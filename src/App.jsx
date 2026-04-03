@@ -576,7 +576,7 @@ function RankingsSection({ color }) {
 
   const stats = [
     { label: "Temas analisados", val: TOPICS.length, c: T.textPrimary },
-    { label: "Crítico W-IPR 80+", val: TOPICS.filter(t => t.wipr >= 80).length, c: "#EF4444" },
+    { label: "Crítico", val: TOPICS.filter(t => t.wipr >= 80).length, c: "#EF4444" },
     { label: "Subiram ↑", val: TOPICS.filter(t => t.wipr > t.old + 2).length, c: "#10B981" },
     { label: "Caíram ↓",  val: TOPICS.filter(t => t.wipr < t.old - 2).length, c: "#EF4444" },
   ];
@@ -709,7 +709,7 @@ function PlanoSection({ color, user }) {
           { l: "Semanas",     v: "16",                                        c: color },
           { l: "Total horas", v: `~${totalHours}h`,                           c: color },
           { l: "Média/sem",   v: "~15h",                                      c: color },
-          { l: "Temas",       v: `${TOPICS.length}`,                            c: color },
+          { l: "Tarefas",       v: `${totalTopics}`,                            c: color },
         ].map(s => (
           <div key={s.l} style={S.gridCard(s.c)}>
             <div style={S.gridLabel(s.c)}>{s.l}</div>
