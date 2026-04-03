@@ -69,8 +69,7 @@ const mobileCSS = `
 @media (min-width: 769px) { .mp-nav-mobile { display: none !important; } }
 `;
 
-// ── Helpers & Constants ─────────────────────────────────────────────
-const trendV = { c: 1.0, e: 0.75, d: 0.40 };
+// ── Helpers ─────────────────────────────────────────────
 const SPEC_COLORS = { CM: "#0EA5E9", CG: "#F59E0B", OBS: "#EC4899", PED: "#10B981", PREV: "#6366F1", GIN: "#F97316" };
 
 function tier(v) {
@@ -80,90 +79,182 @@ function tier(v) {
   return { color: "#0EA5E9", label: "BAIXA PRIOR." };
 }
 
-// ── Core Engine: Calcula WIPR com base no Perfil do Utilizador ──────
-function calculateDynamicWIPR(rawTopics, profile) {
-  if (!rawTopics.length || !profile.institutions.length) return [];
-
-  // Calcular o Peso Total (W_T) das bancas escolhidas pelo utilizador
+// ============================================================================
+// 🔒 ÁREA SIMULADA DO BACK-END (CLOUD FUNCTIONS)
+// O código desta função não será legível para o utilizador no futuro.
+// Ele ficará num servidor seguro e o React apenas pedirá o resultado.
+// ============================================================================
+async function backendSimuladoObterRanking(profile, dbRef) {
+  if (!profile || !profile.institutions || profile.institutions.length === 0) return [];
+  
+  const querySnapshot = await getDocs(collection(dbRef, "estatisticas_temas"));
+  const rawTopics = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+  
   const W_T = profile.institutions.reduce((sum, inst) => sum + inst.weight, 0);
+  const trendV = { c: 1.0, e: 0.75, d: 0.40 }; // Tabela secreta
 
-  // 1. Processar os temas e encontrar o máximo histórico (maxWfRaw)
   let maxWfRaw = 0;
   const mappedData = rawTopics.map(t => {
-    let n_total = 0;
-    let c_total = 0;
-
+    let n_total = 0, c_total = 0;
     profile.institutions.forEach(inst => {
-      const freq = t.frequencias[inst.name] || { n: 0, c: 0 };
+      const freq = t.frequencias ? (t.frequencias[inst.name] || { n: 0, c: 0 }) : { n: 0, c: 0 };
       n_total += freq.n * inst.weight;
       c_total += freq.c * inst.weight;
     });
-
     const rawWf = n_total / W_T;
     if (rawWf > maxWfRaw) maxWfRaw = rawWf;
-
     return { ...t, n_total, c_total, rawWf };
   });
 
   const maxWf = maxWfRaw === 0 ? 1 : maxWfRaw;
 
-  // 2. Aplicar a fórmula final W-IPR
   return mappedData.map(t => {
     const Wcov = t.c_total / W_T;
     const tendencia = trendV[t.tendencia] || 0.75; 
     const simplicidade = t.simplicidade || 0.70;
     
+    // A fórmula exata (A ser movida para Cloud Functions)
     const wiprRaw = (t.rawWf / maxWf * 0.40 + Wcov * 0.30 + tendencia * 0.20 + simplicidade * 0.10) * 100;
-    return { ...t, wipr: Math.round(wiprRaw) };
+    
+    return { 
+      id: t.id, nome: t.nome, especialidade: t.especialidade, 
+      wipr: Math.round(wiprRaw), wiprAnterior: t.wiprAnterior 
+    };
   }).sort((a, b) => b.wipr - a.wipr);
+}
+// ============================================================================
+
+
+// ── Seletor Dinâmico de Instituições ────────────────────────────────
+function InstitutionSelector({ institutions, setInstitutions }) {
+  const [search, setSearch] = useState("");
+  const [showDropdown, setShowDropdown] = useState(false);
+  const [instWeight, setInstWeight] = useState(5);
+  const [uniqueInsts, setUniqueInsts] = useState([]);
+
+  useEffect(() => {
+    // Busca os nomes das instituições disponíveis no banco para o auto-complete
+    async function loadInsts() {
+      const querySnapshot = await getDocs(collection(db, "estatisticas_temas"));
+      const instSet = new Set();
+      querySnapshot.forEach(doc => {
+        const f = doc.data().frequencias;
+        if(f) Object.keys(f).forEach(i => instSet.add(i));
+      });
+      setUniqueInsts(Array.from(instSet).sort());
+    }
+    loadInsts();
+  }, []);
+
+  const filteredInsts = uniqueInsts.filter(i => i.toLowerCase().includes(search.toLowerCase()));
+
+  const handleAddInst = () => {
+    if (!search || !uniqueInsts.includes(search)) return alert("Selecione uma instituição válida da lista.");
+    if (institutions.some(i => i.name === search)) return alert("Esta instituição já foi adicionada.");
+    setInstitutions([...institutions, { name: search, weight: Number(instWeight) }]);
+    setSearch("");
+    setInstWeight(5);
+  };
+
+  return (
+    <div>
+      <div style={{ display: "flex", gap: 8, marginBottom: 16, flexWrap: "wrap", alignItems: "flex-start" }}>
+        <div style={{ position: "relative", flex: 1, minWidth: 200 }}>
+          <input 
+            placeholder="Digite para procurar a instituição..." 
+            value={search} 
+            onChange={e => { setSearch(e.target.value); setShowDropdown(true); }}
+            onFocus={() => setShowDropdown(true)}
+            onBlur={() => setTimeout(() => setShowDropdown(false), 200)}
+            style={{...S.input, width: "100%", boxSizing: "border-box"}} 
+          />
+          {showDropdown && (
+            <div style={{ position: "absolute", top: "100%", left: 0, right: 0, marginTop: 4, background: "#fff", border: `1px solid ${T.borderCard}`, borderRadius: 6, maxHeight: 200, overflowY: "auto", zIndex: 50, boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.1)" }}>
+              {filteredInsts.length > 0 ? filteredInsts.map(inst => (
+                <div key={inst} onMouseDown={() => { setSearch(inst); setShowDropdown(false); }} style={{ padding: "10px 14px", cursor: "pointer", borderBottom: `1px solid ${T.borderCard}`, fontSize: 13, color: T.textPrimary }}>
+                  {inst}
+                </div>
+              )) : <div style={{ padding: "10px 14px", fontSize: 13, color: T.textDisabled }}>Nenhuma instituição encontrada.</div>}
+            </div>
+          )}
+        </div>
+
+        <select value={instWeight} onChange={e => setInstWeight(e.target.value)} style={{...S.input, width: 140}}>
+          <option value={5}>Peso 5 - Foco Total</option>
+          <option value={4}>Peso 4 - Muito Desejada</option>
+          <option value={3}>Peso 3 - Moderada</option>
+          <option value={2}>Peso 2 - Secundária</option>
+          <option value={1}>Peso 1 - Backup</option>
+        </select>
+        <button onClick={handleAddInst} style={{ padding: "0 20px", height: 41, background: "#0F172A", color: "#fff", border: "none", borderRadius: 6, fontWeight: "bold", cursor: "pointer" }}>Adicionar</button>
+      </div>
+
+      <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+        {institutions.map((inst, idx) => (
+          <div key={idx} style={{ display: "flex", justifyContent: "space-between", background: "#fff", padding: "10px 14px", borderRadius: 6, border: "1px solid #e2e8f0" }}>
+            <span style={{ fontFamily: "monospace", fontWeight: 600 }}>{inst.name}</span>
+            <div style={{ display: "flex", gap: 16, alignItems: "center" }}>
+              <span style={{ fontSize: 12, color: T.textMuted }}>Peso {inst.weight}</span>
+              <button onClick={() => setInstitutions(institutions.filter((_, i) => i !== idx))} style={{ background: "none", border: "none", color: "#EF4444", cursor: "pointer", fontSize: 12 }}>Remover</button>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
 }
 
 // ── Sections ────────────────────────────────────────────────────────
 
-function PerfilSection({ color, profile, setProfile, user, rawTopics }) {
-  const [examDate, setExamDate] = useState(profile.examDate || "");
-  const [instWeight, setInstWeight] = useState(1);
-  const [institutions, setInstitutions] = useState(profile.institutions || []);
+// TELA DE ONBOARDING
+function OnboardingSection({ user, onComplete }) {
+  const [examDate, setExamDate] = useState("");
+  const [institutions, setInstitutions] = useState([]);
   const [saving, setSaving] = useState(false);
 
-  // ── ESTADOS DO DROPDOWN PESQUISÁVEL ──
-  const [search, setSearch] = useState("");
-  const [showDropdown, setShowDropdown] = useState(false);
-  const [uniqueInsts, setUniqueInsts] = useState([]);
+  const handleFinish = async () => {
+    if (!examDate || institutions.length === 0) return alert("Preencha a data e adicione pelo menos uma instituição.");
+    setSaving(true);
+    const newProfile = { examDate, institutions };
+    await setDoc(doc(db, "usuarios", user.uid), { perfil: newProfile, onboardingConcluido: true }, { merge: true });
+    onComplete(newProfile);
+  };
 
-  // Extrai dinamicamente todas as bancas que existem no Firebase
-  useEffect(() => {
-    const instSet = new Set();
-    rawTopics.forEach(t => {
-      if (t.frequencias) {
-        Object.keys(t.frequencias).forEach(inst => instSet.add(inst));
-      }
-    });
-    setUniqueInsts(Array.from(instSet).sort());
-  }, [rawTopics]);
+  return (
+    <div style={{ maxWidth: 600, margin: "0 auto", paddingTop: 20 }}>
+      <h2 style={{ marginBottom: 10 }}>Bem-vindo ao RESIDEX</h2>
+      <p style={{ color: T.textMuted, marginBottom: 30, lineHeight: 1.6 }}>Para gerarmos o seu algoritmo de estudo personalizado, precisamos de configurar o seu alvo. Pode alterar isto mais tarde.</p>
 
-  // Filtra as bancas à medida que o utilizador digita
-  const filteredInsts = uniqueInsts.filter(i => 
-    i.toLowerCase().includes(search.toLowerCase())
+      <div style={S.alert("#6366F1")}>
+        <div style={S.alertTitle("#6366F1")}>1. Quando é a sua prova principal?</div>
+        <input type="date" value={examDate} onChange={e => setExamDate(e.target.value)} style={{...S.input, maxWidth: 200}} />
+      </div>
+
+      <div style={S.alert("#F97316")}>
+        <div style={S.alertTitle("#F97316")}>2. Quais as instituições alvo?</div>
+        <InstitutionSelector institutions={institutions} setInstitutions={setInstitutions} />
+        
+        <div style={{ marginTop: 20, fontSize: 11, color: T.textSubtle, background: "#fff", padding: 12, borderRadius: 6, border: `1px solid ${T.borderCard}` }}>
+          <b>Como funcionam os Pesos:</b><br/>
+          • <b>Peso 5:</b> Instituição de prioridade máxima. O algoritmo focará 100% no padrão desta prova.<br/>
+          • <b>Peso 4:</b> Instituição muito desejada, mas secundária à prioridade principal.<br/>
+          • <b>Peso 3:</b> Instituição desejada (plano B ou composição de nota).<br/>
+          • <b>Peso 2:</b> Instituição secundária (foco complementar para base de conhecimento).<br/>
+          • <b>Peso 1:</b> Instituição de backup ou apenas para treino.
+        </div>
+      </div>
+
+      <button onClick={handleFinish} disabled={saving} style={{ padding: "14px 24px", background: "#0F172A", color: "#fff", border: "none", borderRadius: 8, fontSize: 16, fontWeight: "bold", cursor: "pointer", width: "100%" }}>
+        {saving ? "A processar..." : "Gerar Algoritmo de Estudos"}
+      </button>
+    </div>
   );
+}
 
-  const handleAddInst = () => {
-    if (!search || !uniqueInsts.includes(search)) {
-      alert("Por favor, selecione uma instituição válida da lista clicando nela.");
-      return;
-    }
-    if (institutions.some(i => i.name === search)) {
-      alert("Esta instituição já foi adicionada ao seu alvo.");
-      return;
-    }
-    setInstitutions([...institutions, { name: search, weight: Number(instWeight) }]);
-    setSearch(""); // Limpa o campo de pesquisa
-    setInstWeight(1);
-  };
-
-  const handleRemoveInst = (idx) => {
-    setInstitutions(institutions.filter((_, i) => i !== idx));
-  };
+function PerfilSection({ color, profile, setProfile, user }) {
+  const [examDate, setExamDate] = useState(profile.examDate || "");
+  const [institutions, setInstitutions] = useState(profile.institutions || []);
+  const [saving, setSaving] = useState(false);
 
   const saveProfile = async () => {
     setSaving(true);
@@ -171,98 +262,35 @@ function PerfilSection({ color, profile, setProfile, user, rawTopics }) {
     await setDoc(doc(db, "usuarios", user.uid), { perfil: newProfile }, { merge: true });
     setProfile(newProfile);
     setSaving(false);
-    alert("Perfil guardado! A fórmula foi recalculada com as suas instituições.");
+    alert("Perfil guardado! O seu cronograma e algoritmo foram atualizados.");
   };
 
   return (
     <div>
       <div style={S.alert(color)}>
         <div style={S.alertTitle(color)}>Data da Prova</div>
-        <input 
-          type="date" 
-          value={examDate} 
-          onChange={e => setExamDate(e.target.value)} 
-          style={{...S.input, maxWidth: 200, marginBottom: 10}} 
-        />
-        <div style={{ fontSize: 11, color: T.textMuted }}>O plano semanal será distribuído até esta data.</div>
+        <input type="date" value={examDate} onChange={e => setExamDate(e.target.value)} style={{...S.input, maxWidth: 200, marginBottom: 10}} />
       </div>
 
       <div style={S.alert("#F97316")}>
         <div style={S.alertTitle("#F97316")}>Instituições Alvo & Pesos</div>
-        
-        <div style={{ display: "flex", gap: 8, marginBottom: 16, flexWrap: "wrap", alignItems: "flex-start" }}>
-          
-          {/* COMPONENTE AUTO-COMPLETE (DROPDOWN) */}
-          <div style={{ position: "relative", flex: 1, minWidth: 200 }}>
-            <input 
-              placeholder="Digite para procurar a instituição..." 
-              value={search} 
-              onChange={e => { setSearch(e.target.value); setShowDropdown(true); }}
-              onFocus={() => setShowDropdown(true)}
-              onBlur={() => setTimeout(() => setShowDropdown(false), 200)} // Pequeno atraso para permitir o clique
-              style={{...S.input, width: "100%", boxSizing: "border-box"}} 
-            />
-            
-            {showDropdown && (
-              <div style={{ 
-                position: "absolute", top: "100%", left: 0, right: 0, marginTop: 4, 
-                background: "#fff", border: `1px solid ${T.borderCard}`, borderRadius: 6, 
-                maxHeight: 200, overflowY: "auto", zIndex: 50, 
-                boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.1)" 
-              }}>
-                {filteredInsts.length > 0 ? filteredInsts.map(inst => (
-                  <div 
-                    key={inst}
-                    onMouseDown={() => { setSearch(inst); setShowDropdown(false); }} // Usamos onMouseDown em vez de onClick para rodar antes do onBlur do input
-                    style={{ padding: "10px 14px", cursor: "pointer", borderBottom: `1px solid ${T.borderCard}`, fontSize: 13, color: T.textPrimary, transition: "background 0.2s" }}
-                    onMouseEnter={(e) => e.target.style.background = "#f1f5f9"}
-                    onMouseLeave={(e) => e.target.style.background = "#fff"}
-                  >
-                    {inst}
-                  </div>
-                )) : (
-                  <div style={{ padding: "10px 14px", fontSize: 13, color: T.textDisabled, fontStyle: "italic" }}>
-                    Nenhuma instituição encontrada.
-                  </div>
-                )}
-              </div>
-            )}
-          </div>
-
-          <select value={instWeight} onChange={e => setInstWeight(e.target.value)} style={{...S.input, width: 90}}>
-            {[1,2,3,4,5].map(w => <option key={w} value={w}>Peso {w}</option>)}
-          </select>
-          <button onClick={handleAddInst} style={{ padding: "0 20px", height: 41, background: "#F97316", color: "#fff", border: "none", borderRadius: 6, fontWeight: "bold", cursor: "pointer" }}>Adicionar</button>
-        </div>
-
-        <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-          {institutions.map((inst, idx) => (
-            <div key={idx} style={{ display: "flex", justifyContent: "space-between", background: "#fff", padding: "10px 14px", borderRadius: 6, border: "1px solid #e2e8f0" }}>
-              <span style={{ fontFamily: "monospace", fontWeight: 600 }}>{inst.name}</span>
-              <div style={{ display: "flex", gap: 16, alignItems: "center" }}>
-                <span style={{ fontSize: 12, color: T.textMuted }}>Peso {inst.weight}</span>
-                <button onClick={() => handleRemoveInst(idx)} style={{ background: "none", border: "none", color: "#EF4444", cursor: "pointer", fontSize: 12 }}>Remover</button>
-              </div>
-            </div>
-          ))}
-          {institutions.length === 0 && <div style={{ fontSize: 12, color: T.textMuted, fontStyle: "italic" }}>Nenhuma instituição adicionada.</div>}
-        </div>
+        <InstitutionSelector institutions={institutions} setInstitutions={setInstitutions} />
       </div>
 
       <button onClick={saveProfile} disabled={saving} style={{ padding: "12px 24px", background: color, color: "#fff", border: "none", borderRadius: 8, fontSize: 14, fontWeight: "bold", cursor: "pointer", width: "100%" }}>
-        {saving ? "A guardar..." : "Guardar Perfil & Recalcular Fórmula"}
+        {saving ? "A guardar..." : "Guardar Perfil"}
       </button>
     </div>
   );
 }
 
-
+// ABA DA FÓRMULA (AGORA SUPERFICIAL E SECRETA)
 function FormulaSection({ color, profile }) {
-  if (!profile.institutions.length) return <div style={{ color: T.textMuted }}>Configure o seu perfil primeiro.</div>;
+  if (!profile.institutions.length) return null;
 
   return (
     <div>
-      <div style={S.gridTitle}>Pesos por instituição (Dinâmico)</div>
+      <div style={S.gridTitle}>Instituições Processadas</div>
       <div style={{ ...S.gridWrap, gridTemplateColumns: "repeat(auto-fill,minmax(180px,1fr))", marginBottom: 24 }}>
         {profile.institutions.map((w, idx) => (
           <div key={idx} style={S.gridCard(color)}>
@@ -271,10 +299,13 @@ function FormulaSection({ color, profile }) {
           </div>
         ))}
       </div>
+      
       <div style={{ ...S.alert("#000"), background: "#fafaf8", border: "1px solid #e2e8f0", borderLeft: "3px solid #000" }}>
-        <div style={{ ...S.alertTitle("#000")}}>Fórmula W-IPR Aplicada</div>
-        <div style={{ ...S.gridValue, fontSize: 11, color: T.textMuted }}>
-          Os 69 temas já foram processados. O algoritmo somou as frequências exclusivas das bancas que escolheu e ponderou pela complexidade e tendência de cada matéria. Vá à aba "Rankings" para ver o resultado exato.
+        <div style={{ ...S.alertTitle("#000")}}>O Motor W-IPR</div>
+        <div style={{ ...S.gridValue, fontSize: 12, color: T.textMuted, lineHeight: 1.8 }}>
+          O sistema extraiu dados de mais de 10 anos de provas e aplicou o nosso algoritmo de priorização aos seus alvos específicos.<br/><br/>
+          O cálculo é processado de forma segura na nuvem e cruza o volume de incidência de cada tema, a exclusividade institucional, a tendência de cobrança recente (se o tema tem caído mais nos últimos 3 anos) e o custo-benefício didático. <br/><br/>
+          O resultado é um <b>Índice Crítico</b> (1 a 100) que determina exatamente o que estudar primeiro para maximizar o retorno do seu tempo.
         </div>
       </div>
     </div>
@@ -345,14 +376,12 @@ function PlanoSection({ color, user, dynamicTopics, profile }) {
   const [done, setDone] = useState(new Set());
   const [loading, setLoading] = useState(true);
 
-  // 1. Calcular Semanas Restantes
   const hoje = new Date();
-  const prova = profile.examDate ? new Date(profile.examDate) : new Date(hoje.getTime() + 180 * 24 * 60 * 60 * 1000); // Default 6 meses
+  const prova = profile.examDate ? new Date(profile.examDate) : new Date(hoje.getTime() + 180 * 24 * 60 * 60 * 1000);
   const diffTime = Math.abs(prova - hoje);
   const diffWeeks = Math.ceil(diffTime / (1000 * 60 * 60 * 24 * 7));
-  const totalWeeks = Math.max(1, Math.min(diffWeeks, 52)); // Min 1 semana, Max 52 semanas
+  const totalWeeks = Math.max(1, Math.min(diffWeeks, 52)); 
 
-  // 2. Distribuir os 69 temas dinamicamente pelas semanas
   const temasPorSemana = Math.ceil(dynamicTopics.length / totalWeeks);
   const WEEKS = Array.from({ length: totalWeeks }, (_, i) => ({
     n: i + 1,
@@ -432,10 +461,10 @@ function PlanoSection({ color, user, dynamicTopics, profile }) {
 
 // ── Application Core ────────────────────────────────────────────────
 const SECTIONS = [
-  { id: "perfil",   name: "Meu Perfil",    color: "#F97316" },
-  { id: "formula",  name: "Fórmula",       color: "#6366F1" },
-  { id: "rankings", name: "Rankings",      color: "#0EA5E9" },
   { id: "plano",    name: "Plano Semanal", color: "#10B981" },
+  { id: "rankings", name: "Rankings",      color: "#0EA5E9" },
+  { id: "formula",  name: "O Motor W-IPR", color: "#6366F1" },
+  { id: "perfil",   name: "Meu Perfil",    color: "#F97316" },
 ];
 
 export default function RESIDEX_CONTROLLER() {
@@ -470,64 +499,62 @@ export default function RESIDEX_CONTROLLER() {
 }
 
 function RESIDEX_APP({ user, onLogout }) {
-  const [active, setActive] = useState("perfil");
-  const [rawTopics, setRawTopics] = useState([]);
+  const [active, setActive] = useState("plano");
   const [dynamicTopics, setDynamicTopics] = useState([]);
-  const [profile, setProfile] = useState({ examDate: "", institutions: [] });
+  const [profile, setProfile] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [firebaseError, setFirebaseError] = useState(null);
+  const [appState, setAppState] = useState("loading"); // loading | onboarding | dashboard
 
   const sec = SECTIONS.find(s => s.id === active);
 
-  // 1. Puxar Dados Brutos (Firebase) + Perfil do Utilizador
   useEffect(() => {
-    async function fetchData() {
+    async function loadUser() {
       try {
-        // Puxar Perfil
         const userDoc = await getDoc(doc(db, "usuarios", user.uid));
-        let userProfile = { examDate: "", institutions: [] };
-        
-        if (userDoc.exists() && userDoc.data().perfil) {
-          userProfile = userDoc.data().perfil;
+        if (userDoc.exists() && userDoc.data().perfil && userDoc.data().perfil.institutions.length > 0) {
+          setProfile(userDoc.data().perfil);
+          setAppState("dashboard");
         } else {
-          // Perfil Default se for o primeiro acesso
-          userProfile = { examDate: "2026-11-15", institutions: [{name: "ENARE_AOCP_FGV", weight: 5}, {name: "USP", weight: 4}, {name: "UNIFESP", weight: 2}] };
+          setAppState("onboarding");
         }
-        setProfile(userProfile);
-
-        // Puxar os 69 Temas e os metadados
-        const querySnapshot = await getDocs(collection(db, "estatisticas_temas"));
-        const rawData = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-        setRawTopics(rawData);
-
       } catch (error) {
-        setFirebaseError(error.message);
+        console.error(error);
       } finally {
         setIsLoading(false);
       }
     }
-    fetchData();
+    loadUser();
   }, [user.uid]);
 
-  // 2. Recalcular WIPR sempre que o perfil (bancas/pesos) mudar
   useEffect(() => {
-    if (rawTopics.length > 0) {
-      const calculated = calculateDynamicWIPR(rawTopics, profile);
-      setDynamicTopics(calculated);
+    if (appState === "dashboard" && profile) {
+      // 🔒 CHAMA O BACK-END SIMULADO 
+      backendSimuladoObterRanking(profile, db).then(calculated => {
+        setDynamicTopics(calculated);
+      });
     }
-  }, [rawTopics, profile]);
+  }, [appState, profile]);
 
-  function renderContent() {
-    if (isLoading) return <div style={{fontFamily: "monospace", color: T.textSubtle}}>Baixando dados do Firebase...</div>;
-    
-    if (firebaseError) return (
-      <div style={S.alert("#EF4444")}>
-        <div style={S.alertTitle("#EF4444")}>Falha de Conexão</div>
-        <div style={{ ...S.alertText, fontFamily: "monospace", fontSize: 12 }}>{firebaseError}</div>
+  if (isLoading) return <div style={{display:"flex", height:"100vh", alignItems:"center", justifyContent:"center"}}>Sincronizando...</div>;
+  
+  if (appState === "onboarding") {
+    return (
+      <div style={S.page}>
+        <div style={S.header}>
+          <div style={{display: "flex", justifyContent: "space-between", alignItems: "center"}}>
+            <h1 style={S.headerTitle}>RESIDEX Setup</h1>
+            <button onClick={onLogout} style={{ background: "transparent", border: "none", cursor: "pointer", fontSize: 11, color: T.textMuted }}>Sair</button>
+          </div>
+        </div>
+        <div style={{ padding: "20px" }}>
+          <OnboardingSection user={user} onComplete={(p) => { setProfile(p); setAppState("dashboard"); }} />
+        </div>
       </div>
     );
-    
-    if (active === "perfil") return <PerfilSection color={sec.color} profile={profile} setProfile={setProfile} user={user}rawTopics={rawTopics} />;
+  }
+
+  function renderContent() {
+    if (active === "perfil")   return <PerfilSection color={sec.color} profile={profile} setProfile={setProfile} user={user} />;
     if (active === "formula")  return <FormulaSection color={sec.color} profile={profile} />;
     if (active === "rankings") return <RankingsSection color={sec.color} dynamicTopics={dynamicTopics} />;
     if (active === "plano")    return <PlanoSection color={sec.color} user={user} dynamicTopics={dynamicTopics} profile={profile} />;
@@ -540,8 +567,8 @@ function RESIDEX_APP({ user, onLogout }) {
       <div style={S.header}>
         <div style={{display: "flex", justifyContent: "space-between", alignItems: "center"}}>
           <div>
-            <div style={S.headerEyebrow}>RESIDEX · Análise Estratégica</div>
-            <h1 style={S.headerTitle}>W-IPR (Ao Vivo)</h1>
+            <div style={S.headerEyebrow}>RESIDEX · Inteligência Médica</div>
+            <h1 style={S.headerTitle}>Cronograma</h1>
           </div>
           <button onClick={onLogout} style={{ background: "transparent", border: `1px solid ${T.borderSection}`, padding: "6px 12px", borderRadius: 6, cursor: "pointer", fontSize: 11, fontFamily: "monospace", color: T.textMuted }}>
             Sair
