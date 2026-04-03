@@ -406,6 +406,7 @@ function RESIDEX_APP({ user, onLogout }) {
   const [active, setActive] = useState("formula");
   const [dynamicTopics, setDynamicTopics] = useState([]);
   const [isLoadingData, setIsLoadingData] = useState(true);
+  const [firebaseError, setFirebaseError] = useState(null); // 1. NOVO ESTADO DE ERRO
 
   const sec = SECTIONS.find(s => s.id === active);
 
@@ -421,12 +422,10 @@ function RESIDEX_APP({ user, onLogout }) {
 
         const W_E = 5, W_U = 4, W_F = 2, W_T = 11;
 
-        // Passo 1: Calcular os pesos brutos para descobrir qual o maxWf atual da nuvem
         let maxWfRaw = 0;
         const mappedData = TOPICS_METADATA.map(t => {
           const freqs = fbData[t.code] || {};
           
-          // Ajuste aqui os nomes literais das bancas se diferente (ex: ENAMED_INEP, USP, etc)
           const enare = freqs["ENARE_AOCP_FGV"] || { n: 0, c: 0 };
           const usp   = freqs["USP"] || { n: 0, c: 0 };
           const unif  = freqs["UNIFESP"] || { n: 0, c: 0 };
@@ -443,9 +442,8 @@ function RESIDEX_APP({ user, onLogout }) {
           };
         });
 
-        const maxWf = maxWfRaw === 0 ? 1 : maxWfRaw; // Evita divisão por zero
+        const maxWf = maxWfRaw === 0 ? 1 : maxWfRaw;
 
-        // Passo 2: Gerar o WIPR final normalizado
         const finalTopics = mappedData.map(t => {
           const Wcov = (t.cE * W_E + t.cU * W_U + t.cF * W_F) / W_T;
           const wiprRaw = (t.rawWf / maxWf * 0.40 + Wcov * 0.30 + trendV[t.trend] * 0.20 + t.simp * 0.10) * 100;
@@ -455,6 +453,7 @@ function RESIDEX_APP({ user, onLogout }) {
         setDynamicTopics(finalTopics);
       } catch (error) {
         console.error("Erro ao buscar estatísticas do Firestore:", error);
+        setFirebaseError(error.message); // 2. CAPTURA DO ERRO
       } finally {
         setIsLoadingData(false);
       }
@@ -464,6 +463,16 @@ function RESIDEX_APP({ user, onLogout }) {
 
   function renderContent() {
     if (isLoadingData) return <div style={{fontFamily: "monospace", color: T.textSubtle}}>Baixando dados do Firebase...</div>;
+    
+    // 3. EXIBIÇÃO DO ERRO NA TELA
+    if (firebaseError) return (
+      <div style={S.alert("#EF4444")}>
+        <div style={S.alertTitle("#EF4444")}>Falha de Conexão com Firebase</div>
+        <div style={{ ...S.alertText, fontFamily: "monospace", fontSize: 12 }}>
+          {firebaseError}
+        </div>
+      </div>
+    );
     
     if (active === "formula")  return <FormulaSection color={sec.color} />;
     if (active === "rankings") return <RankingsSection color={sec.color} dynamicTopics={dynamicTopics} />;
