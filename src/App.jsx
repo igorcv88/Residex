@@ -283,17 +283,11 @@ page: {
 // ── Responsive CSS ───────────────────────────────────────────────────
 // ── Responsive CSS & Fontes ──────────────────────────────────────────
 const mobileCSS = `
-/* 1. Importando as fontes super profissionais do Google */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&family=JetBrains+Mono:wght@400;500;600&family=DM+Serif+Display&display=swap');
 
-*, *::before, *::after { box-sizing: border-box; }
-
-/* 2. Matando a fonte feia globalmente! 
-   Isso pega qualquer lugar do código que tentou usar "monospace" 
-   e substitui pela JetBrains Mono elegante e encorpada */
 [style*="monospace"] {
-  font-family: 'Roboto', monospace !important;
-  font-weight: 500; /* Deixa a fonte um pouco mais gordinha e legível */
+  font-family: 'JetBrains Mono', monospace !important;
+  font-weight: 500;
 }
 
 @media (max-width: 768px) {
@@ -503,7 +497,7 @@ function FormulaSection({ color }) {
         {weights.map(w => (
           <div key={w.inst} style={S.gridCard(w.color)}>
             <div style={S.gridLabel(w.color)}>{w.inst}</div>
-            <div style={{ fontSize: 32, fontWeight: 300, color: w.color, fontFamily: "Neuton", lineHeight: 1.1, marginBottom: 6 }}>{w.w}</div>
+            <div style={{ fontSize: 30, fontWeight: 300, color: w.color, fontFamily: "Neuton", lineHeight: 1.1, marginBottom: 6 }}>{w.w}</div>
             <div style={{ ...S.gridValue, fontSize: 11.5, color: T.textMuted }}>{w.desc}</div>
           </div>
         ))}
@@ -511,7 +505,7 @@ function FormulaSection({ color }) {
 
       <div style={S.alert(color)}>
         <div style={S.alertTitle(color)}>Frequência ponderada — componente 40%</div>
-        <div style={{ ...S.alertText, fontFamily: "Neuton", fontSize: 12.5, lineHeight: 2 }}>
+        <div style={{ ...S.alertText, fontFamily: "Roboto", fontSize: 12, fontWidth, fontWeight: 250, lineHeight: 2 }}>
           Wf = (n_ENARE × 5 + n_USP × 4 + n_UNIFESP × 2) ÷ 11<br />
           Wf_norm = Wf ÷ 3.18 &nbsp;&nbsp;← máximo observado (Epidemiologia)
         </div>
