@@ -482,6 +482,8 @@ function RESIDEX_APP({ user, onLogout }) {
   return (
     <div style={S.page}>
       <style>{mobileCSS}</style>
+      
+      {/* HEADER */}
       <div style={S.header}>
         <div style={{display: "flex", justifyContent: "space-between", alignItems: "center"}}>
           <div>
@@ -494,6 +496,25 @@ function RESIDEX_APP({ user, onLogout }) {
         </div>
       </div>
 
+      {/* NAV MOBILE (O BLOCO QUE FALTAVA) */}
+      <div className="mp-nav-mobile">
+        {SECTIONS.map(s => (
+          <button
+            key={s.id}
+            onClick={() => setActive(s.id)}
+            className="mp-nav-mobile-btn"
+            style={{
+              background: active === s.id ? s.color : "rgba(255,255,255,0.06)",
+              color: active === s.id ? "#fff" : "rgba(255,255,255,0.6)",
+              boxShadow: active === s.id ? `0 0 12px ${s.color}44` : "none",
+            }}
+          >
+            {s.name}
+          </button>
+        ))}
+      </div>
+
+      {/* BODY (Desktop Sidebar + Content) */}
       <div style={{ display: "flex", flex: 1, overflow: "hidden" }} className="mp-body">
         <div style={S.nav} className="mp-nav-sidebar">
           {SECTIONS.map(s => (
