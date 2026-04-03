@@ -619,7 +619,7 @@ function RankingsSection({ color }) {
       </div>
 
       {filtered.map((t, i) => {
-        const ti = tier(t.wipr);
+        const ti = t.wipr > 0 ? tier(t.wipr) : { color: "#6366F1", label: "REV" };
         const sc = SPEC_COLORS[t.spec] || color;
         const d  = t.wipr - t.old;
         const globalRank = TOPICS.indexOf(t) + 1;
@@ -729,21 +729,25 @@ function PlanoSection({ color, user }) {
             const ms=modeStyle(t.mode);
             const ti=t.wipr>0?tier(t.wipr):{c:"#6366F1",l:"REV"};
 
-            const badgeStyle=isDone
-              ? {flexShrink:0,width:32,height:20,borderRadius:4,
-                 background:ti.c,
-                 border:`1px solid ${ti.c}`,
-                 color:"#ffffff",
-                 fontSize:10,fontFamily:"monospace",
-                 display:"flex",alignItems:"center",justifyContent:"center",fontWeight:700,
-                 transition:"all 0.2s"}
-              : {flexShrink:0,width:32,height:20,borderRadius:4,
-                 background:`${ti.c}15`,
-                 border:`1px solid ${ti.c}44`,
-                 color:ti.c,
-                 fontSize:10,fontFamily:"monospace",
-                 display:"flex",alignItems:"center",justifyContent:"center",fontWeight:600,
-                 transition:"all 0.2s"};
+            const badgeStyle = isDone
+              ? {
+                  flexShrink: 0, width: 32, height: 20, borderRadius: 4,
+                  background: ti.color,
+                  border: `1px solid ${ti.color}`,
+                  color: "#ffffff",
+                  fontSize: 10, fontFamily: "monospace",
+                  display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 700,
+                  transition: "all 0.2s"
+                }
+              : {
+                  flexShrink: 0, width: 32, height: 20, borderRadius: 4,
+                  background: `${ti.color}26`,
+                  border: `1px solid ${ti.color}`,
+                  color: ti.color,
+                  fontSize: 10, fontFamily: "monospace",
+                  display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 600,
+                  transition: "all 0.2s"
+                };
 
             return(<div
               key={key}
@@ -755,7 +759,7 @@ function PlanoSection({ color, user }) {
                       transition:"background 0.2s",
                       margin:"0 -4px",paddingLeft:4,paddingRight:4}}
             >
-              <div style={badgeStyle}>{t.wipr>0?t.wipr:"rev"}</div>
+              <div style={badgeStyle}>{t.wipr > 0 ? t.wipr : "rev"}</div>
               <div style={{flex:1,minWidth:0}}>
                 <div style={{fontSize:12.5,
                              color:isDone?T.textDisabled:T.textPrimary,
