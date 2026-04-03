@@ -53,7 +53,7 @@ const S = {
 page: {
     background: T.bgPage,
     minHeight: "100vh",
-    fontFamily: "'Source Serif 4', -apple-system, BlinkMacSystemFont, sans-serif",
+    fontFamily: "'Source Serif 4'",
     color: T.textBody,
     display: "flex",
     flexDirection: "column",
@@ -203,6 +203,7 @@ page: {
     fontSize: 13,
     color: T.textBody,
     lineHeight: 1.75,
+    fontFamily: "Neuton"
   },
   gridTitle: {
     fontSize: 10,
@@ -293,7 +294,7 @@ const mobileCSS = `
    e substitui pela JetBrains Mono elegante e encorpada */
 [style*="monospace"] {
   font-family: 'Neuton', monospace !important;
-  font-weight: 400; /* Deixa a fonte um pouco mais gordinha e legível */
+  font-weight: 500; /* Deixa a fonte um pouco mais gordinha e legível */
 }
 
 @media (max-width: 768px) {
@@ -503,7 +504,7 @@ function FormulaSection({ color }) {
         {weights.map(w => (
           <div key={w.inst} style={S.gridCard(w.color)}>
             <div style={S.gridLabel(w.color)}>{w.inst}</div>
-            <div style={{ fontSize: 32, fontWeight: 300, color: w.color, fontFamily: "monospace", lineHeight: 1.1, marginBottom: 6 }}>{w.w}</div>
+            <div style={{ fontSize: 32, fontWeight: 300, color: w.color, fontFamily: "Neuton", lineHeight: 1.1, marginBottom: 6 }}>{w.w}</div>
             <div style={{ ...S.gridValue, fontSize: 11.5, color: T.textMuted }}>{w.desc}</div>
           </div>
         ))}
@@ -511,7 +512,7 @@ function FormulaSection({ color }) {
 
       <div style={S.alert(color)}>
         <div style={S.alertTitle(color)}>Frequência ponderada — componente 40%</div>
-        <div style={{ ...S.alertText, fontFamily: "monospace", fontSize: 12.5, lineHeight: 2 }}>
+        <div style={{ ...S.alertText, fontFamily: "Neuton", fontSize: 12.5, lineHeight: 2 }}>
           Wf = (n_ENARE × 5 + n_USP × 4 + n_UNIFESP × 2) ÷ 11<br />
           Wf_norm = Wf ÷ 3.18 &nbsp;&nbsp;← máximo observado (Epidemiologia)
         </div>
@@ -519,7 +520,7 @@ function FormulaSection({ color }) {
 
       <div style={S.alert("#10B981")}>
         <div style={S.alertTitle("#10B981")}>Cobertura institucional — componente 30%</div>
-        <div style={{ ...S.alertText, fontFamily: "monospace", fontSize: 12.5, lineHeight: 2 }}>
+        <div style={{ ...S.alertText, fontFamily: "Neuton", fontSize: 12.5, lineHeight: 2 }}>
           Wcov = (pE × 5 + pU × 4 + pF × 2) ÷ 11<br />
           p = 1 se presente, 0 se ausente na instituição
         </div>
@@ -527,7 +528,7 @@ function FormulaSection({ color }) {
 
       <div style={{ ...S.alert("#000"), background: "#fafaf8", border: "1px solid #e2e8f0", borderLeft: "3px solid #000" }}>
         <div style={{ ...S.alertTitle("#000"), fontSize: 10 }}>Fórmula W-IPR — completa</div>
-        <div style={{ ...S.alertText, fontFamily: "monospace", fontSize: 13, fontWeight: 500, lineHeight: 2 }}>
+        <div style={{ ...S.alertText, fontFamily: "Neuton", fontSize: 13, fontWeight: 500, lineHeight: 2 }}>
           W-IPR = round( (Wf_norm × 0.40 + Wcov × 0.30 + Wtrend × 0.20 + Wsimp × 0.10) × 100 )
         </div>
       </div>
