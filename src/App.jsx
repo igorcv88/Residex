@@ -292,7 +292,7 @@ const mobileCSS = `
    Isso pega qualquer lugar do código que tentou usar "monospace" 
    e substitui pela JetBrains Mono elegante e encorpada */
 [style*="monospace"] {
-  font-family: 'Neuton', monospace !important;
+  font-family: 'Roboto', monospace !important;
   font-weight: 500; /* Deixa a fonte um pouco mais gordinha e legível */
 }
 
