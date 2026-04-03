@@ -943,9 +943,9 @@ function RESIDEX_APP({ user, onLogout }) {
   }
 
   const sectionTitles = {
-    formula:  "Sistema de Pontuação W-IPR",
-    rankings: `${TOPICS.length} Temas — Ranking Recalculado`,
-    plano:    "Cronograma 16 Semanas",
+    formula:  "",
+    rankings: ``,
+    plano:    "",
   };
 
   return (
