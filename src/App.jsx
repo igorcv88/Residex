@@ -120,17 +120,44 @@ function calculateDynamicWIPR(rawTopics, profile) {
 
 // ── Sections ────────────────────────────────────────────────────────
 
-function PerfilSection({ color, profile, setProfile, user }) {
+function PerfilSection({ color, profile, setProfile, user, rawTopics }) {
   const [examDate, setExamDate] = useState(profile.examDate || "");
-  const [instName, setInstName] = useState("");
   const [instWeight, setInstWeight] = useState(1);
   const [institutions, setInstitutions] = useState(profile.institutions || []);
   const [saving, setSaving] = useState(false);
 
+  // ── ESTADOS DO DROPDOWN PESQUISÁVEL ──
+  const [search, setSearch] = useState("");
+  const [showDropdown, setShowDropdown] = useState(false);
+  const [uniqueInsts, setUniqueInsts] = useState([]);
+
+  // Extrai dinamicamente todas as bancas que existem no Firebase
+  useEffect(() => {
+    const instSet = new Set();
+    rawTopics.forEach(t => {
+      if (t.frequencias) {
+        Object.keys(t.frequencias).forEach(inst => instSet.add(inst));
+      }
+    });
+    setUniqueInsts(Array.from(instSet).sort());
+  }, [rawTopics]);
+
+  // Filtra as bancas à medida que o utilizador digita
+  const filteredInsts = uniqueInsts.filter(i => 
+    i.toLowerCase().includes(search.toLowerCase())
+  );
+
   const handleAddInst = () => {
-    if (!instName) return;
-    setInstitutions([...institutions, { name: instName.toUpperCase(), weight: Number(instWeight) }]);
-    setInstName("");
+    if (!search || !uniqueInsts.includes(search)) {
+      alert("Por favor, selecione uma instituição válida da lista clicando nela.");
+      return;
+    }
+    if (institutions.some(i => i.name === search)) {
+      alert("Esta instituição já foi adicionada ao seu alvo.");
+      return;
+    }
+    setInstitutions([...institutions, { name: search, weight: Number(instWeight) }]);
+    setSearch(""); // Limpa o campo de pesquisa
     setInstWeight(1);
   };
 
@@ -144,7 +171,7 @@ function PerfilSection({ color, profile, setProfile, user }) {
     await setDoc(doc(db, "usuarios", user.uid), { perfil: newProfile }, { merge: true });
     setProfile(newProfile);
     setSaving(false);
-    alert("Perfil guardado com sucesso! A fórmula foi recalculada.");
+    alert("Perfil guardado! A fórmula foi recalculada com as suas instituições.");
   };
 
   return (
@@ -162,12 +189,50 @@ function PerfilSection({ color, profile, setProfile, user }) {
 
       <div style={S.alert("#F97316")}>
         <div style={S.alertTitle("#F97316")}>Instituições Alvo & Pesos</div>
-        <div style={{ display: "flex", gap: 8, marginBottom: 16, flexWrap: "wrap" }}>
-          <input placeholder="Ex: ENARE_AOCP_FGV, USP" value={instName} onChange={e => setInstName(e.target.value)} style={{...S.input, flex: 1, minWidth: 150}} />
+        
+        <div style={{ display: "flex", gap: 8, marginBottom: 16, flexWrap: "wrap", alignItems: "flex-start" }}>
+          
+          {/* COMPONENTE AUTO-COMPLETE (DROPDOWN) */}
+          <div style={{ position: "relative", flex: 1, minWidth: 200 }}>
+            <input 
+              placeholder="Digite para procurar a instituição..." 
+              value={search} 
+              onChange={e => { setSearch(e.target.value); setShowDropdown(true); }}
+              onFocus={() => setShowDropdown(true)}
+              onBlur={() => setTimeout(() => setShowDropdown(false), 200)} // Pequeno atraso para permitir o clique
+              style={{...S.input, width: "100%", boxSizing: "border-box"}} 
+            />
+            
+            {showDropdown && (
+              <div style={{ 
+                position: "absolute", top: "100%", left: 0, right: 0, marginTop: 4, 
+                background: "#fff", border: `1px solid ${T.borderCard}`, borderRadius: 6, 
+                maxHeight: 200, overflowY: "auto", zIndex: 50, 
+                boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.1)" 
+              }}>
+                {filteredInsts.length > 0 ? filteredInsts.map(inst => (
+                  <div 
+                    key={inst}
+                    onMouseDown={() => { setSearch(inst); setShowDropdown(false); }} // Usamos onMouseDown em vez de onClick para rodar antes do onBlur do input
+                    style={{ padding: "10px 14px", cursor: "pointer", borderBottom: `1px solid ${T.borderCard}`, fontSize: 13, color: T.textPrimary, transition: "background 0.2s" }}
+                    onMouseEnter={(e) => e.target.style.background = "#f1f5f9"}
+                    onMouseLeave={(e) => e.target.style.background = "#fff"}
+                  >
+                    {inst}
+                  </div>
+                )) : (
+                  <div style={{ padding: "10px 14px", fontSize: 13, color: T.textDisabled, fontStyle: "italic" }}>
+                    Nenhuma instituição encontrada.
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+
           <select value={instWeight} onChange={e => setInstWeight(e.target.value)} style={{...S.input, width: 90}}>
             {[1,2,3,4,5].map(w => <option key={w} value={w}>Peso {w}</option>)}
           </select>
-          <button onClick={handleAddInst} style={{ padding: "0 20px", background: "#F97316", color: "#fff", border: "none", borderRadius: 6, fontWeight: "bold", cursor: "pointer" }}>Adicionar</button>
+          <button onClick={handleAddInst} style={{ padding: "0 20px", height: 41, background: "#F97316", color: "#fff", border: "none", borderRadius: 6, fontWeight: "bold", cursor: "pointer" }}>Adicionar</button>
         </div>
 
         <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
@@ -190,6 +255,7 @@ function PerfilSection({ color, profile, setProfile, user }) {
     </div>
   );
 }
+
 
 function FormulaSection({ color, profile }) {
   if (!profile.institutions.length) return <div style={{ color: T.textMuted }}>Configure o seu perfil primeiro.</div>;
@@ -461,7 +527,7 @@ function RESIDEX_APP({ user, onLogout }) {
       </div>
     );
     
-    if (active === "perfil")   return <PerfilSection color={sec.color} profile={profile} setProfile={setProfile} user={user} />;
+    if (active === "perfil") return <PerfilSection color={sec.color} profile={profile} setProfile={setProfile} user={user}rawTopics={rawTopics} />;
     if (active === "formula")  return <FormulaSection color={sec.color} profile={profile} />;
     if (active === "rankings") return <RankingsSection color={sec.color} dynamicTopics={dynamicTopics} />;
     if (active === "plano")    return <PlanoSection color={sec.color} user={user} dynamicTopics={dynamicTopics} profile={profile} />;
