@@ -89,19 +89,19 @@ const formatInstUI = (rawName) => {
 };
 
 // ============================================================================
-// 🔒 MOTOR W-IPR OBFUSCADO (COM NORMALIZAÇÃO RELATIVA MÁXIMA)
+// 🔒 MOTOR W-IPR OBFUSCADO (CURVA LIFT / TOP-HEAVY DISTRIBUTION)
 // ============================================================================
 async function engineObterRanking(p, d) {
   if (!p || !p.institutions || p.institutions.length===0) return [];
   const q = await getDocs(collection(d, "estatisticas_temas"));
   const r = q.docs.map(x => ({ id: x.id, ...x.data() }));
 
-  const V = { c: 1.0, e: 0.75, d: 0.40 }; // Tabela secreta de tendências
+  const V = { c: 1.0, e: 0.75, d: 0.40 };
 
-  let maxN = 0.0001; // Impede divisão por zero
+  let maxN = 0.0001;
   let maxC = 0.0001;
 
-  // PASSO 1: Somar os volumes e descobrir o "Teto" do cenário atual
+  // PASSO 1: Volume Bruto (Encontrar os "Super Gigantes")
   const preProcessado = r.map(t => {
     let n_total = 0;
     let c_total = 0;
@@ -109,9 +109,8 @@ async function engineObterRanking(p, d) {
     p.institutions.forEach(i => {
       const k = i.raw || i.name;
       const f = t.frequencias ? (t.frequencias[k] || { n:0, c:0 }) : { n:0, c:0 };
-
       n_total += f.n * i.weight;
-      c_total += f.c * i.weight; // Frequência histórica real, sem binarismo
+      c_total += f.c * i.weight;
     });
 
     if (n_total > maxN) maxN = n_total;
@@ -120,25 +119,29 @@ async function engineObterRanking(p, d) {
     return { ...t, n_total, c_total };
   });
 
-  // PASSO 2: Calcular o Score Proporcional (sempre de 0 a 1)
   let maxScoreBruto = 0.0001;
+  
+  // PASSO 2: Aplicação do Lift Quântico
   const comScores = preProcessado.map(t => {
-    const wf = t.n_total / maxN; // Proporção do volume face ao tema que mais caiu
-    const wc = t.c_total / maxC; // Proporção de constância face ao mais constante
+    // A MÁGICA: Math.sqrt "achata" a montanha do #1 e levanta todo o meio da tabela
+    const wf = Math.sqrt(t.n_total / maxN);
+    const wc = Math.sqrt(t.c_total / maxC);
     const vd = V[t.tendencia] || 0.75;
     const sm = t.simplicidade || 0.70;
 
-    // A fórmula ponderada secreta
     const score = (wf * 0.45) + (wc * 0.25) + (vd * 0.20) + (sm * 0.10);
     if (score > maxScoreBruto) maxScoreBruto = score;
 
     return { ...t, score };
   });
 
-  // PASSO 3: Normalização Final "Curva de Gauss" para o Índice
+  // PASSO 3: Formatação Final Ponderada no Topo
   return comScores.map(t => {
-    // O melhor tema da lista terá nota 100. Os outros descem em proporção exata.
-    const wiprFinal = (t.score / maxScoreBruto) * 100;
+    // Elevamos o score final à potência de 0.7. 
+    // Isso cria o efeito desejado: notas médias disparam para 70-80, 
+    // e o fundo da tabela (os 10% piores) tranca nos 25-35 pontos.
+    const curvaTopHeavy = Math.pow(t.score / maxScoreBruto, 0.7);
+    const wiprFinal = curvaTopHeavy * 100;
 
     return {
       id: t.id,
@@ -148,6 +151,7 @@ async function engineObterRanking(p, d) {
     };
   }).sort((a,b) => b.wipr - a.wipr);
 }
+
 
 
 // ── Seletor Dinâmico (Auto-Complete) ────────────────────────────────
