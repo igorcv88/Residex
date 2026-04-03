@@ -729,7 +729,7 @@ function PlanoSection({ color, user }) {
 
         <div style={{ marginBottom: 8 }}>
           <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 4 }}>
-            <span style={{ fontSize: 10, fontFamily: "monospace", color: T.textDisabled }}>Tópicos concluídos</span>
+            <span style={{ fontSize: 10, fontFamily: "monospace", color: T.textDisabled }}>Tarefas concluídas</span>
             <span style={{ fontSize: 10, fontFamily: "monospace", color: color, fontWeight: 600 }}>{pctTopics}%</span>
           </div>
           <div style={{ height: 6, background: T.borderCard, borderRadius: 3, overflow: "hidden" }}>
