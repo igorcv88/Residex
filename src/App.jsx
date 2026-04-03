@@ -19,7 +19,7 @@ const db = getFirestore(app);
 const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
 
-// ── Design Tokens & CSS ──────────────────────────────────────────────
+// ── Tokens & CSS ──────────────────────────────────────────────
 const T = {
   bgPage: "#f8fafc", bgSurface: "#f1f5f9", bgCard: "#ffffff",
   bgObs: "#eef2ff", bgCardHl: "#eff6ff", borderCard: "#e2e8f0",
@@ -69,7 +69,7 @@ const mobileCSS = `
 @media (min-width: 769px) { .mp-nav-mobile { display: none !important; } }
 `;
 
-// ── Helpers ─────────────────────────────────────────────
+// ── Helpers & Formatter ─────────────────────────────────────────────
 const SPEC_COLORS = { CM: "#0EA5E9", CG: "#F59E0B", OBS: "#EC4899", PED: "#10B981", PREV: "#6366F1", GIN: "#F97316" };
 
 function tier(v) {
@@ -79,61 +79,57 @@ function tier(v) {
   return { color: "#0EA5E9", label: "BAIXA PRIOR." };
 }
 
-// ============================================================================
-// 🔒 ÁREA SIMULADA DO BACK-END (CLOUD FUNCTIONS)
-// O código desta função não será legível para o utilizador no futuro.
-// Ele ficará num servidor seguro e o React apenas pedirá o resultado.
-// ============================================================================
-async function backendSimuladoObterRanking(profile, dbRef) {
-  if (!profile || !profile.institutions || profile.institutions.length === 0) return [];
-  
-  const querySnapshot = await getDocs(collection(dbRef, "estatisticas_temas"));
-  const rawTopics = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-  
-  const W_T = profile.institutions.reduce((sum, inst) => sum + inst.weight, 0);
-  const trendV = { c: 1.0, e: 0.75, d: 0.40 }; // Tabela secreta
+// FORMATADOR DE NOMES: Troca underlines por parênteses para a UI
+const formatInstUI = (rawName) => {
+  if (!rawName) return "";
+  if (rawName === "ENARE_AOCP_FGV") return "ENARE (AOCP/FGV)";
+  if (rawName === "ENAMED_INEP") return "ENAMED (INEP)";
+  if (rawName === "REVALIDA_INEP") return "REVALIDA (INEP)";
+  return rawName.replace(/_/g, " "); 
+};
 
-  let maxWfRaw = 0;
-  const mappedData = rawTopics.map(t => {
-    let n_total = 0, c_total = 0;
-    profile.institutions.forEach(inst => {
-      const freq = t.frequencias ? (t.frequencias[inst.name] || { n: 0, c: 0 }) : { n: 0, c: 0 };
-      n_total += freq.n * inst.weight;
-      c_total += freq.c * inst.weight;
+// ============================================================================
+// 🔒 MOTOR W-IPR OBFUSCADO
+// ============================================================================
+async function engineObterRanking(p, d) {
+  if (!p || !p.institutions || p.institutions.length===0) return [];
+  const q = await getDocs(collection(d, "estatisticas_temas"));
+  const r = q.docs.map(x => ({ id: x.id, ...x.data() }));
+  const W = p.institutions.reduce((s, i) => s + i.weight, 0);
+  const V = { c: 1.0, e: 0.75, d: 0.40 };
+  let M = 0;
+  const mx = r.map(t => {
+    let nT=0, cT=0;
+    p.institutions.forEach(i => {
+      const k = i.raw || i.name;
+      const f = t.frequencias ? (t.frequencias[k] || { n:0, c:0 }) : { n:0, c:0 };
+      nT += f.n * i.weight;
+      cT += (f.n > 0 ? 1 : 0) * i.weight; // FIX: Presença estritamente binária (0 ou 1)
     });
-    const rawWf = n_total / W_T;
-    if (rawWf > maxWfRaw) maxWfRaw = rawWf;
-    return { ...t, n_total, c_total, rawWf };
+    const rw = nT / W;
+    if(rw > M) M = rw;
+    return { ...t, nT, cT, rw };
   });
-
-  const maxWf = maxWfRaw === 0 ? 1 : maxWfRaw;
-
-  return mappedData.map(t => {
-    const Wcov = t.c_total / W_T;
-    const tendencia = trendV[t.tendencia] || 0.75; 
-    const simplicidade = t.simplicidade || 0.70;
-    
-    // A fórmula exata (A ser movida para Cloud Functions)
-    const wiprRaw = (t.rawWf / maxWf * 0.40 + Wcov * 0.30 + tendencia * 0.20 + simplicidade * 0.10) * 100;
-    
-    return { 
-      id: t.id, nome: t.nome, especialidade: t.especialidade, 
-      wipr: Math.round(wiprRaw), wiprAnterior: t.wiprAnterior 
-    };
-  }).sort((a, b) => b.wipr - a.wipr);
+  const mxF = M === 0 ? 1 : M;
+  return mx.map(t => {
+    const Wc = t.cT / W; 
+    const vd = V[t.tendencia] || 0.75; 
+    const sm = t.simplicidade || 0.70;
+    const wf = t.rw / mxF;
+    const z = (wf * 0.40 + Wc * 0.30 + vd * 0.20 + sm * 0.10) * 100;
+    return { id: t.id, nome: t.nome, especialidade: t.especialidade, wipr: Math.round(z) };
+  }).sort((a,b) => b.wipr - a.wipr);
 }
-// ============================================================================
 
-
-// ── Seletor Dinâmico de Instituições ────────────────────────────────
+// ── Seletor Dinâmico (Auto-Complete) ────────────────────────────────
 function InstitutionSelector({ institutions, setInstitutions }) {
   const [search, setSearch] = useState("");
   const [showDropdown, setShowDropdown] = useState(false);
   const [instWeight, setInstWeight] = useState(5);
-  const [uniqueInsts, setUniqueInsts] = useState([]);
+  const [uniqueInstsRaw, setUniqueInstsRaw] = useState([]);
+  const [selectedRaw, setSelectedRaw] = useState(null);
 
   useEffect(() => {
-    // Busca os nomes das instituições disponíveis no banco para o auto-complete
     async function loadInsts() {
       const querySnapshot = await getDocs(collection(db, "estatisticas_temas"));
       const instSet = new Set();
@@ -141,18 +137,37 @@ function InstitutionSelector({ institutions, setInstitutions }) {
         const f = doc.data().frequencias;
         if(f) Object.keys(f).forEach(i => instSet.add(i));
       });
-      setUniqueInsts(Array.from(instSet).sort());
+      setUniqueInstsRaw(Array.from(instSet).sort());
     }
     loadInsts();
   }, []);
 
-  const filteredInsts = uniqueInsts.filter(i => i.toLowerCase().includes(search.toLowerCase()));
+  // Filtra as instituições usando a versão formatada
+  const filteredInsts = uniqueInstsRaw.filter(raw => 
+    formatInstUI(raw).toLowerCase().includes(search.toLowerCase())
+  );
+
+  const handleSelect = (rawKey) => {
+    setSearch(formatInstUI(rawKey));
+    setSelectedRaw(rawKey);
+    setShowDropdown(false);
+  };
 
   const handleAddInst = () => {
-    if (!search || !uniqueInsts.includes(search)) return alert("Selecione uma instituição válida da lista.");
-    if (institutions.some(i => i.name === search)) return alert("Esta instituição já foi adicionada.");
-    setInstitutions([...institutions, { name: search, weight: Number(instWeight) }]);
+    // Procura o match exato caso o utilizador digite em vez de clicar
+    const rawToAdd = selectedRaw || uniqueInstsRaw.find(r => formatInstUI(r).toLowerCase() === search.toLowerCase());
+    
+    if (!rawToAdd) return alert("Por favor, selecione uma instituição válida da lista.");
+    if (institutions.some(i => (i.raw || i.name) === rawToAdd)) return alert("Esta instituição já foi adicionada.");
+    
+    setInstitutions([...institutions, { 
+      name: formatInstUI(rawToAdd), // Para display antigo
+      raw: rawToAdd,                // A chave real do Firebase
+      weight: Number(instWeight) 
+    }]);
+    
     setSearch("");
+    setSelectedRaw(null);
     setInstWeight(5);
   };
 
@@ -163,16 +178,16 @@ function InstitutionSelector({ institutions, setInstitutions }) {
           <input 
             placeholder="Digite para procurar a instituição..." 
             value={search} 
-            onChange={e => { setSearch(e.target.value); setShowDropdown(true); }}
+            onChange={e => { setSearch(e.target.value); setShowDropdown(true); setSelectedRaw(null); }}
             onFocus={() => setShowDropdown(true)}
             onBlur={() => setTimeout(() => setShowDropdown(false), 200)}
             style={{...S.input, width: "100%", boxSizing: "border-box"}} 
           />
           {showDropdown && (
             <div style={{ position: "absolute", top: "100%", left: 0, right: 0, marginTop: 4, background: "#fff", border: `1px solid ${T.borderCard}`, borderRadius: 6, maxHeight: 200, overflowY: "auto", zIndex: 50, boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.1)" }}>
-              {filteredInsts.length > 0 ? filteredInsts.map(inst => (
-                <div key={inst} onMouseDown={() => { setSearch(inst); setShowDropdown(false); }} style={{ padding: "10px 14px", cursor: "pointer", borderBottom: `1px solid ${T.borderCard}`, fontSize: 13, color: T.textPrimary }}>
-                  {inst}
+              {filteredInsts.length > 0 ? filteredInsts.map(raw => (
+                <div key={raw} onMouseDown={() => handleSelect(raw)} style={{ padding: "10px 14px", cursor: "pointer", borderBottom: `1px solid ${T.borderCard}`, fontSize: 13, color: T.textPrimary }}>
+                  {formatInstUI(raw)}
                 </div>
               )) : <div style={{ padding: "10px 14px", fontSize: 13, color: T.textDisabled }}>Nenhuma instituição encontrada.</div>}
             </div>
@@ -181,7 +196,7 @@ function InstitutionSelector({ institutions, setInstitutions }) {
 
         <select value={instWeight} onChange={e => setInstWeight(e.target.value)} style={{...S.input, width: 140}}>
           <option value={5}>Peso 5 - Foco Total</option>
-          <option value={4}>Peso 4 - Muito Desejada</option>
+          <option value={4}>Peso 4 - Desejada</option>
           <option value={3}>Peso 3 - Moderada</option>
           <option value={2}>Peso 2 - Secundária</option>
           <option value={1}>Peso 1 - Backup</option>
@@ -192,7 +207,7 @@ function InstitutionSelector({ institutions, setInstitutions }) {
       <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
         {institutions.map((inst, idx) => (
           <div key={idx} style={{ display: "flex", justifyContent: "space-between", background: "#fff", padding: "10px 14px", borderRadius: 6, border: "1px solid #e2e8f0" }}>
-            <span style={{ fontFamily: "monospace", fontWeight: 600 }}>{inst.name}</span>
+            <span style={{ fontFamily: "monospace", fontWeight: 600 }}>{formatInstUI(inst.raw || inst.name)}</span>
             <div style={{ display: "flex", gap: 16, alignItems: "center" }}>
               <span style={{ fontSize: 12, color: T.textMuted }}>Peso {inst.weight}</span>
               <button onClick={() => setInstitutions(institutions.filter((_, i) => i !== idx))} style={{ background: "none", border: "none", color: "#EF4444", cursor: "pointer", fontSize: 12 }}>Remover</button>
@@ -204,9 +219,7 @@ function InstitutionSelector({ institutions, setInstitutions }) {
   );
 }
 
-// ── Sections ────────────────────────────────────────────────────────
-
-// TELA DE ONBOARDING
+// ── Sections (Vistas) ────────────────────────────────────────────────
 function OnboardingSection({ user, onComplete }) {
   const [examDate, setExamDate] = useState("");
   const [institutions, setInstitutions] = useState([]);
@@ -223,7 +236,7 @@ function OnboardingSection({ user, onComplete }) {
   return (
     <div style={{ maxWidth: 600, margin: "0 auto", paddingTop: 20 }}>
       <h2 style={{ marginBottom: 10 }}>Bem-vindo ao RESIDEX</h2>
-      <p style={{ color: T.textMuted, marginBottom: 30, lineHeight: 1.6 }}>Para gerarmos o seu algoritmo de estudo personalizado, precisamos de configurar o seu alvo. Pode alterar isto mais tarde.</p>
+      <p style={{ color: T.textMuted, marginBottom: 30, lineHeight: 1.6 }}>Configure o seu alvo principal. O algoritmo fará o resto.</p>
 
       <div style={S.alert("#6366F1")}>
         <div style={S.alertTitle("#6366F1")}>1. Quando é a sua prova principal?</div>
@@ -236,11 +249,11 @@ function OnboardingSection({ user, onComplete }) {
         
         <div style={{ marginTop: 20, fontSize: 11, color: T.textSubtle, background: "#fff", padding: 12, borderRadius: 6, border: `1px solid ${T.borderCard}` }}>
           <b>Como funcionam os Pesos:</b><br/>
-          • <b>Peso 5:</b> Instituição de prioridade máxima. O algoritmo focará 100% no padrão desta prova.<br/>
-          • <b>Peso 4:</b> Instituição muito desejada, mas secundária à prioridade principal.<br/>
-          • <b>Peso 3:</b> Instituição desejada (plano B ou composição de nota).<br/>
-          • <b>Peso 2:</b> Instituição secundária (foco complementar para base de conhecimento).<br/>
-          • <b>Peso 1:</b> Instituição de backup ou apenas para treino.
+          • <b>Peso 5:</b> Instituição de prioridade máxima. Foco total do estudo.<br/>
+          • <b>Peso 4:</b> Instituição muito desejada, mas não é a principal.<br/>
+          • <b>Peso 3:</b> Instituição desejada (plano B ou composição).<br/>
+          • <b>Peso 2:</b> Instituição secundária (foco complementar).<br/>
+          • <b>Peso 1:</b> Instituição de backup ou apenas treino.
         </div>
       </div>
 
@@ -262,7 +275,7 @@ function PerfilSection({ color, profile, setProfile, user }) {
     await setDoc(doc(db, "usuarios", user.uid), { perfil: newProfile }, { merge: true });
     setProfile(newProfile);
     setSaving(false);
-    alert("Perfil guardado! O seu cronograma e algoritmo foram atualizados.");
+    alert("Perfil guardado! O cronograma foi recalculado.");
   };
 
   return (
@@ -271,12 +284,10 @@ function PerfilSection({ color, profile, setProfile, user }) {
         <div style={S.alertTitle(color)}>Data da Prova</div>
         <input type="date" value={examDate} onChange={e => setExamDate(e.target.value)} style={{...S.input, maxWidth: 200, marginBottom: 10}} />
       </div>
-
       <div style={S.alert("#F97316")}>
         <div style={S.alertTitle("#F97316")}>Instituições Alvo & Pesos</div>
         <InstitutionSelector institutions={institutions} setInstitutions={setInstitutions} />
       </div>
-
       <button onClick={saveProfile} disabled={saving} style={{ padding: "12px 24px", background: color, color: "#fff", border: "none", borderRadius: 8, fontSize: 14, fontWeight: "bold", cursor: "pointer", width: "100%" }}>
         {saving ? "A guardar..." : "Guardar Perfil"}
       </button>
@@ -284,28 +295,25 @@ function PerfilSection({ color, profile, setProfile, user }) {
   );
 }
 
-// ABA DA FÓRMULA (AGORA SUPERFICIAL E SECRETA)
 function FormulaSection({ color, profile }) {
   if (!profile.institutions.length) return null;
-
   return (
     <div>
-      <div style={S.gridTitle}>Instituições Processadas</div>
+      <div style={S.gridTitle}>Alvos Processados</div>
       <div style={{ ...S.gridWrap, gridTemplateColumns: "repeat(auto-fill,minmax(180px,1fr))", marginBottom: 24 }}>
         {profile.institutions.map((w, idx) => (
           <div key={idx} style={S.gridCard(color)}>
-            <div style={S.gridLabel(color)}>{w.name}</div>
+            <div style={S.gridLabel(color)}>{formatInstUI(w.raw || w.name)}</div>
             <div style={{ fontSize: 30, fontWeight: 300, color: color, fontFamily: "'DM Serif Display', serif", lineHeight: 1.1, marginBottom: 6 }}>{w.weight}</div>
           </div>
         ))}
       </div>
-      
       <div style={{ ...S.alert("#000"), background: "#fafaf8", border: "1px solid #e2e8f0", borderLeft: "3px solid #000" }}>
-        <div style={{ ...S.alertTitle("#000")}}>O Motor W-IPR</div>
+        <div style={{ ...S.alertTitle("#000")}}>A Inteligência RESIDEX</div>
         <div style={{ ...S.gridValue, fontSize: 12, color: T.textMuted, lineHeight: 1.8 }}>
-          O sistema extraiu dados de mais de 10 anos de provas e aplicou o nosso algoritmo de priorização aos seus alvos específicos.<br/><br/>
-          O cálculo é processado de forma segura na nuvem e cruza o volume de incidência de cada tema, a exclusividade institucional, a tendência de cobrança recente (se o tema tem caído mais nos últimos 3 anos) e o custo-benefício didático. <br/><br/>
-          O resultado é um <b>Índice Crítico</b> (1 a 100) que determina exatamente o que estudar primeiro para maximizar o retorno do seu tempo.
+          O sistema avaliou todo o histórico das provas e aplicou o nosso algoritmo exclusivo aos seus alvos específicos.<br/><br/>
+          O motor de processamento determina a relevância de cada tema cruzando a incidência na banca escolhida, a prevalência nacional e a complexidade técnica da matéria.<br/><br/>
+          O resultado final é o <b>Índice de Prioridade (1-100)</b>: um número fechado que rege a ordem exata do que deve ser estudado primeiro.
         </div>
       </div>
     </div>
@@ -314,7 +322,6 @@ function FormulaSection({ color, profile }) {
 
 function RankingsSection({ color, dynamicTopics }) {
   const [filter, setFilter] = useState("all");
-
   const filtered = dynamicTopics.filter(t => {
     if (filter === "c") return t.wipr >= 80;
     if (filter === "h") return t.wipr >= 60 && t.wipr < 80;
@@ -327,35 +334,20 @@ function RankingsSection({ color, dynamicTopics }) {
     <div>
       <div style={{ display: "flex", gap: 6, flexWrap: "wrap", marginBottom: 16 }}>
         {[{ id: "all", label: "Todos" }, { id: "c", label: "Crítico 80+" }, { id: "h", label: "Alta 60–79" }, { id: "m", label: "Média 40–59" }, { id: "l", label: "Baixa <40" }].map(f => (
-          <button
-            key={f.id}
-            onClick={() => setFilter(f.id)}
-            style={{
-              background: filter === f.id ? `${color}15` : "transparent",
-              border: `1px solid ${filter === f.id ? color : T.borderCard}`,
-              color: filter === f.id ? color : T.textMuted,
-              padding: "5px 12px", borderRadius: 4, fontSize: 11, fontFamily: "monospace", cursor: "pointer", transition: "all 0.15s",
-            }}
-          >
+          <button key={f.id} onClick={() => setFilter(f.id)} style={{ background: filter === f.id ? `${color}15` : "transparent", border: `1px solid ${filter === f.id ? color : T.borderCard}`, color: filter === f.id ? color : T.textMuted, padding: "5px 12px", borderRadius: 4, fontSize: 11, fontFamily: "monospace", cursor: "pointer", transition: "all 0.15s" }}>
             {f.label}
           </button>
         ))}
       </div>
-
-      <div style={{ fontSize: 10, fontFamily: "monospace", color: T.textDisabled, marginBottom: 12 }}>
-        {filtered.length} TEMAS EXIBIDOS
-      </div>
-
+      <div style={{ fontSize: 10, fontFamily: "monospace", color: T.textDisabled, marginBottom: 12 }}>{filtered.length} TEMAS EXIBIDOS</div>
       {filtered.map((t, i) => {
         const ti = t.wipr > 0 ? tier(t.wipr) : { color: "#6366F1", label: "REV" };
         const sc = SPEC_COLORS[t.especialidade] || color;
-        const globalRank = dynamicTopics.indexOf(t) + 1;
-        
         return (
           <div key={t.id + i} style={S.gradeWrap(ti.color)}>
             <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 4, flexShrink: 0 }}>
               <div style={{ ...S.gradeBadge(ti.color), fontSize: 13, padding: "6px 10px" }}>{t.wipr}</div>
-              <div style={{ fontSize: 9, fontFamily: "monospace", color: T.textDisabled }}>#{globalRank}</div>
+              <div style={{ fontSize: 9, fontFamily: "monospace", color: T.textDisabled }}>#{dynamicTopics.indexOf(t) + 1}</div>
             </div>
             <div style={{ flex: 1, minWidth: 0 }}>
               <div style={{ fontSize: 13, color: T.textPrimary, lineHeight: 1.4, marginBottom: 3 }}>{t.nome || t.id}</div>
@@ -384,8 +376,7 @@ function PlanoSection({ color, user, dynamicTopics, profile }) {
 
   const temasPorSemana = Math.ceil(dynamicTopics.length / totalWeeks);
   const WEEKS = Array.from({ length: totalWeeks }, (_, i) => ({
-    n: i + 1,
-    col: i < totalWeeks * 0.3 ? "#EF4444" : i < totalWeeks * 0.7 ? "#F97316" : "#10B981",
+    n: i + 1, col: i < totalWeeks * 0.3 ? "#EF4444" : i < totalWeeks * 0.7 ? "#F97316" : "#10B981",
     topics: dynamicTopics.slice(i * temasPorSemana, (i + 1) * temasPorSemana)
   })).filter(w => w.topics.length > 0);
 
@@ -412,41 +403,33 @@ function PlanoSection({ color, user, dynamicTopics, profile }) {
   return (
     <div>
       <div style={S.alert(color)}>
-        <div style={S.alertTitle(color)}>Cronograma Gerado Automático</div>
+        <div style={S.alertTitle(color)}>Cronograma Adaptativo</div>
         <div style={{ ...S.alertText, fontSize: 12 }}>
-          Faltam <b>{totalWeeks} semanas</b> para a prova. Os {dynamicTopics.length} temas foram divididos à razão de ~{temasPorSemana} por semana, começando pelos mais Críticos.
+          Faltam <b>{totalWeeks} semanas</b>. Os temas foram divididos à razão de ~{temasPorSemana} por semana, começando pelos mais críticos.
         </div>
       </div>
-
       {WEEKS.map(w => {
         const isO = exp.has(w.n);
         const weekKeys = w.topics.map(t => `${w.n}-${t.id}`);
         const doneCount = weekKeys.filter(k => done.has(k)).length;
         const allDone = doneCount > 0 && doneCount === w.topics.length;
-
         return (
           <div key={w.n} style={S.decisionWrap(allDone ? "#10B981" : w.col)}>
             <div onClick={() => tog(w.n)} style={{ display: "flex", alignItems: "center", gap: 10, padding: "10px 14px", background: allDone ? "#F0FDF4" : "#fafaf8", cursor: "pointer" }}>
               <span style={{ fontSize: 10, fontFamily: "monospace", color: allDone ? "#14532D" : w.col, minWidth: 60, fontWeight: 600 }}>SEMANA {w.n}</span>
-              <span style={{ flex: 1, fontSize: 12.5, color: allDone ? T.textMuted : T.textPrimary, textDecoration: allDone ? "line-through" : "none" }}>Estudo Guiado</span>
+              <span style={{ flex: 1, fontSize: 12.5, color: allDone ? T.textMuted : T.textPrimary, textDecoration: allDone ? "line-through" : "none" }}>Foco Direcionado</span>
               <span style={{ fontSize: 10, fontFamily: "monospace", color: T.textDisabled }}>{doneCount}/{w.topics.length}</span>
             </div>
-
             {isO && (
               <div style={{ padding: "0 14px 10px" }}>
                 {w.topics.map((t) => {
                   const key = `${w.n}-${t.id}`;
                   const isDone = done.has(key);
                   const ti = t.wipr > 0 ? tier(t.wipr) : { color: "#6366F1" };
-
                   return (
                     <div key={key} onClick={(e) => { e.stopPropagation(); togDone(key); }} style={{ display: "flex", alignItems: "flex-start", gap: 8, padding: "8px 0", cursor: "pointer", borderBottom: `1px solid ${T.borderCard}` }}>
-                      <div style={{ flexShrink: 0, width: 32, height: 20, borderRadius: 4, background: `${ti.color}26`, color: ti.color, fontSize: 10, fontFamily: "monospace", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 600 }}>
-                        {t.wipr}
-                      </div>
-                      <div style={{ flex: 1, fontSize: 12.5, color: isDone ? T.textDisabled : T.textPrimary, textDecoration: isDone ? "line-through" : "none" }}>
-                        {t.nome || t.id}
-                      </div>
+                      <div style={{ flexShrink: 0, width: 32, height: 20, borderRadius: 4, background: `${ti.color}26`, color: ti.color, fontSize: 10, fontFamily: "monospace", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 600 }}>{t.wipr}</div>
+                      <div style={{ flex: 1, fontSize: 12.5, color: isDone ? T.textDisabled : T.textPrimary, textDecoration: isDone ? "line-through" : "none" }}>{t.nome || t.id}</div>
                     </div>
                   );
                 })}
@@ -459,11 +442,11 @@ function PlanoSection({ color, user, dynamicTopics, profile }) {
   );
 }
 
-// ── Application Core ────────────────────────────────────────────────
+// ── App Core ────────────────────────────────────────────────
 const SECTIONS = [
   { id: "plano",    name: "Plano Semanal", color: "#10B981" },
   { id: "rankings", name: "Rankings",      color: "#0EA5E9" },
-  { id: "formula",  name: "O Motor W-IPR", color: "#6366F1" },
+  { id: "formula",  name: "O Motor",       color: "#6366F1" },
   { id: "perfil",   name: "Meu Perfil",    color: "#F97316" },
 ];
 
@@ -473,13 +456,8 @@ export default function RESIDEX_CONTROLLER() {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
-      if (currentUser) {
-        setUser(currentUser);
-        setStatus("authorized"); 
-      } else {
-        setUser(null);
-        setStatus("loggedOut");
-      }
+      if (currentUser) { setUser(currentUser); setStatus("authorized"); } 
+      else { setUser(null); setStatus("loggedOut"); }
     });
     return () => unsubscribe();
   }, []);
@@ -487,7 +465,7 @@ export default function RESIDEX_CONTROLLER() {
   const handleLogin = () => signInWithPopup(auth, provider);
   const handleLogout = () => signOut(auth);
 
-  if (status === "loading") return <div style={{ display: "flex", height: "100vh", alignItems: "center", justifyContent: "center", background: "#0F172A", color: "#fff", fontFamily: "monospace" }}>Carregando...</div>;
+  if (status === "loading") return <div style={{ display: "flex", height: "100vh", alignItems: "center", justifyContent: "center", background: "#0F172A", color: "#fff" }}>Carregando...</div>;
   if (status === "loggedOut") return (
     <div style={{ display: "flex", flexDirection: "column", height: "100vh", alignItems: "center", justifyContent: "center", background: "#0F172A", padding: 20 }}>
       <h1 style={{ color: "#fff", fontSize: 28, marginBottom: 20 }}>RESIDEX</h1>
@@ -503,7 +481,7 @@ function RESIDEX_APP({ user, onLogout }) {
   const [dynamicTopics, setDynamicTopics] = useState([]);
   const [profile, setProfile] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [appState, setAppState] = useState("loading"); // loading | onboarding | dashboard
+  const [appState, setAppState] = useState("loading");
 
   const sec = SECTIONS.find(s => s.id === active);
 
@@ -514,24 +492,16 @@ function RESIDEX_APP({ user, onLogout }) {
         if (userDoc.exists() && userDoc.data().perfil && userDoc.data().perfil.institutions.length > 0) {
           setProfile(userDoc.data().perfil);
           setAppState("dashboard");
-        } else {
-          setAppState("onboarding");
-        }
-      } catch (error) {
-        console.error(error);
-      } finally {
-        setIsLoading(false);
-      }
+        } else { setAppState("onboarding"); }
+      } catch (error) { console.error(error); } 
+      finally { setIsLoading(false); }
     }
     loadUser();
   }, [user.uid]);
 
   useEffect(() => {
     if (appState === "dashboard" && profile) {
-      // 🔒 CHAMA O BACK-END SIMULADO 
-      backendSimuladoObterRanking(profile, db).then(calculated => {
-        setDynamicTopics(calculated);
-      });
+      engineObterRanking(profile, db).then(calculated => setDynamicTopics(calculated));
     }
   }, [appState, profile]);
 
@@ -546,9 +516,7 @@ function RESIDEX_APP({ user, onLogout }) {
             <button onClick={onLogout} style={{ background: "transparent", border: "none", cursor: "pointer", fontSize: 11, color: T.textMuted }}>Sair</button>
           </div>
         </div>
-        <div style={{ padding: "20px" }}>
-          <OnboardingSection user={user} onComplete={(p) => { setProfile(p); setAppState("dashboard"); }} />
-        </div>
+        <div style={{ padding: "20px" }}><OnboardingSection user={user} onComplete={(p) => { setProfile(p); setAppState("dashboard"); }} /></div>
       </div>
     );
   }
@@ -563,42 +531,27 @@ function RESIDEX_APP({ user, onLogout }) {
   return (
     <div style={S.page}>
       <style>{mobileCSS}</style>
-      
       <div style={S.header}>
         <div style={{display: "flex", justifyContent: "space-between", alignItems: "center"}}>
-          <div>
-            <div style={S.headerEyebrow}>RESIDEX · Inteligência Médica</div>
-            <h1 style={S.headerTitle}>Cronograma</h1>
-          </div>
-          <button onClick={onLogout} style={{ background: "transparent", border: `1px solid ${T.borderSection}`, padding: "6px 12px", borderRadius: 6, cursor: "pointer", fontSize: 11, fontFamily: "monospace", color: T.textMuted }}>
-            Sair
-          </button>
+          <div><div style={S.headerEyebrow}>RESIDEX</div><h1 style={S.headerTitle}>Painel de Estudos</h1></div>
+          <button onClick={onLogout} style={{ background: "transparent", border: `1px solid ${T.borderSection}`, padding: "6px 12px", borderRadius: 6, cursor: "pointer", fontSize: 11, fontFamily: "monospace", color: T.textMuted }}>Sair</button>
         </div>
       </div>
-
       <div className="mp-nav-mobile">
         {SECTIONS.map(s => (
-          <button key={s.id} onClick={() => setActive(s.id)} className="mp-nav-mobile-btn" style={{ background: active === s.id ? s.color : "rgba(255,255,255,0.06)", color: active === s.id ? "#fff" : "rgba(255,255,255,0.6)", boxShadow: active === s.id ? `0 0 12px ${s.color}44` : "none" }}>
-            {s.name}
-          </button>
+          <button key={s.id} onClick={() => setActive(s.id)} className="mp-nav-mobile-btn" style={{ background: active === s.id ? s.color : "rgba(255,255,255,0.06)", color: active === s.id ? "#fff" : "rgba(255,255,255,0.6)", boxShadow: active === s.id ? `0 0 12px ${s.color}44` : "none" }}>{s.name}</button>
         ))}
       </div>
-
       <div style={{ display: "flex", flex: 1, overflow: "hidden" }} className="mp-body">
         <div style={S.nav} className="mp-nav-sidebar">
           {SECTIONS.map(s => (
             <button key={s.id} onClick={() => setActive(s.id)} style={S.navBtn(active === s.id, s.color)}>
-              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                <div style={S.navDot(active === s.id, s.color)} />
-                {s.name}
-              </div>
+              <div style={{ display: "flex", alignItems: "center", gap: 8 }}><div style={S.navDot(active === s.id, s.color)} />{s.name}</div>
             </button>
           ))}
         </div>
         <div style={S.content} className="mp-content">
-          <div style={S.sectionHeader(sec.color)}>
-            <div style={S.sectionBadge(sec.color)}>{sec.name}</div>
-          </div>
+          <div style={S.sectionHeader(sec.color)}><div style={S.sectionBadge(sec.color)}>{sec.name}</div></div>
           {renderContent()}
         </div>
       </div>
