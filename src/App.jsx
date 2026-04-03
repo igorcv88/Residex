@@ -54,7 +54,8 @@ page: {
     background: T.bgPage,
     minHeight: "100vh",
     fontFamily: "'DM Sans', sans-serif",
-    fontWeight: 400,    color: T.textBody,
+    fontWeight: 400,    
+    color: T.textBody,
     display: "flex",
     flexDirection: "column",
   },
@@ -505,7 +506,7 @@ function FormulaSection({ color }) {
 
       <div style={S.alert(color)}>
         <div style={S.alertTitle(color)}>Frequência ponderada — componente 40%</div>
-        <div style={{ ...S.alertText, fontFamily: "Roboto", fontSize: 12, fontWidth, fontWeight: 250, lineHeight: 2 }}>
+        <div style={{ ...S.alertText, fontFamily: "'JetBrains Mono', monospace", fontSize: 12, lineHeight: 2 }}>
           Wf = (n_ENARE × 5 + n_USP × 4 + n_UNIFESP × 2) ÷ 11<br />
           Wf_norm = Wf ÷ 3.18 &nbsp;&nbsp;← máximo observado (Epidemiologia)
         </div>
