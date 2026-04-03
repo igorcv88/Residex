@@ -89,65 +89,61 @@ const formatInstUI = (rawName) => {
 };
 
 // ============================================================================
-// 🔒 MOTOR W-IPR OBFUSCADO (CURVA LIFT / TOP-HEAVY DISTRIBUTION)
+// 🔒 MOTOR W-IPR OBFUSCADO (A FÓRMULA RAIZ NORMALIZADA)
 // ============================================================================
 async function engineObterRanking(p, d) {
   if (!p || !p.institutions || p.institutions.length===0) return [];
   const q = await getDocs(collection(d, "estatisticas_temas"));
   const r = q.docs.map(x => ({ id: x.id, ...x.data() }));
 
+  const W_T = p.institutions.reduce((s, i) => s + i.weight, 0);
   const V = { c: 1.0, e: 0.75, d: 0.40 };
 
-  let maxN = 0.0001;
-  let maxC = 0.0001;
+  // 1. NORMALIZAÇÃO INTRA-BANCA
+  // Encontra o "Teto de Volume" isolado de cada instituição.
+  // Isso impede que um banco de dados de 5000 questões atropele um banco de 500.
+  const maxN_Por_Banca = {};
+  p.institutions.forEach(inst => {
+    const k = inst.raw || inst.name;
+    let maxN = 1; // Evita divisão por zero
+    r.forEach(t => {
+      const f = t.frequencias ? (t.frequencias[k] || { n: 0 }) : { n: 0 };
+      if (f.n > maxN) maxN = f.n;
+    });
+    maxN_Por_Banca[k] = maxN;
+  });
 
-  // PASSO 1: Volume Bruto (Encontrar os "Super Gigantes")
-  const preProcessado = r.map(t => {
-    let n_total = 0;
-    let c_total = 0;
+  // 2. A MATEMÁTICA ORIGINAL W-IPR
+  return r.map(t => {
+    let Wf_sum = 0;
+    let Wcov_sum = 0;
 
     p.institutions.forEach(i => {
       const k = i.raw || i.name;
-      const f = t.frequencias ? (t.frequencias[k] || { n:0, c:0 }) : { n:0, c:0 };
-      n_total += f.n * i.weight;
-      c_total += f.c * i.weight;
+      const f = t.frequencias ? (t.frequencias[k] || { n:0 }) : { n:0 };
+
+      // Converte o volume bruto num valor justo entre 0.0 e 1.0
+      const volumeNormalizado = f.n / maxN_Por_Banca[k];
+
+      Wf_sum += volumeNormalizado * i.weight;
+      Wcov_sum += (f.n > 0 ? 1 : 0) * i.weight; // Cobertura estritamente binária
     });
 
-    if (n_total > maxN) maxN = n_total;
-    if (c_total > maxC) maxC = c_total;
+    // Tranca matematicamente Wf_norm e Wcov_norm entre 0.0 e 1.0
+    const Wf_norm = Wf_sum / W_T;
+    const Wcov_norm = Wcov_sum / W_T;
 
-    return { ...t, n_total, c_total };
-  });
-
-  let maxScoreBruto = 0.0001;
-  
-  // PASSO 2: Aplicação do Lift Quântico
-  const comScores = preProcessado.map(t => {
-    // A MÁGICA: Math.sqrt "achata" a montanha do #1 e levanta todo o meio da tabela
-    const wf = Math.sqrt(t.n_total / maxN);
-    const wc = Math.sqrt(t.c_total / maxC);
     const vd = V[t.tendencia] || 0.75;
     const sm = t.simplicidade || 0.70;
 
-    const score = (wf * 0.45) + (wc * 0.25) + (vd * 0.20) + (sm * 0.10);
-    if (score > maxScoreBruto) maxScoreBruto = score;
-
-    return { ...t, score };
-  });
-
-  // PASSO 3: Formatação Final Ponderada no Topo
-  return comScores.map(t => {
-    // Elevamos o score final à potência de 0.7. 
-    // Isso cria o efeito desejado: notas médias disparam para 70-80, 
-    // e o fundo da tabela (os 10% piores) tranca nos 25-35 pontos.
-    const curvaTopHeavy = Math.pow(t.score / maxScoreBruto, 0.7);
-    const wiprFinal = curvaTopHeavy * 100;
+    // FÓRMULA RAIZ: 40% Volume + 30% Cobertura + 20% Tendência + 10% Simplicidade
+    const wiprRaw = (Wf_norm * 0.40 + Wcov_norm * 0.30 + vd * 0.20 + sm * 0.10) * 100;
 
     return {
       id: t.id,
       nome: t.nome,
       especialidade: t.especialidade,
-      wipr: Math.round(wiprFinal)
+      wipr: Math.round(wiprRaw)
     };
   }).sort((a,b) => b.wipr - a.wipr);
 }
