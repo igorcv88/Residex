@@ -23,16 +23,16 @@ const provider = new GoogleAuthProvider();
 
 // ── Design Tokens (medpanel-tokens) ─────────────────────────────────
 const T = {
-  bgPage: "#ffffff",
-  bgSurface: "#ffffff",
-  bgCard: "#ffffff",
+  bgPage:    "#f8fafc",   // camada 0 — fundo da página
+  bgSurface: "#f1f5f9",   // camada 1 — header, sidebar, footer
+  bgCard:    "#ffffff",   // camada 2 — cards e dados
+  bgObs:     "#eef2ff",   // indigo-50, destaca das observações
   bgCardHl: "#eff6ff",
-  bgObs: "#f8fafc",
   borderCard: "#e2e8f0",
   borderCardHl: "#bfdbfe",
   borderObs: "#6366F1",
-  borderSection: "#e2e8f0",
-  borderNav: "#e2e8f0",
+  borderSection: "#dde3eb",
+  borderNav:     "#dde3eb",
   textPrimary: "#000000",
   textBody: "#000000",
   textMuted: "#445162",
@@ -53,8 +53,8 @@ const S = {
 page: {
     background: T.bgPage,
     minHeight: "100vh",
-    fontFamily: "'Roboto'; font-weight: 250; font-width: 95",
-    color: T.textBody,
+    fontFamily: "'DM Sans', sans-serif",
+    fontWeight: 400,    color: T.textBody,
     display: "flex",
     flexDirection: "column",
   },
@@ -497,7 +497,7 @@ function FormulaSection({ color }) {
         {weights.map(w => (
           <div key={w.inst} style={S.gridCard(w.color)}>
             <div style={S.gridLabel(w.color)}>{w.inst}</div>
-            <div style={{ fontSize: 30, fontWeight: 300, color: w.color, fontFamily: "Neuton", lineHeight: 1.1, marginBottom: 6 }}>{w.w}</div>
+            <div style={{ fontSize: 30, fontWeight: 300, color: w.color, fontFamily: "'DM Serif Display', serif", lineHeight: 1.1, marginBottom: 6 }}>{w.w}</div>
             <div style={{ ...S.gridValue, fontSize: 11.5, color: T.textMuted }}>{w.desc}</div>
           </div>
         ))}
@@ -513,7 +513,7 @@ function FormulaSection({ color }) {
 
       <div style={S.alert("#10B981")}>
         <div style={S.alertTitle("#10B981")}>Cobertura institucional — componente 30%</div>
-        <div style={{ ...S.alertText, fontFamily: "Neuton", fontSize: 12.5, lineHeight: 2 }}>
+        <div style={{ ...S.alertText, fontFamily: "'DM Serif Display', serif", fontSize: 12.5, lineHeight: 2 }}>
           Wcov = (pE × 5 + pU × 4 + pF × 2) ÷ 11<br />
           p = 1 se presente, 0 se ausente na instituição
         </div>
@@ -521,7 +521,7 @@ function FormulaSection({ color }) {
 
       <div style={{ ...S.alert("#000"), background: "#fafaf8", border: "1px solid #e2e8f0", borderLeft: "3px solid #000" }}>
         <div style={{ ...S.alertTitle("#000"), fontSize: 10 }}>Fórmula W-IPR — completa</div>
-        <div style={{ ...S.alertText, fontFamily: "Neuton", fontSize: 13, fontWeight: 500, lineHeight: 2 }}>
+        <div style={{ ...S.alertText, fontFamily: "'DM Serif Display', serif", fontSize: 13, fontWeight: 500, lineHeight: 2 }}>
           W-IPR = round( (Wf_norm × 0.40 + Wcov × 0.30 + Wtrend × 0.20 + Wsimp × 0.10) × 100 )
         </div>
       </div>
@@ -582,7 +582,7 @@ function RankingsSection({ color }) {
 
   return (
     <div>
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 8, marginBottom: 20 }}>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(130px, 1fr))", gap: 8, marginBottom: 20 }}>
         {stats.map(s => (
           <div key={s.label} style={S.gridCard(s.c)}>
             <div style={S.gridLabel(s.c)}>{s.label}</div>
@@ -697,7 +697,7 @@ function PlanoSection({ color, user }) {
   const maxH = Math.max(...WEEKS.map(w => w.h));
 
   return(<div>
-    <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:8,marginBottom:18}}>
+    <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(130px,1fr))",gap:8,marginBottom:18}}>
       {[{l:"Semanas",v:"16",c:color},{l:"Total horas",v:`~${WEEKS.reduce((s,w)=>s+w.h,0)}h`,c:color},{l:"Média/sem",v:"~15h",c:color},{l:"Temas",v:"48",c:color}].map(s=><div key={s.l} style={S.gridCard(s.c)}><div style={S.gridLabel(s.c)}>{s.l}</div><div style={{fontSize:22,fontWeight:300,color:s.c,fontFamily:"monospace"}}>{s.v}</div></div>)}
     </div>
     <div style={{display:"flex",gap:6,marginBottom:14}}>
