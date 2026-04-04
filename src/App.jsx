@@ -75,7 +75,7 @@ const SPEC_COLORS = { CM: "#0EA5E9", CG: "#F59E0B", OBS: "#EC4899", PED: "#10B98
 function tier(v) {
   if (v >= 80) return { color: "#EF4444", label: "CRÍTICO" };
   if (v >= 60) return { color: "#F97316", label: "ALTA PRIOR." };
-  if (v >= 40) return { color: "#10B981", label: "MÉDIA PRIOR." };
+  if (v >= 40) return { color: "#EAB308", label: "MÉDIA PRIOR." };
   return { color: "#0EA5E9", label: "BAIXA PRIOR." };
 }
 
