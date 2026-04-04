@@ -789,18 +789,20 @@ function RankingsSection({ color, dynamicTopics }) {
   );
 }
 // ── Mode colors (Adicione logo acima da PlanoSection) ───────────────
+// ── LÓGICA ATUALIZADA: PlanoSection ──────────────────────────────────
 function modeStyle(mode) {
   if (mode === "Estudo completo") return { bg: "#FEF2F2", tx: "#991B1B", br: "#FECACA" };
   if (mode === "Visão geral") return { bg: "#F0FDF4", tx: "#14532D", br: "#BBF7D0" };
   if (mode === "Revisão rápida") return { bg: "#F0F9FF", tx: "#0C4A6E", br: "#BAE6FD" };
-  return { bg: "#EEF2FF", tx: "#312E81", br: "#C7D2FE" };
+  if (mode === "Treinamento Prático") return { bg: "#F5F3FF", tx: "#6D28D9", br: "#DDD6FE" };
+  return { bg: "#EEF2FF", tx: "#312E81", br: "#C7D2FE" }; // Revisão Ativa
 }
 
 function PlanoSection({ color, user, dynamicTopics, profile }) {
   const [exp, setExp] = useState(new Set([1, 2]));
-  const [doneData, setDoneData] = useState({}); // Agora é um objeto, não um array puro
+  const [doneData, setDoneData] = useState({});
   const [loading, setLoading] = useState(true);
-  const [activeEval, setActiveEval] = useState(null); // ID da tarefa recebendo % acerto
+  const [activeEval, setActiveEval] = useState(null); 
   const [tempScore, setTempScore] = useState("");
 
   // 1. Calcular Semanas
@@ -818,10 +820,10 @@ function PlanoSection({ color, user, dynamicTopics, profile }) {
     return { ...t, h, mode };
   });
 
-  const totalHours = enhancedTopics.reduce((s, t) => s + t.h, 0);
-  const avgHoursPerWeek = Math.ceil(totalHours / totalWeeks);
+  const totalTheoryHours = enhancedTopics.reduce((s, t) => s + t.h, 0);
+  const avgHoursPerWeek = Math.max(Math.ceil(totalTheoryHours / totalWeeks), 15); // Mínimo base
 
-  // 3. NOVO ALGORITMO DE DISTRIBUIÇÃO (Concentra teoria no início, libera simulados no final)
+  // 3. NOVO ALGORITMO DE DISTRIBUIÇÃO (Concentra teoria no início, balanceia o fim)
   const WEEKS = [];
   let currentWeek = 1;
   let currentWeekTopics = [];
@@ -830,23 +832,25 @@ function PlanoSection({ color, user, dynamicTopics, profile }) {
 
   for (let i = 0; i < enhancedTopics.length; i++) {
     const t = enhancedTopics[i];
-    // Define o limite de horas de teoria da semana: 100% da média na 1ª metade, cai para 50% na 2ª.
-    const weekTheoryLimit = currentWeek <= halfPoint ? avgHoursPerWeek + 2 : Math.max(avgHoursPerWeek * 0.5, 4);
+    
+    // Na 1ª metade, o limite é a média + um chorinho. Na 2ª metade, a teoria cai pela metade.
+    const weekTheoryLimit = currentWeek <= halfPoint ? avgHoursPerWeek * 1.2 : avgHoursPerWeek * 0.5;
 
-    if (currentWeekHours + t.h > weekTheoryLimit && currentWeekTopics.length > 0 && currentWeek < totalWeeks) {
-      // Fecha a semana atual
-      // Se estivermos na 2ª metade, injeta um Simulado para equiparar as horas totais de estudo
+    // Se bater o limite de horas de teoria daquela semana e não for a última:
+    if (currentWeekHours + t.h > weekTheoryLimit && currentWeek < totalWeeks) {
+      
+      // Injeta simulado na 2ª metade para compensar a queda de teoria (Bug das 150h corrigido)
       if (currentWeek > halfPoint) {
-        const simHours = Math.max(0, avgHoursPerWeek - currentWeekHours);
-        if (simHours > 0) {
-          currentWeekTopics.push({ id: `sim-${currentWeek}`, nome: "Simulado na Íntegra (100+ Questões)", h: simHours, mode: "Treinamento Prático", wipr: 0, especialidade: "GERAL" });
+        const simHours = Math.round(Math.max(0, avgHoursPerWeek - currentWeekHours));
+        if (simHours >= 2 && simHours <= 15) { // Evita anomalias
+          currentWeekTopics.push({ id: `sim-${currentWeek}`, nome: "Simulado na Íntegra", h: simHours, mode: "Treinamento Prático", wipr: 0, especialidade: "GERAL" });
           currentWeekHours += simHours;
         }
       }
       
       const maxWipr = Math.max(...currentWeekTopics.map((x) => x.wipr || 0));
       const weekColor = maxWipr >= 80 ? "#EF4444" : maxWipr >= 60 ? "#F97316" : maxWipr >= 40 ? "#EAB308" : "#0EA5E9";
-      const focus = currentWeekTopics.slice(0, 2).map((x) => (x.nome || x.id).split("—")[0].trim()).join(" + ") + "...";
+      const focus = currentWeekTopics.slice(0, 2).map((x) => (x.nome || x.id).split("—")[0].trim()).join(" + ") + (currentWeekTopics.length > 2 ? "..." : "");
 
       WEEKS.push({ n: currentWeek, col: weekColor, focus, h: currentWeekHours, topics: currentWeekTopics });
       
@@ -854,29 +858,72 @@ function PlanoSection({ color, user, dynamicTopics, profile }) {
       currentWeekTopics = [];
       currentWeekHours = 0;
     }
+    
     currentWeekTopics.push(t);
     currentWeekHours += t.h;
   }
   
-  // Adiciona a última semana residual
+  // Trata os resíduos da última semana com limite máximo de horas
   if (currentWeekTopics.length > 0) {
-    const simHours = currentWeek > halfPoint ? Math.max(0, avgHoursPerWeek - currentWeekHours) : 0;
-    if (simHours > 0) {
-      currentWeekTopics.push({ id: `sim-${currentWeek}`, nome: "Simulado na Íntegra Final", h: simHours, mode: "Treinamento Prático", wipr: 0, especialidade: "GERAL" });
-      currentWeekHours += simHours;
-    }
-    WEEKS.push({ n: currentWeek, col: "#0EA5E9", focus: "Revisões e Finalização", h: currentWeekHours, topics: currentWeekTopics });
+      const finalSimHours = currentWeek > halfPoint ? Math.round(Math.max(0, avgHoursPerWeek - currentWeekHours)) : 0;
+      if (finalSimHours >= 2 && finalSimHours <= 15) {
+        currentWeekTopics.push({ id: `sim-${currentWeek}`, nome: "Simulado na Íntegra", h: finalSimHours, mode: "Treinamento Prático", wipr: 0, especialidade: "GERAL" });
+        currentWeekHours += finalSimHours;
+      }
+      WEEKS.push({ n: currentWeek, col: "#0EA5E9", focus: "Revisões e Finalização", h: currentWeekHours, topics: currentWeekTopics });
   }
 
-  // 4. Firestore & Migração Retrocompatível
+  // 4. INJEÇÃO DE REPETIÇÃO ESPAÇADA NAS SEMANAS
+  Object.keys(doneData).forEach(key => {
+      // Formato da key: "semanaId-topicoId"
+      const parts = key.split('-');
+      if (parts.length >= 2) {
+          const origWeek = parseInt(parts[0]);
+          const topicId = parts.slice(1).join('-');
+          const data = doneData[key];
+
+          if (data.score !== undefined && !topicId.startsWith('sim')) {
+              // Regra de Espaçamento Baseada em Evidências
+              let delayWeeks = 1; // < 60% (Revisão Urgente R1)
+              if (data.score >= 80) delayWeeks = 3; // > 80% (Revisão Longa R3)
+              else if (data.score >= 60) delayWeeks = 2; // Médio (Revisão Média R2)
+
+              const targetWeek = origWeek + delayWeeks;
+
+              // Encontra a semana alvo e injeta o card de revisão
+              const targetW = WEEKS.find(w => w.n === targetWeek);
+              if (targetW) {
+                  const origTopic = enhancedTopics.find(t => t.id === topicId);
+                  if (origTopic) {
+                      // Verifica se já não adicionamos esta revisão
+                      const revId = `rev-${targetWeek}-${topicId}`;
+                      if (!targetW.topics.some(t => t.id === revId)) {
+                          targetW.topics.unshift({ // Coloca no topo da semana
+                              id: revId,
+                              parentId: key, // Salva quem é o pai para podermos checar
+                              nome: `[R${delayWeeks}] Revisão de ${origTopic.nome || origTopic.id}`,
+                              h: 1, // Revisão leva menos tempo
+                              mode: "Revisão Ativa",
+                              wipr: origTopic.wipr,
+                              especialidade: origTopic.especialidade,
+                              isReview: true
+                          });
+                          targetW.h += 1;
+                      }
+                  }
+              }
+          }
+      }
+  });
+
+  // 5. Firestore
   const docRef = doc(db, "progresso", user.uid);
   useEffect(() => {
     const unsubscribe = onSnapshot(docRef, (docSnap) => {
       if (docSnap.exists()) {
         const rawData = docSnap.data().temasFeitos || {};
-        // Se for o array antigo, converte para o novo formato de dicionário
         if (Array.isArray(rawData)) {
-          const converted = rawData.reduce((acc, val) => ({ ...acc, [val]: { score: 100, date: new Date().toISOString() } }), {});
+          const converted = rawData.reduce((acc, val) => ({ ...acc, [val]: { score: 100, doneAt: new Date().toISOString() } }), {});
           setDoneData(converted);
         } else {
           setDoneData(rawData);
@@ -889,27 +936,9 @@ function PlanoSection({ color, user, dynamicTopics, profile }) {
 
   const tog = (n) => setExp((p) => { const nx = new Set(p); nx.has(n) ? nx.delete(n) : nx.add(n); return nx; });
 
-  // 5. MOTOR DE DESEMPENHO E CÁLCULO DE REPETIÇÃO ESPAÇADA
   const savePerformance = async (key) => {
     const scoreVal = parseInt(tempScore) || 0;
-    
-    // Algoritmo de espaçamento baseado em percentual (Espaçamento Dinâmico)
-    let diasProximaRev = 7; // R1 padrão
-    if (scoreVal >= 80) diasProximaRev = 21; // Memória forte
-    else if (scoreVal >= 60) diasProximaRev = 14; // Memória média
-    
-    const nextRevDate = new Date();
-    nextRevDate.setDate(nextRevDate.getDate() + diasProximaRev);
-
-    const newData = {
-      ...doneData,
-      [key]: {
-        score: scoreVal,
-        doneAt: new Date().toISOString(),
-        nextRev: nextRevDate.toISOString()
-      }
-    };
-    
+    const newData = { ...doneData, [key]: { score: scoreVal, doneAt: new Date().toISOString() } };
     setDoneData(newData);
     await setDoc(docRef, { temasFeitos: newData }, { merge: true });
     setActiveEval(null);
@@ -925,18 +954,86 @@ function PlanoSection({ color, user, dynamicTopics, profile }) {
 
   if (loading) return <div style={{ padding: 20, fontFamily: "monospace", color: T.textSubtle }}>Sincronizando nuvem...</div>;
 
-  const totalTopics = enhancedTopics.length;
-  let doneTopicsCount = 0; let doneHoursCount = 0;
-  Object.keys(doneData).forEach(k => { doneTopicsCount++; doneHoursCount += 4; }); // Horas estimadas
+  // 6. CÁLCULOS RESTAURADOS DE PROGRESSO GERAL
+  let totalTopics = 0;
+  let computedTotalHours = 0;
+  WEEKS.forEach(w => {
+      totalTopics += w.topics.length;
+      computedTotalHours += w.h;
+  });
+
+  let doneTopicsCount = 0; 
+  let doneHoursCount = 0;
+  WEEKS.forEach(w => {
+      w.topics.forEach(t => {
+          const key = t.isReview ? t.id : `${w.n}-${t.id}`;
+          if (doneData[key]) {
+              doneTopicsCount++;
+              doneHoursCount += t.h;
+          }
+      });
+  });
+
+  const pctTopics = totalTopics > 0 ? ((doneTopicsCount / totalTopics) * 100).toFixed(1) : "0.0";
+  const pctHours = computedTotalHours > 0 ? ((doneHoursCount / computedTotalHours) * 100).toFixed(1) : "0.0";
+  const maxH = Math.max(...WEEKS.map((w) => w.h), 1);
 
   return (
     <div>
-      {/* Cards de Métricas Omitidos para economizar espaço, manter igual ao original */}
+      {/* HEADER RESTAURADO: Cards de Informação */}
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(130px, 1fr))", gap: 8, marginBottom: 18 }}>
+        {[
+          { l: "Semanas", v: totalWeeks, c: color },
+          { l: "Total horas", v: `~${computedTotalHours}h`, c: color },
+          { l: "Média/sem", v: `~${Math.round(computedTotalHours/totalWeeks)}h`, c: color },
+          { l: "Temas + Revs", v: totalTopics, c: color },
+        ].map((s) => (
+          <div key={s.l} style={S.gridCard(s.c)}>
+            <div style={S.gridLabel(s.c)}>{s.l}</div>
+            <div style={{ fontSize: 22, fontWeight: 300, color: s.c, fontFamily: "monospace" }}>{s.v}</div>
+          </div>
+        ))}
+      </div>
+
+      {/* HEADER RESTAURADO: Barras de Progresso */}
+      <div style={{ marginBottom: 18, padding: "14px 16px", background: "#fafaf8", border: `1px solid ${T.borderCard}`, borderRadius: 6 }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
+          <span style={{ fontSize: 11, fontFamily: "monospace", color: T.textMuted, letterSpacing: "0.06em" }}>PROGRESSO GERAL</span>
+          <span style={{ fontSize: 11, fontFamily: "monospace", color: color }}>{doneTopicsCount}/{totalTopics} tarefas · {doneHoursCount}h/{computedTotalHours}h</span>
+        </div>
+
+        <div style={{ marginBottom: 8 }}>
+          <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 4 }}>
+            <span style={{ fontSize: 10, fontFamily: "monospace", color: T.textDisabled }}>Tarefas concluídas</span>
+            <span style={{ fontSize: 10, fontFamily: "monospace", color: color, fontWeight: 600 }}>{pctTopics}%</span>
+          </div>
+          <div style={{ height: 6, background: T.borderCard, borderRadius: 3, overflow: "hidden" }}>
+            <div style={{ width: `${pctTopics}%`, height: "100%", background: color, borderRadius: 3, transition: "width 0.4s ease" }} />
+          </div>
+        </div>
+
+        <div>
+          <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 4 }}>
+            <span style={{ fontSize: 10, fontFamily: "monospace", color: T.textDisabled }}>Horas de estudo</span>
+            <span style={{ fontSize: 10, fontFamily: "monospace", color: color, fontWeight: 600 }}>{pctHours}%</span>
+          </div>
+          <div style={{ height: 6, background: T.borderCard, borderRadius: 3, overflow: "hidden" }}>
+            <div style={{ width: `${pctHours}%`, height: "100%", background: color, borderRadius: 3, transition: "width 0.4s ease" }} />
+          </div>
+        </div>
+      </div>
+
+      {/* BOTÕES RESTAURADOS */}
+      <div style={{ display: "flex", gap: 6, marginBottom: 14 }}>
+        <button onClick={() => setExp(new Set(WEEKS.map((w) => w.n)))} style={{ background: "transparent", border: `1px solid ${T.borderCard}`, color: T.textMuted, padding: "5px 11px", borderRadius: 4, fontSize: 11, fontFamily: "monospace", cursor: "pointer" }}>Expandir tudo</button>
+        <button onClick={() => setExp(new Set())} style={{ background: "transparent", border: `1px solid ${T.borderCard}`, color: T.textMuted, padding: "5px 11px", borderRadius: 4, fontSize: 11, fontFamily: "monospace", cursor: "pointer" }}>Recolher tudo</button>
+      </div>
 
       {/* Renderização das Semanas */}
       {WEEKS.map((w) => {
         const isO = exp.has(w.n);
-        const weekKeys = w.topics.map((t) => `${w.n}-${t.id}`);
+        // Calcula se a semana está toda feita baseada nos itens (normais e injeções)
+        const weekKeys = w.topics.map((t) => t.isReview ? t.id : `${w.n}-${t.id}`);
         const doneCount = weekKeys.filter((k) => doneData[k]).length;
         const allDone = doneCount > 0 && doneCount === w.topics.length;
 
@@ -945,66 +1042,80 @@ function PlanoSection({ color, user, dynamicTopics, profile }) {
             <div onClick={() => tog(w.n)} style={{ display: "flex", alignItems: "center", gap: 10, padding: "10px 14px", background: allDone ? "#F0FDF4" : "#fafaf8", cursor: "pointer" }}>
               <span style={{ fontSize: 10, fontFamily: "monospace", color: allDone ? "#14532D" : w.col, minWidth: 60, fontWeight: 600 }}>SEMANA {w.n}</span>
               <span style={{ flex: 1, fontSize: 12.5, color: allDone ? T.textMuted : T.textPrimary, textDecoration: allDone ? "line-through" : "none" }}>{w.focus}</span>
-              <span style={{ fontSize: 10, fontFamily: "monospace", color: allDone ? "#14532D" : w.col }}>{w.h}h</span>
+              <span style={{ fontSize: 10, fontFamily: "monospace", color: allDone ? "#14532D" : T.textDisabled }}>{doneCount}/{w.topics.length}</span>
+              
+              <div style={{ width: 56, height: 4, background: T.borderCard, borderRadius: 2, overflow: "hidden", flexShrink: 0 }}>
+                <div style={{ width: `${Math.round((w.h / maxH) * 100)}%`, height: "100%", background: allDone ? "#10B981" : w.col, borderRadius: 2, transition: "background 0.3s" }} />
+              </div>
+
+              <span style={{ fontSize: 11, fontFamily: "monospace", color: allDone ? "#14532D" : w.col, minWidth: 26, textAlign: "right" }}>{w.h}h</span>
             </div>
 
             {isO && (
               <div style={{ padding: "0 14px 10px" }}>
                 {w.topics.map((t, i) => {
-                  const key = `${w.n}-${t.id}`;
+                  const key = t.isReview ? t.id : `${w.n}-${t.id}`;
                   const isDone = !!doneData[key];
                   const ms = modeStyle(t.mode);
-                  const ti = t.wipr > 0 ? tier(t.wipr) : { color: "#10B981", label: "PRÁTICA" };
                   
-                  // Verificação de Revisão Pendente
-                  let precisaRevisar = false;
-                  if (isDone && doneData[key].nextRev) {
-                     precisaRevisar = new Date(doneData[key].nextRev) <= hoje;
+                  // Define cor do badge
+                  let badgeColor = "#6366F1";
+                  let badgeText = "REV";
+                  if (!t.isReview) {
+                     const ti = t.wipr > 0 ? tier(t.wipr) : { color: "#8B5CF6", label: "SIM" };
+                     badgeColor = ti.color;
+                     badgeText = t.wipr > 0 ? t.wipr : "SIM";
                   }
 
                   return (
                     <div key={key} style={{ borderBottom: i < w.topics.length - 1 ? `1px solid ${T.borderCard}` : "none", padding: "8px 4px", background: isDone ? "#fafffe" : "transparent" }}>
-                      
-                      {/* Cabecalho da Tarefa */}
                       <div style={{ display: "flex", alignItems: "flex-start", gap: 8 }}>
-                        <div style={{ width: 32, height: 20, borderRadius: 4, background: isDone ? ti.color : `${ti.color}15`, color: isDone ? "#fff" : ti.color, fontSize: 10, fontFamily: "monospace", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 700 }}>
-                          {t.wipr > 0 ? t.wipr : "SIM"}
+                        <div style={{ width: 32, height: 20, borderRadius: 4, background: isDone ? badgeColor : `${badgeColor}15`, color: isDone ? "#fff" : badgeColor, fontSize: 10, fontFamily: "monospace", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 700 }}>
+                          {badgeText}
                         </div>
                         <div style={{ flex: 1, minWidth: 0 }}>
                           <div style={{ fontSize: 12.5, color: isDone ? T.textDisabled : T.textPrimary, textDecoration: isDone ? "line-through" : "none" }}>{t.nome || t.id}</div>
                           
-                          {/* Botões e Status de Repetição Espaçada */}
+                          {/* Botões e Inputs */}
                           <div style={{ marginTop: 6, display: 'flex', gap: 8, alignItems: 'center' }}>
                             {!isDone && activeEval !== key && (
-                               <button onClick={() => setActiveEval(key)} style={{ fontSize: 10, padding: "4px 8px", background: T.bgSurface, border: `1px solid ${T.borderCard}`, borderRadius: 4, cursor: "pointer" }}>Marcar Feito</button>
+                               <button onClick={() => {
+                                  if (t.isReview) {
+                                      // Se for revisão, não pede nota, só conclui
+                                      const newData = { ...doneData, [key]: { score: 100, doneAt: new Date().toISOString() } };
+                                      setDoneData(newData);
+                                      setDoc(docRef, { temasFeitos: newData }, { merge: true });
+                                  } else {
+                                      setActiveEval(key);
+                                  }
+                               }} style={{ fontSize: 10, padding: "4px 8px", background: T.bgSurface, border: `1px solid ${T.borderCard}`, borderRadius: 4, cursor: "pointer", fontWeight: 600 }}>{t.isReview ? "Concluir Revisão" : "Marcar Feito"}</button>
                             )}
                             
                             {isDone && (
                                <>
-                                 <span style={{ fontSize: 10, color: "#10B981", fontFamily: "monospace", fontWeight: 600 }}>✓ {doneData[key].score}% Acerto</span>
-                                 {precisaRevisar ? (
-                                    <span style={{ fontSize: 10, color: "#EF4444", background: "#FEF2F2", padding: "2px 6px", borderRadius: 4, fontFamily: "monospace" }}>Revisão Pendente (R)</span>
-                                 ) : (
-                                    <span style={{ fontSize: 9, color: T.textDisabled }}>R: {new Date(doneData[key].nextRev).toLocaleDateString()}</span>
-                                 )}
+                                 <span style={{ fontSize: 10, color: "#10B981", fontFamily: "monospace", fontWeight: 600 }}>✓ {t.isReview ? "Revisado" : `${doneData[key].score}% Acerto`}</span>
                                  <button onClick={() => removeDone(key)} style={{ fontSize: 10, background: "none", border: "none", color: T.textSubtle, cursor: "pointer" }}>Desfazer</button>
                                </>
                             )}
                           </div>
 
-                          {/* Input de Desempenho (Só aparece ao clicar em Marcar Feito) */}
-                          {activeEval === key && (
+                          {/* Formulário de % (Só aparece para teoria e se clicado) */}
+                          {activeEval === key && !t.isReview && (
                              <div style={{ marginTop: 8, padding: 10, background: "#F8FAFC", borderRadius: 6, border: `1px solid ${T.borderCardHl}` }}>
-                               <div style={{ fontSize: 11, marginBottom: 6, fontWeight: 600 }}>Quantas acertou? (%)</div>
+                               <div style={{ fontSize: 11, marginBottom: 6, fontWeight: 600 }}>De 0 a 100, como foi seu rendimento nas questões?</div>
                                <div style={{ display: 'flex', gap: 6 }}>
                                   <input type="number" placeholder="Ex: 75" value={tempScore} onChange={(e) => setTempScore(e.target.value)} style={{ width: 80, padding: "4px 8px", borderRadius: 4, border: `1px solid ${T.borderCard}` }} />
                                   <button onClick={() => savePerformance(key)} style={{ background: "#0F172A", color: "#fff", border: "none", borderRadius: 4, padding: "4px 12px", fontSize: 11, cursor: "pointer" }}>Salvar</button>
                                   <button onClick={() => setActiveEval(null)} style={{ background: "transparent", border: "none", fontSize: 11, color: T.textMuted, cursor: "pointer" }}>Cancelar</button>
                                </div>
+                               <div style={{ fontSize: 9, color: T.textSubtle, marginTop: 4 }}>Isso calculará a semana da sua próxima revisão.</div>
                              </div>
                           )}
-
                         </div>
+
+                        <span style={{ fontSize: 9, padding: "2px 5px", borderRadius: 3, background: isDone ? "#F0FDF4" : ms.bg, border: `1px solid ${isDone ? "#BBF7D0" : ms.br}`, color: isDone ? "#14532D" : ms.tx, fontFamily: "monospace", fontWeight: 600, flexShrink: 0 }}>
+                          {isDone ? "✓" : t.mode}
+                        </span>
                         <span style={{ fontSize: 11, fontFamily: "monospace", color: T.textMuted }}>{t.h}h</span>
                       </div>
                     </div>
