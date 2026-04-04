@@ -209,7 +209,10 @@ const S = {
     border: `1px solid ${T.borderCard}`,
     fontSize: 14,
     fontFamily: "'DM Sans', sans-serif",
+    background: "#ffffff", // Garante o fundo branco
+    color: "#000000",      // Garante o texto preto para contraste
   },
+
 };
 
 const mobileCSS = `
@@ -1100,14 +1103,37 @@ function PlanoSection({ color, user, dynamicTopics, profile }) {
                           </div>
 
                           {/* Formulário de % (Só aparece para teoria e se clicado) */}
+                          {/* Formulário de % (Dentro do loop de topics) */}
                           {activeEval === key && !t.isReview && (
                              <div style={{ marginTop: 8, padding: 10, background: "#F8FAFC", borderRadius: 6, border: `1px solid ${T.borderCardHl}` }}>
-                               <div style={{ fontSize: 11, marginBottom: 6, fontWeight: 600 }}>De 0 a 100, como foi seu rendimento nas questões?</div>
+                               <div style={{ fontSize: 11, marginBottom: 6, fontWeight: 600, color: "#000" }}>De 0 a 100, como foi seu rendimento?</div>
                                <div style={{ display: 'flex', gap: 6 }}>
-                                  <input type="number" placeholder="Ex: 75" value={tempScore} onChange={(e) => setTempScore(e.target.value)} style={{ width: 80, padding: "4px 8px", borderRadius: 4, border: `1px solid ${T.borderCard}` }} />
-                                  <button onClick={() => savePerformance(key)} style={{ background: "#0F172A", color: "#fff", border: "none", borderRadius: 4, padding: "4px 12px", fontSize: 11, cursor: "pointer" }}>Salvar</button>
+                                  <input 
+                                    type="number" 
+                                    placeholder="0-100" 
+                                    value={tempScore} 
+                                    onChange={(e) => setTempScore(e.target.value)} 
+                                    style={{ ...S.input, width: 80, height: 35 }} // Usa o S.input padronizado
+                                  />
+                                  <button 
+                                    onClick={() => savePerformance(key)} 
+                                    style={{ 
+                                      background: "#ffffff", 
+                                      color: "#000000", 
+                                      border: `1px solid ${T.borderCard}`, 
+                                      borderRadius: 4, 
+                                      padding: "0 15px", 
+                                      fontSize: 11, 
+                                      cursor: "pointer",
+                                      fontWeight: "bold"
+                                    }}
+                                  >
+                                    Salvar
+                                  </button>
                                   <button onClick={() => setActiveEval(null)} style={{ background: "transparent", border: "none", fontSize: 11, color: T.textMuted, cursor: "pointer" }}>Cancelar</button>
                                </div>
+                             </div>
+                          )}
                                <div style={{ fontSize: 9, color: T.textSubtle, marginTop: 4 }}>Isso calculará a semana da sua próxima revisão.</div>
                              </div>
                           )}
