@@ -792,7 +792,7 @@ function RankingsSection({ color, dynamicTopics }) {
 // ── LÓGICA ATUALIZADA: PlanoSection ──────────────────────────────────
 function modeStyle(mode) {
   if (mode === "Estudo completo") return { bg: "#FEF2F2", tx: "#991B1B", br: "#FECACA" };
-  if (mode === "Visão geral") return { bg: "#F0FDF4", tx: "#14532D", br: "#BBF7D0" };
+  if (mode === "Visão geral") return { bg: "#FFFBEB", tx: "#92400E", br: "#FDE68A" };
   if (mode === "Revisão rápida") return { bg: "#F0F9FF", tx: "#0C4A6E", br: "#BAE6FD" };
   if (mode === "Treinamento Prático") return { bg: "#F5F3FF", tx: "#6D28D9", br: "#DDD6FE" };
   return { bg: "#EEF2FF", tx: "#312E81", br: "#C7D2FE" }; // Revisão Ativa
