@@ -1058,7 +1058,7 @@ function PlanoSection({ color, user, dynamicTopics, profile }) {
 
             {isO && (
               <div style={{ padding: "0 14px 10px" }}>
-                {w.topics.map((t, i) => {
+                                {w.topics.map((t, i) => {
                   const key = t.isReview ? t.id : `${w.n}-${t.id}`;
                   const isDone = !!doneData[key];
                   const ms = modeStyle(t.mode);
@@ -1075,13 +1075,15 @@ function PlanoSection({ color, user, dynamicTopics, profile }) {
                   return (
                     <div key={key} style={{ borderBottom: i < w.topics.length - 1 ? `1px solid ${T.borderCard}` : "none", padding: "8px 4px", background: isDone ? "#fafffe" : "transparent" }}>
                       <div style={{ display: "flex", alignItems: "flex-start", gap: 8 }}>
+                        
                         <div style={{ width: 32, height: 20, borderRadius: 4, background: isDone ? badgeColor : `${badgeColor}15`, color: isDone ? "#fff" : badgeColor, fontSize: 10, fontFamily: "monospace", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 700 }}>
                           {badgeText}
                         </div>
+                        
                         <div style={{ flex: 1, minWidth: 0 }}>
                           <div style={{ fontSize: 12.5, color: isDone ? T.textDisabled : T.textPrimary, textDecoration: isDone ? "line-through" : "none" }}>{t.nome || t.id}</div>
                           
-                          {/* Botões e Inputs */}
+                          {/* Botões de Ação */}
                           <div style={{ marginTop: 6, display: 'flex', gap: 8, alignItems: 'center' }}>
                             {!isDone && activeEval !== key && (
                                <button onClick={() => {
@@ -1105,7 +1107,6 @@ function PlanoSection({ color, user, dynamicTopics, profile }) {
                           </div>
 
                           {/* Formulário de % (Só aparece para teoria e se clicado) */}
-                          {/* Formulário de % (Dentro do loop de topics) */}
                           {activeEval === key && !t.isReview && (
                              <div style={{ marginTop: 8, padding: 10, background: "#F8FAFC", borderRadius: 6, border: `1px solid ${T.borderCardHl}` }}>
                                <div style={{ fontSize: 11, marginBottom: 6, fontWeight: 600, color: "#000" }}>De 0 a 100, como foi seu rendimento?</div>
@@ -1115,7 +1116,7 @@ function PlanoSection({ color, user, dynamicTopics, profile }) {
                                     placeholder="0-100" 
                                     value={tempScore} 
                                     onChange={(e) => setTempScore(e.target.value)} 
-                                    style={{ ...S.input, width: 80, height: 35 }} // Usa o S.input padronizado
+                                    style={{ ...S.input, width: 80, height: 35 }} 
                                   />
                                   <button 
                                     onClick={() => savePerformance(key)} 
@@ -1134,18 +1135,19 @@ function PlanoSection({ color, user, dynamicTopics, profile }) {
                                   </button>
                                   <button onClick={() => setActiveEval(null)} style={{ background: "transparent", border: "none", fontSize: 11, color: T.textMuted, cursor: "pointer" }}>Cancelar</button>
                                </div>
-                             </div>
-                          )}
-                               <div style={{ fontSize: 9, color: T.textSubtle, marginTop: 4 }}>Isso calculará a semana da sua próxima revisão.</div>
+                               <div style={{ fontSize: 9, color: T.textSubtle, marginTop: 6 }}>Isso calculará a semana da sua próxima revisão.</div>
                              </div>
                           )}
                         </div>
 
+                        {/* Badges Finais: Modo e Horas */}
                         <span style={{ fontSize: 9, padding: "2px 5px", borderRadius: 3, background: isDone ? "#F0FDF4" : ms.bg, border: `1px solid ${isDone ? "#BBF7D0" : ms.br}`, color: isDone ? "#14532D" : ms.tx, fontFamily: "monospace", fontWeight: 600, flexShrink: 0 }}>
                           {isDone ? "✓" : t.mode}
                         </span>
                         <span style={{ fontSize: 11, fontFamily: "monospace", color: T.textMuted }}>{t.h}h</span>
+                      
                       </div>
+                    </div>
                   );
                 })}
               </div>
@@ -1156,6 +1158,7 @@ function PlanoSection({ color, user, dynamicTopics, profile }) {
     </div>
   );
 }
+
 
 // ── App Core ────────────────────────────────────────────────
 const SECTIONS = [
