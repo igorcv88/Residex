@@ -1058,7 +1058,7 @@ function PlanoSection({ color, user, dynamicTopics, profile }) {
 
             {isO && (
               <div style={{ padding: "0 14px 10px" }}>
-                                {w.topics.map((t, i) => {
+                {w.topics.map((t, i) => {
                   const key = t.isReview ? t.id : `${w.n}-${t.id}`;
                   const isDone = !!doneData[key];
                   const ms = modeStyle(t.mode);
