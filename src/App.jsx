@@ -754,70 +754,44 @@ function RankingsSection({ color, dynamicTopics }) {
 
   return (
     <div>
-      <div
-        style={{
+      <div style={{
           background: "#fafaf8",
           border: `1px solid ${T.borderCard}`,
           borderLeft: `3px solid ${color}`,
           borderRadius: 8,
           padding: "12px 14px",
-          marginBottom: 16,
-        }}
-      >
-        <div
-          style={{
+          marginBottom: 16,}}>
+        <div style={{
             fontSize: 11,
             color: T.textMuted,
             lineHeight: 1.6,
-            fontFamily: "'DM Sans', sans-serif",
-          }}
-        >
-          <b
-            style={{
+            fontFamily: "'DM Sans', sans-serif",}}>
+          <b style={{
               color: T.textPrimary,
               textTransform: "uppercase",
               letterSpacing: "0.05em",
-              fontSize: 10,
-            }}
-          >
+              fontSize: 10,}}>
             Diretrizes de Estudo
           </b>
         </div>
-        <div
-          style={{
+          <div style={{
             marginTop: 6,
             display: "flex",
             flexDirection: "column",
-            gap: 6,
-          }}
-        >
-          <b style={{ color: "#EF4444" }}>Crítico:</b>
-          Estudo profundo nível R+. Exige domínio de especialista: interações
-          medicamentosas, contraindicações específicas e minúcias de cada classe
-          terapêutica.
+            gap: 6,}}>
+            <b style={{ color: "#EF4444" }}>Crítico:</b> Estudo profundo nível R+. Exige domínio de especialista: interações medicamentosas, contraindicações específicas e minúcias de cada classe terapêutica.
+          </div>
+          <div>
+            <b style={{ color: "#F97316" }}>Alto:</b> Domínio completo para o generalista. Aprofundamento em toda a matéria, incluindo os detalhes de rodapé, mas sem adentrar no nível de exclusividade do especialista.
+          </div>
+          <div>
+            <b style={{ color: "#EAB308" }}>Médio:</b> Foco no essencial bem consolidado. Dominar o texto principal que todo generalista deve saber, ignorando detalhes de rodapé e contextos excessivamente específicos.
+          </div>
+          <div>
+            <b style={{ color: "#0EA5E9" }}>Baixo:</b> Estudo de reconhecimento. Focar apenas no básico para identificar e diagnosticar padrões principais, sem necessidade de decorar posologias ou minúcias de tratamento.
+          </div>
         </div>
-        <div>
-          <b style={{ color: "#F97316" }}>Alto:</b>
-          Domínio completo para o generalista. Aprofundamento em toda a matéria,
-          incluindo os detalhes de rodapé, mas sem adentrar no nível de
-          exclusividade do especialista.
-        </div>
-        <div>
-          <b style={{ color: "#EAB308" }}>Médio:</b>
-          Foco no essencial bem consolidado. Dominar o texto principal que todo
-          generalista deve saber, ignorando detalhes de rodapé e contextos
-          excessivamente específicos.
-        </div>
-        <div>
-          <b style={{ color: "#0EA5E9" }}>Baixo:</b> Estudo de reconhecimento.
-          Focar apenas no básico para identificar e diagnosticar padrões
-          principais, sem necessidade de decorar posologias ou minúcias de
-          tratamento.
-        </div>
-      </div>
-      <div
-        style={{ display: "flex", gap: 6, flexWrap: "wrap", marginBottom: 16 }}
-      >
+      <div style={{ display: "flex", gap: 6, flexWrap: "wrap", marginBottom: 16 }}>
         {[
           { id: "all", label: "Todos" },
           { id: "c", label: "Crítico 80+" },
