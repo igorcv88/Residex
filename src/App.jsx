@@ -360,26 +360,37 @@ function RankingsSection({ color, dynamicTopics }) {
   });
 
   return (
-    <div style={{ background: "#fafaf8", border: `1px solid ${T.borderCard}`, borderLeft: `3px solid ${color}`, borderRadius: 8, padding: "12px 14px", marginBottom: 16 }}>
-  <div style={{ fontSize: 11, color: T.textMuted, lineHeight: 1.6, fontFamily: "'DM Sans', sans-serif" }}>
-    <b style={{ color: T.textPrimary, textTransform: "uppercase", letterSpacing: "0.05em", fontSize: 10 }}>Diretrizes de Estudo</b>
-    <div style={{ marginTop: 6, display: "flex", flexDirection: "column", gap: 6 }}>
-      <div>
-        <b style={{ color: "#EF4444" }}>Crítico:</b> Estudo profundo nível R+. Exige domínio de especialista: interações medicamentosas, contraindicações específicas e minúcias de cada classe terapêutica.
+    <div>
+      <div style={{ background: "#fafaf8", border: `1px solid ${T.borderCard}`, borderLeft: `3px solid ${color}`, borderRadius: 8, padding: "12px 14px", marginBottom: 16 }}>
+        <div style={{ fontSize: 11, color: T.textMuted, lineHeight: 1.6, fontFamily: "'DM Sans', sans-serif" }}>
+          <b style={{ color: T.textPrimary, textTransform: "uppercase", letterSpacing: "0.05em", fontSize: 10 }}>
+            Diretrizes de Estudo
+          </b>
+        </div>
+        <div style={{ marginTop: 6, display: "flex", flexDirection: "column", gap: 6 }}>
+          <b style={{ color: "#EF4444" }}>
+            Crítico:
+          </b> 
+          Estudo profundo nível R+. Exige domínio de especialista: interações medicamentosas, contraindicações específicas e minúcias de cada classe terapêutica.
+        </div>
+        <div>
+          <b style={{ color: "#F97316" }}>
+            Alto:
+          </b> 
+          Domínio completo para o generalista. Aprofundamento em toda a matéria, incluindo os detalhes de rodapé, mas sem adentrar no nível de exclusividade do especialista.
+        </div>
+        <div>
+          <b style={{ color: "#EAB308" }}>
+            Médio:
+          </b> 
+          Foco no essencial bem consolidado. Dominar o texto principal que todo generalista deve saber, ignorando detalhes de rodapé e contextos excessivamente específicos.
+        </div>
+        <div>
+          <b style={{ color: "#0EA5E9" }}>
+            Baixo:
+          </b> Estudo de reconhecimento. Focar apenas no básico para identificar e diagnosticar padrões principais, sem necessidade de decorar posologias ou minúcias de tratamento.
+        </div>
       </div>
-      <div>
-        <b style={{ color: "#F97316" }}>Alto:</b> Domínio completo para o generalista. Aprofundamento em toda a matéria, incluindo os detalhes de rodapé, mas sem adentrar no nível de exclusividade do especialista.
-      </div>
-      <div>
-        <b style={{ color: "#EAB308" }}>Médio:</b> Foco no essencial bem consolidado. Dominar o texto principal que todo generalista deve saber, ignorando detalhes de rodapé e contextos excessivamente específicos.
-      </div>
-      <div>
-        <b style={{ color: "#0EA5E9" }}>Baixo:</b> Estudo de reconhecimento. Focar apenas no básico para identificar e diagnosticar padrões principais, sem necessidade de decorar posologias ou minúcias de tratamento.
-      </div>
-    </div>
-  </div>
-</div>
-
       <div style={{ display: "flex", gap: 6, flexWrap: "wrap", marginBottom: 16 }}>
         {[{ id: "all", label: "Todos" }, { id: "c", label: "Crítico 80+" }, { id: "h", label: "Alta 60–79" }, { id: "m", label: "Média 40–59" }, { id: "l", label: "Baixa <40" }].map(f => (
           <button key={f.id} onClick={() => setFilter(f.id)} style={{ background: filter === f.id ? `${color}15` : "transparent", border: `1px solid ${filter === f.id ? color : T.borderCard}`, color: filter === f.id ? color : T.textMuted, padding: "5px 12px", borderRadius: 4, fontSize: 11, fontFamily: "monospace", cursor: "pointer", transition: "all 0.15s" }}>
@@ -387,29 +398,25 @@ function RankingsSection({ color, dynamicTopics }) {
           </button>
         ))}
       </div>
-      <div style={{ fontSize: 10, fontFamily: "monospace", color: T.textDisabled, marginBottom: 12 }}>{filtered.length} TEMAS EXIBIDOS</div>
-      {filtered.map((t, i) => {
-        const ti = t.wipr > 0 ? tier(t.wipr) : { color: "#6366F1", label: "REV" };
-        const sc = SPEC_COLORS[t.especialidade] || color;
-        return (
-          <div key={t.id + i} style={S.gradeWrap(ti.color)}>
-            <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 4, flexShrink: 0 }}>
-              <div style={{ ...S.gradeBadge(ti.color), fontSize: 13, padding: "6px 10px" }}>{t.wipr}</div>
-              <div style={{ fontSize: 9, fontFamily: "monospace", color: T.textDisabled }}>#{dynamicTopics.indexOf(t) + 1}</div>
-            </div>
-            <div style={{ flex: 1, minWidth: 0 }}>
-              <div style={{ fontSize: 13, color: T.textPrimary, lineHeight: 1.4, marginBottom: 3 }}>{t.nome || t.id}</div>
-              <div style={{ display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>
-                <span style={{ fontSize: 9, fontFamily: "monospace", padding: "2px 7px", borderRadius: 3, background: `${sc}15`, border: `1px solid ${sc}44`, color: sc }}>{t.especialidade || 'GERAL'}</span>
-                <span style={{ fontSize: 10, fontFamily: "monospace", color: T.textDisabled }}>{t.id}</span>
+      <div style={{ fontSize: 10, fontFamily: "monospace", color: T.textDisabled, marginBottom: 12 }}>{filtered.length} 
+        TEMAS EXIBIDOS
+        {filtered.map((t, i) => {
+          const ti = t.wipr > 0 ? tier(t.wipr) : { color: "#6366F1", label: "REV" };
+          const sc = SPEC_COLORS[t.especialidade] || color;
+          return (
+            <div key={t.id + i} style={S.gradeWrap(ti.color)}>
+              <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 4, flexShrink: 0 }}>
+                <div style={{ ...S.gradeBadge(ti.color), fontSize: 13, padding: "6px 10px" }}>{t.wipr}</div>
+                <div style={{ fontSize: 9, fontFamily: "monospace", color: T.textDisabled }}>#{dynamicTopics.indexOf(t) + 1}</div>
               </div>
-            </div>
-          </div>
-        );
-      })}
-    </div>
-  );
-}
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div style={{ fontSize: 13, color: T.textPrimary, lineHeight: 1.4, marginBottom: 3 }}>{t.nome || t.id}</div>
+                <div style={{ display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>
+                  <span style={{ fontSize: 9, fontFamily: "monospace", padding: "2px 7px", borderRadius: 3, background: `${sc}15`, border: `1px solid ${sc}44`, color: sc }}>{t.especialidade || 'GERAL'}</span>
+                  <span style={{ fontSize: 10, fontFamily: "monospace", color: T.textDisabled }}>{t.id}</span>
+                </div>
+              </div>
+          )}}  
 
 // ── Mode colors (Adicione logo acima da PlanoSection) ───────────────
 function modeStyle(mode) {
