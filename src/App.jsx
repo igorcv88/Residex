@@ -808,6 +808,7 @@ function PlanoSection({ color, user, dynamicTopics, profile }) {
   const [loading, setLoading] = useState(true);
   const [activeEval, setActiveEval] = useState(null); 
   const [tempScore, setTempScore] = useState("");
+  const [tempDate, setTempDate] = useState(""); // <-- NOVO: Estado para a data de conclusão
 
   // 1. Calcular Semanas
   const hoje = new Date();
@@ -825,9 +826,9 @@ function PlanoSection({ color, user, dynamicTopics, profile }) {
   });
 
   const totalTheoryHours = enhancedTopics.reduce((s, t) => s + t.h, 0);
-  const avgHoursPerWeek = Math.max(Math.ceil(totalTheoryHours / totalWeeks), 15); // Mínimo base
+  const avgHoursPerWeek = Math.max(Math.ceil(totalTheoryHours / totalWeeks), 15);
 
-  // 3. NOVO ALGORITMO DE DISTRIBUIÇÃO (Concentra teoria no início, balanceia o fim)
+  // 3. NOVO ALGORITMO DE DISTRIBUIÇÃO
   const WEEKS = [];
   let currentWeek = 1;
   let currentWeekTopics = [];
@@ -837,16 +838,13 @@ function PlanoSection({ color, user, dynamicTopics, profile }) {
   for (let i = 0; i < enhancedTopics.length; i++) {
     const t = enhancedTopics[i];
     
-    // Na 1ª metade, o limite é a média + um chorinho. Na 2ª metade, a teoria cai pela metade.
     const weekTheoryLimit = currentWeek <= halfPoint ? avgHoursPerWeek * 1.2 : avgHoursPerWeek * 0.5;
 
-    // Se bater o limite de horas de teoria daquela semana e não for a última:
     if (currentWeekHours + t.h > weekTheoryLimit && currentWeek < totalWeeks) {
       
-      // Injeta simulado na 2ª metade para compensar a queda de teoria (Bug das 150h corrigido)
       if (currentWeek > halfPoint) {
         const simHours = Math.round(Math.max(0, avgHoursPerWeek - currentWeekHours));
-        if (simHours >= 2 && simHours <= 15) { // Evita anomalias
+        if (simHours >= 2 && simHours <= 15) {
           currentWeekTopics.push({ id: `sim-${currentWeek}`, nome: "Simulado na Íntegra", h: simHours, mode: "Treinamento Prático", wipr: 0, especialidade: "GERAL" });
           currentWeekHours += simHours;
         }
@@ -867,7 +865,6 @@ function PlanoSection({ color, user, dynamicTopics, profile }) {
     currentWeekHours += t.h;
   }
   
-  // Trata os resíduos da última semana com limite máximo de horas
   if (currentWeekTopics.length > 0) {
       const finalSimHours = currentWeek > halfPoint ? Math.round(Math.max(0, avgHoursPerWeek - currentWeekHours)) : 0;
       if (finalSimHours >= 2 && finalSimHours <= 15) {
@@ -877,9 +874,8 @@ function PlanoSection({ color, user, dynamicTopics, profile }) {
       WEEKS.push({ n: currentWeek, col: "#0EA5E9", focus: "Revisões e Finalização", h: currentWeekHours, topics: currentWeekTopics });
   }
 
-  // 4. INJEÇÃO DE REPETIÇÃO ESPAÇADA NAS SEMANAS
+  // 4. INJEÇÃO DE REPETIÇÃO ESPAÇADA NAS SEMANAS (ATUALIZADA)
   Object.keys(doneData).forEach(key => {
-      // Formato da key: "semanaId-topicoId"
       const parts = key.split('-');
       if (parts.length >= 2) {
           const origWeek = parseInt(parts[0]);
@@ -887,26 +883,38 @@ function PlanoSection({ color, user, dynamicTopics, profile }) {
           const data = doneData[key];
 
           if (data.score !== undefined && !topicId.startsWith('sim')) {
-              // Regra de Espaçamento Baseada em Evidências
-              let delayWeeks = 1; // < 60% (Revisão Urgente R1)
-              if (data.score >= 80) delayWeeks = 3; // > 80% (Revisão Longa R3)
-              else if (data.score >= 60) delayWeeks = 2; // Médio (Revisão Média R2)
+              let delayWeeks = 1; 
+              if (data.score >= 80) delayWeeks = 3; 
+              else if (data.score >= 60) delayWeeks = 2; 
 
-              const targetWeek = origWeek + delayWeeks;
+              // --- LÓGICA DE DATA DINÂMICA ---
+              const doneDate = new Date(data.doneAt || new Date());
+              const revDate = new Date(doneDate.getTime() + delayWeeks * 7 * 24 * 60 * 60 * 1000);
+              
+              // Limpa as horas para comparar apenas os dias
+              const hojeAbs = new Date(hoje.getFullYear(), hoje.getMonth(), hoje.getDate());
+              const revDateAbs = new Date(revDate.getFullYear(), revDate.getMonth(), revDate.getDate());
 
-              // Encontra a semana alvo e injeta o card de revisão
+              const diffTime = revDateAbs.getTime() - hojeAbs.getTime();
+              const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+              
+              // Se a data já passou ou é nesta semana, a revisão é injetada na semana atual (Semana 1)
+              let targetWeek = Math.ceil(diffDays / 7);
+              if (targetWeek < 1) targetWeek = 1; 
+
               const targetW = WEEKS.find(w => w.n === targetWeek);
+              // --------------------------------
+
               if (targetW) {
                   const origTopic = enhancedTopics.find(t => t.id === topicId);
                   if (origTopic) {
-                      // Verifica se já não adicionamos esta revisão
                       const revId = `rev-${targetWeek}-${topicId}`;
                       if (!targetW.topics.some(t => t.id === revId)) {
-                          targetW.topics.unshift({ // Coloca no topo da semana
+                          targetW.topics.unshift({ 
                               id: revId,
-                              parentId: key, // Salva quem é o pai para podermos checar
+                              parentId: key, 
                               nome: `[R${delayWeeks}] Revisão de ${origTopic.nome || origTopic.id}`,
-                              h: 1, // Revisão leva menos tempo
+                              h: 1, 
                               mode: "Revisão Ativa",
                               wipr: origTopic.wipr,
                               especialidade: origTopic.especialidade,
@@ -942,11 +950,20 @@ function PlanoSection({ color, user, dynamicTopics, profile }) {
 
   const savePerformance = async (key) => {
     const scoreVal = parseInt(tempScore) || 0;
-    const newData = { ...doneData, [key]: { score: scoreVal, doneAt: new Date().toISOString() } };
+    
+    // Configura a data final a ser salva. Se escolheu pelo input, crava meio-dia para evitar bug de fuso horário.
+    let finalDate = new Date().toISOString();
+    if (tempDate) {
+        const [y, m, d] = tempDate.split('-');
+        finalDate = new Date(y, m - 1, d, 12, 0, 0).toISOString();
+    }
+
+    const newData = { ...doneData, [key]: { score: scoreVal, doneAt: finalDate } };
     setDoneData(newData);
     await setDoc(docRef, { temasFeitos: newData }, { merge: true });
     setActiveEval(null);
     setTempScore("");
+    setTempDate("");
   };
 
   const removeDone = async (key) => {
@@ -984,7 +1001,6 @@ function PlanoSection({ color, user, dynamicTopics, profile }) {
 
   return (
     <div>
-      {/* HEADER RESTAURADO: Cards de Informação */}
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(130px, 1fr))", gap: 8, marginBottom: 18 }}>
         {[
           { l: "Semanas", v: totalWeeks, c: color },
@@ -999,7 +1015,6 @@ function PlanoSection({ color, user, dynamicTopics, profile }) {
         ))}
       </div>
 
-      {/* HEADER RESTAURADO: Barras de Progresso */}
       <div style={{ marginBottom: 18, padding: "14px 16px", background: "#fafaf8", border: `1px solid ${T.borderCard}`, borderRadius: 6 }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
           <span style={{ fontSize: 11, fontFamily: "monospace", color: T.textMuted, letterSpacing: "0.06em" }}>PROGRESSO GERAL</span>
@@ -1027,16 +1042,13 @@ function PlanoSection({ color, user, dynamicTopics, profile }) {
         </div>
       </div>
 
-      {/* BOTÕES RESTAURADOS */}
       <div style={{ display: "flex", gap: 6, marginBottom: 14 }}>
         <button onClick={() => setExp(new Set(WEEKS.map((w) => w.n)))} style={{ background: "transparent", border: `1px solid ${T.borderCard}`, color: T.textMuted, padding: "5px 11px", borderRadius: 4, fontSize: 11, fontFamily: "monospace", cursor: "pointer" }}>Expandir tudo</button>
         <button onClick={() => setExp(new Set())} style={{ background: "transparent", border: `1px solid ${T.borderCard}`, color: T.textMuted, padding: "5px 11px", borderRadius: 4, fontSize: 11, fontFamily: "monospace", cursor: "pointer" }}>Recolher tudo</button>
       </div>
 
-      {/* Renderização das Semanas */}
       {WEEKS.map((w) => {
         const isO = exp.has(w.n);
-        // Calcula se a semana está toda feita baseada nos itens (normais e injeções)
         const weekKeys = w.topics.map((t) => t.isReview ? t.id : `${w.n}-${t.id}`);
         const doneCount = weekKeys.filter((k) => doneData[k]).length;
         const allDone = doneCount > 0 && doneCount === w.topics.length;
@@ -1062,7 +1074,6 @@ function PlanoSection({ color, user, dynamicTopics, profile }) {
                   const isDone = !!doneData[key];
                   const ms = modeStyle(t.mode);
                   
-                  // Define cor do badge
                   let badgeColor = "#6366F1";
                   let badgeText = "REV";
                   if (!t.isReview) {
@@ -1082,17 +1093,21 @@ function PlanoSection({ color, user, dynamicTopics, profile }) {
                         <div style={{ flex: 1, minWidth: 0 }}>
                           <div style={{ fontSize: 12.5, color: isDone ? T.textDisabled : T.textPrimary, textDecoration: isDone ? "line-through" : "none" }}>{t.nome || t.id}</div>
                           
-                          {/* Botões de Ação */}
                           <div style={{ marginTop: 6, display: 'flex', gap: 8, alignItems: 'center' }}>
                             {!isDone && activeEval !== key && (
                                <button onClick={() => {
                                   if (t.isReview) {
-                                      // Se for revisão, não pede nota, só conclui
                                       const newData = { ...doneData, [key]: { score: 100, doneAt: new Date().toISOString() } };
                                       setDoneData(newData);
                                       setDoc(docRef, { temasFeitos: newData }, { merge: true });
                                   } else {
                                       setActiveEval(key);
+                                      setTempScore("");
+                                      
+                                      // Inicializa o input de data com o dia atual local
+                                      const offset = new Date().getTimezoneOffset() * 60000;
+                                      const localISOTime = (new Date(Date.now() - offset)).toISOString().slice(0, 10);
+                                      setTempDate(localISOTime);
                                   }
                                }} style={{ fontSize: 10, padding: "4px 8px", background: T.bgSurface, border: `1px solid ${T.borderCard}`, borderRadius: 4, cursor: "pointer", fontWeight: 600 }}>{t.isReview ? "Concluir Revisão" : "Marcar Feito"}</button>
                             )}
@@ -1105,17 +1120,23 @@ function PlanoSection({ color, user, dynamicTopics, profile }) {
                             )}
                           </div>
 
-                          {/* Formulário de % (Só aparece para teoria e se clicado) */}
                           {activeEval === key && !t.isReview && (
                              <div style={{ marginTop: 8, padding: 10, background: "#F8FAFC", borderRadius: 6, border: `1px solid ${T.borderCardHl}` }}>
-                               <div style={{ fontSize: 11, marginBottom: 6, fontWeight: 600, color: "#000" }}>De 0 a 100, como foi seu rendimento?</div>
-                               <div style={{ display: 'flex', gap: 6 }}>
+                               <div style={{ fontSize: 11, marginBottom: 6, fontWeight: 600, color: "#000" }}>Rendimento e Data de Conclusão:</div>
+                               <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
                                   <input 
                                     type="number" 
-                                    placeholder="0-100" 
+                                    placeholder="% Acerto" 
                                     value={tempScore} 
                                     onChange={(e) => setTempScore(e.target.value)} 
                                     style={{ ...S.input, width: 80, height: 35 }} 
+                                  />
+                                  <input 
+                                    type="date" 
+                                    value={tempDate} 
+                                    onChange={(e) => setTempDate(e.target.value)} 
+                                    style={{ ...S.input, width: 130, height: 35 }} 
+                                    title="Data em que você concluiu o estudo"
                                   />
                                   <button 
                                     onClick={() => savePerformance(key)} 
@@ -1132,14 +1153,13 @@ function PlanoSection({ color, user, dynamicTopics, profile }) {
                                   >
                                     Salvar
                                   </button>
-                                  <button onClick={() => setActiveEval(null)} style={{ background: "transparent", border: "none", fontSize: 11, color: T.textMuted, cursor: "pointer" }}>Cancelar</button>
+                                  <button onClick={() => { setActiveEval(null); setTempDate(""); }} style={{ background: "transparent", border: "none", fontSize: 11, color: T.textMuted, cursor: "pointer" }}>Cancelar</button>
                                </div>
-                               <div style={{ fontSize: 9, color: T.textSubtle, marginTop: 6 }}>Isso calculará a semana da sua próxima revisão.</div>
+                               <div style={{ fontSize: 9, color: T.textSubtle, marginTop: 6 }}>O algoritmo agendará a sua revisão a partir da data informada acima.</div>
                              </div>
                           )}
                         </div>
 
-                        {/* Badges Finais: Modo e Horas */}
                         <span style={{ fontSize: 9, padding: "2px 5px", borderRadius: 3, background: isDone ? "#F0FDF4" : ms.bg, border: `1px solid ${isDone ? "#BBF7D0" : ms.br}`, color: isDone ? "#14532D" : ms.tx, fontFamily: "monospace", fontWeight: 600, flexShrink: 0 }}>
                           {isDone ? "✓" : t.mode}
                         </span>
