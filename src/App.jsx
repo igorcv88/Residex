@@ -361,6 +361,15 @@ function RankingsSection({ color, dynamicTopics }) {
 
   return (
     <div>
+      {/* NOVO QUADRADINHO INFORMATIVO */}
+      <div style={{ background: "#fafaf8", border: `1px solid ${T.borderCard}`, borderLeft: `3px solid ${color}`, borderRadius: 8, padding: "12px 14px", marginBottom: 16 }}>
+        <div style={{ fontSize: 11, color: T.textMuted, lineHeight: 1.6, fontFamily: "'DM Sans', sans-serif" }}>
+          <b>Diretrizes de Estudo:</b><br/>
+          • <b>Crítico e Alto:</b> Estudar de forma realmente aprofundada e com detalhes.<br/>
+          • <b>Médio e Baixo:</b> Estudar por cima ou apenas dar uma revisada.
+        </div>
+      </div>
+
       <div style={{ display: "flex", gap: 6, flexWrap: "wrap", marginBottom: 16 }}>
         {[{ id: "all", label: "Todos" }, { id: "c", label: "Crítico 80+" }, { id: "h", label: "Alta 60–79" }, { id: "m", label: "Média 40–59" }, { id: "l", label: "Baixa <40" }].map(f => (
           <button key={f.id} onClick={() => setFilter(f.id)} style={{ background: filter === f.id ? `${color}15` : "transparent", border: `1px solid ${filter === f.id ? color : T.borderCard}`, color: filter === f.id ? color : T.textMuted, padding: "5px 12px", borderRadius: 4, fontSize: 11, fontFamily: "monospace", cursor: "pointer", transition: "all 0.15s" }}>
@@ -402,7 +411,7 @@ function modeStyle(mode) {
 
 // ── Nova PlanoSection (Dinâmica & Visualmente Completa) ─────────────
 function PlanoSection({ color, user, dynamicTopics, profile }) {
-  const [exp, setExp] = useState(new Set([1, 2])); // Expande as duas primeiras por padrão
+  const [exp, setExp] = useState(new Set([1, 2]));
   const [done, setDone] = useState(new Set());
   const [loading, setLoading] = useState(true);
 
@@ -432,11 +441,11 @@ function PlanoSection({ color, user, dynamicTopics, profile }) {
     
     if (weekTopics.length === 0) return null;
 
-    // Cor dinâmica da semana (herda a cor do tema mais grave dentro dela)
+    // Cor dinâmica da semana (Alterado o nível médio para o amarelo #EAB308)
     const maxWipr = Math.max(...weekTopics.map(t => t.wipr));
-    const weekColor = maxWipr >= 80 ? "#EF4444" : maxWipr >= 60 ? "#F97316" : maxWipr >= 40 ? "#10B981" : "#0EA5E9";
+    const weekColor = maxWipr >= 80 ? "#EF4444" : maxWipr >= 60 ? "#F97316" : maxWipr >= 40 ? "#EAB308" : "#0EA5E9";
 
-    // Título dinâmico (Pega os nomes, remove o prefixo "Cardio -" e junta os 2 primeiros)
+    // Título dinâmico
     const focusTitles = weekTopics.slice(0, 2).map(t => {
       const parts = (t.nome || t.id).split("—");
       return parts.length > 1 ? parts[1].trim() : parts[0].trim();
@@ -482,11 +491,10 @@ function PlanoSection({ color, user, dynamicTopics, profile }) {
   const pctTopics = totalTopics > 0 ? ((doneTopicsCount / totalTopics) * 100).toFixed(1) : "0.0";
   const pctHours = totalHours > 0 ? ((doneHoursCount / totalHours) * 100).toFixed(1) : "0.0";
   const avgHoursPerWeek = totalWeeks > 0 ? Math.round(totalHours / totalWeeks) : 0;
-  const maxH = Math.max(...WEEKS.map(w => w.h), 1); // Para a barrinha de preenchimento de cada semana
+  const maxH = Math.max(...WEEKS.map(w => w.h), 1);
 
   return (
     <div>
-      {/* ── CARDS SUPERIORES DE RESUMO ── */}
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(130px, 1fr))", gap: 8, marginBottom: 18 }}>
         {[
           { l: "Semanas",     v: totalWeeks,             c: color },
@@ -501,7 +509,6 @@ function PlanoSection({ color, user, dynamicTopics, profile }) {
         ))}
       </div>
 
-      {/* ── PAINEL DE PROGRESSÃO DUPLO ── */}
       <div style={{ marginBottom: 18, padding: "14px 16px", background: "#fafaf8", border: `1px solid ${T.borderCard}`, borderRadius: 6 }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
           <span style={{ fontSize: 11, fontFamily: "monospace", color: T.textMuted, letterSpacing: "0.06em" }}>PROGRESSO GERAL</span>
@@ -540,7 +547,6 @@ function PlanoSection({ color, user, dynamicTopics, profile }) {
         ))}
       </div>
 
-      {/* ── LISTAGEM DE SEMANAS ── */}
       {WEEKS.map(w => {
         const isO = exp.has(w.n);
         const weekKeys = w.topics.map(t => `${w.n}-${t.id}`);
@@ -561,7 +567,6 @@ function PlanoSection({ color, user, dynamicTopics, profile }) {
                 {doneCount}/{w.topics.length}
               </span>
               
-              {/* Mini barra de carga horária da semana */}
               <div style={{ width: 56, height: 4, background: T.borderCard, borderRadius: 2, overflow: "hidden", flexShrink: 0 }}>
                 <div style={{ width: `${Math.round(w.h / maxH * 100)}%`, height: "100%", background: allDone ? "#10B981" : w.col, borderRadius: 2, transition: "background 0.3s" }} />
               </div>
@@ -616,6 +621,7 @@ function PlanoSection({ color, user, dynamicTopics, profile }) {
     </div>
   );
 }
+
 
 
 
