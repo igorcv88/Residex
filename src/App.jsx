@@ -1146,7 +1146,6 @@ function PlanoSection({ color, user, dynamicTopics, profile }) {
                         </span>
                         <span style={{ fontSize: 11, fontFamily: "monospace", color: T.textMuted }}>{t.h}h</span>
                       </div>
-                    </div>
                   );
                 })}
               </div>
